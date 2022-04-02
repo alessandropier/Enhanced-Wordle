@@ -15,7 +15,9 @@ La struttura della repository si presenta nel seguente modo:
 |    |–– checkstyle
 |–– docs
 |    |–– Assegnazione progetto.md
+|    |–– CODE_OF_CONDUCT.md
 |    |–– Guida per lo studente.md
+|    |–– ISPIRATORE.md
 |    |–– img 
 |    |–– javadoc 
 |    |–– Report.md
@@ -44,7 +46,9 @@ Nel seguito si dettagliano i ruoli dei diversi componenti:
 <br>Il file `Report.md` verrà usato per redigere la relazione finale del progetto. 
 <br>La cartella raccoglie inoltre:
     - `Assegnazione progetto.md`: contenente la descrizione dettagliata del progetto assegnato;
+    - `CODE_OF_CONDUCT.md`: contenente il regolamento del gruppo allen;
     - `Guida per lo studente.md`: contenente la descrizione di tutti i passi di configurazione necessari per l'attivazione del flusso di lavoro a supporto dello sviluppo del progetto;
+    - `ISPIRATORE.md`: contenente le informazioni relative a Frances E. Allen
 - `gradle/`: ospita il `.jar` relativo al sistema di gestione delle dipendenze *Gradle*.
 - `lib`: include eventuali librerie esterne utilizzate dal progetto.
 - `res`: contiene risorse varie utilizzate dal sistema 
