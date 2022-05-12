@@ -8,6 +8,7 @@ public class Controller {
     public Controller()
     {}
 
+    /**Imposta una nuova parola segreta da indovinare */
     public void Nuova(String nuovaParola, Paroliere p)
     {
         boolean flagLength=false, flagCorrect=false;
@@ -41,5 +42,17 @@ public class Controller {
             p.setParolaSegreta(nuovaParola);
         }
     }
+
+    /**Mostra la parola segreta impostata */
+    public void Mostra(Paroliere p)
+    {
+        if(p.getParolaSegreta()==null){
+            System.out.println("Parola segreta non impostata.");
+        }else{
+            System.out.println("La parola segreta è "+p.getParolaSegreta()+".");
+        }
+    }
+
+
 }
 
