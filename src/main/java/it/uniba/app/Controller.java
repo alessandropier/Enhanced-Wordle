@@ -1,5 +1,6 @@
 package it.uniba.app;
 
+/**<<Controller>>*/
 public class Controller {
     private final int maxTentativi=6;
     private final int numCaratteri=5;
@@ -53,6 +54,19 @@ public class Controller {
         }
     }
 
-
+    /**Permette di iniziare una nuova partita */
+    public void Gioca(Giocatore g, Paroliere p, Matrice m)
+    {
+        if(p.getParolaSegreta().equals(null))
+        {
+            System.out.println("Parola segreta non impostata. Impossibile giocare.");
+        }
+        else
+        if(g.getTentativi() == 0)
+        {
+            /**Stampa della matrice dei tentativi*/     
+            m.stampaMatrice(maxTentativi, numCaratteri);
+        }
+    }
 }
 
