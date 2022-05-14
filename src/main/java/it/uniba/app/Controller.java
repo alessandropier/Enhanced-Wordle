@@ -1,5 +1,5 @@
 package it.uniba.app;
-
+import java.util.ArrayList;
 /**<<Controller>>*/
 public class Controller {
     private final int maxTentativi=6;
@@ -110,13 +110,55 @@ public class Controller {
         {
             System.out.println("Parola segreta mancante. Imposta una parola segreta per giocare.");
         }
+        /** Verifica se la parola è stata indovinata */
+        if(s.equals(p.getParolaSegreta()))
+        {
+            System.out.println("Parola segreta indovinata in: "+g.getTentativi()+" tentativi.");
+            /**stampa matrice */
+        }
+        else
+        {
+            String parolaGiusta=p.getParolaSegreta();
+            ArrayList<Integer> conta=new ArrayList<>(numCaratteri);
+            ArrayList<Integer> esito=new ArrayList<>(numCaratteri);
+            contaCaratteri(parolaGiusta, conta);
+            contaVerdi(parolaGiusta, s, conta, esito);
+            for(int i=0; i<numCaratteri; i++) /**i: controllo parola paroliere */
+            {
+                if(conta.get(i)>0)
+                {
+                    for(int j=0; j<numCaratteri; j++) /**j: controllo parola utente */
+                    {
+                        if(esito.get(j)!=1)
+                        {
+                            if(s.charAt(j)!=parolaGiusta.charAt(i))
+                                esito.set(i, -1);
+                            else
+                                esito.set(i, 0);
+                        }
+                    }
+                }
+            }
+        }
         /**Implementati i controlli sulla correttezza della parola inserita e sullo stato del gioco
          * Da sviluppare: 
-         * Verifica se la parola è stata indovinata;
          * Colori delle lettere;
          * Implementazione della stampa a video.
         */
          
     }
+    private void contaCaratteri(String parolaGiusta, ArrayList<Integer> conta){}
+    private void contaVerdi(String parolaGiusta, String parolaUtente, ArrayList<Integer> conta, ArrayList<Integer> esito)
+    {
+        for(int i=0; i<numCaratteri; i++)
+        {
+            if(parolaGiusta.charAt(i)==parolaUtente.charAt(i))
+            {
+                esito.set(i, 1);
+                decrementa(parolaGiusta.charAt(i), conta);
+            }
+        }
+    }
+    private void decrementa(char carattere, ArrayList<Integer> conta){}
 }
 

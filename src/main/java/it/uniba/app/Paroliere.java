@@ -10,13 +10,13 @@ public class Paroliere {
         parolaSegreta=null;
     }
 
-    /**Set parola segreta*/
+    /**Get parola segreta*/
     public String getParolaSegreta()
     {
         return parolaSegreta;
     }
 
-    /**Get parola segreta*/
+    /**Set parola segreta*/
     public void setParolaSegreta(String p)
     {
         parolaSegreta=p;
