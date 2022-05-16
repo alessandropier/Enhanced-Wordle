@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="it"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Matrice.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">wordle</a> &gt; <a href="index.source.html" class="el_package">it.uniba.app</a> &gt; <span class="el_source">Matrice.java</span></div><h1>Matrice.java</h1><pre class="source lang-java linenums">package it.uniba.app;
+
+import java.util.ArrayList;
+
+/** &lt;&lt;Boundary&gt;&gt; */
+public class Matrice {
+    private ArrayList&lt;String&gt; Tentativi;
+    private ArrayList&lt;ArrayList&lt;String&gt;&gt; colori;
+    private static final String ANSI_GREEN_BACKGROUND = &quot;\u001B[42m&quot;;
+    private static final String ANSI_YELLOW_BACKGROUND = &quot;\u001B[43m&quot;;
+    private static final String ANSI_GRAY_BACKGROUND = &quot;\033[97;107m&quot;;
+    public static final String ANSI_BLACK_BACKGROUND = &quot;\u001B[40m&quot;;
+
+    /**Costruttore */
+<span class="nc" id="L15">    public Matrice(int maxT, int maxC) {</span>
+<span class="nc" id="L16">        Tentativi = new ArrayList&lt;&gt;();</span>
+<span class="nc bnc" id="L17" title="All 2 branches missed.">        for (int i = 0; i &lt; maxT; i++) {</span>
+<span class="nc" id="L18">            Tentativi.add(&quot;     &quot;);</span>
+        }
+<span class="nc" id="L20">        colori=new ArrayList&lt;&gt;(maxT);</span>
+<span class="nc bnc" id="L21" title="All 2 branches missed.">        for (int i = 0; i &lt; maxT; i++) {</span>
+<span class="nc" id="L22">            colori.add( new ArrayList&lt;String&gt;(maxC));</span>
+<span class="nc bnc" id="L23" title="All 2 branches missed.">            for(int j=0; j &lt; maxC; j++)</span>
+            {
+<span class="nc" id="L25">                colori.get(i).add(&quot;&quot;);</span>
+            }
+        }
+    
+<span class="nc" id="L29">    }</span>
+
+    /**Stampa della matrice */
+    public void stampaMatrice(int maxT, int maxC) 
+    {
+<span class="nc" id="L34">        int size = 0;</span>
+
+<span class="nc bnc" id="L36" title="All 2 branches missed.">        for (int i = 0; i &lt; maxT; i++) </span>
+        {
+<span class="nc" id="L38">            System.out.print(&quot;[&quot;);</span>
+<span class="nc bnc" id="L39" title="All 2 branches missed.">            for (int j = 0; j &lt; maxC; j++) </span>
+            {
+<span class="nc" id="L41">                System.out.print(colori.get(i).get(j));</span>
+<span class="nc" id="L42">                System.out.print(this.Tentativi.get(size).charAt(j)+ANSI_BLACK_BACKGROUND);</span>
+<span class="nc bnc" id="L43" title="All 2 branches missed.">                if (j != maxC - 1) </span>
+                {
+<span class="nc" id="L45">                    System.out.print(&quot;|&quot;);</span>
+                }
+            }
+<span class="nc" id="L48">            size++;</span>
+<span class="nc" id="L49">            System.out.println(&quot;]&quot;);</span>
+        }
+<span class="nc" id="L51">    }</span>
+
+    /**Memorizza il colore dello sfondo per ogni carattere di ogni tentativo */
+    public void impostaColore(ArrayList&lt;Integer&gt; esito, int tentativo)
+    {
+<span class="nc bnc" id="L56" title="All 2 branches missed.">        for(int i=0; i&lt;esito.size(); i++)</span>
+        {
+<span class="nc bnc" id="L58" title="All 2 branches missed.">            if(esito.get(i)==1)</span>
+            {
+<span class="nc" id="L60">                colori.get(tentativo).set(i, ANSI_GREEN_BACKGROUND);</span>
+            }
+<span class="nc bnc" id="L62" title="All 2 branches missed.">            else if(esito.get(i)==0)</span>
+            {
+<span class="nc" id="L64">                colori.get(tentativo).set(i, ANSI_YELLOW_BACKGROUND);</span>
+            }
+            else
+            {
+<span class="nc" id="L68">                colori.get(tentativo).set(i, ANSI_GRAY_BACKGROUND);</span>
+            }
+
+        }
+<span class="nc" id="L72">    }</span>
+
+    /**Set tentavi, memorizza la parola inserita all'n-esimo tentativo */
+    public void setTentativi(int tentativo, String parola) {
+<span class="nc" id="L76">        Tentativi.set(tentativo, parola);</span>
+<span class="nc" id="L77">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

@@ -1,13 +1,24 @@
 package it.uniba.app;
 import java.util.*;
+
 /**<<Controller>>*/
 public class Controller {
-    private final int maxTentativi=6;
-    private final int numCaratteri=5;
+    private final int maxTentativi = 6;
+    private final int numCaratteri = 5;
 
-    /**Costruttore*/
+    /**<<Costruttore>>*/
     public Controller()
     {}
+
+    public int getMaxTentativi() 
+    {
+        return maxTentativi;
+    }
+
+    public int getNumCaratteri() 
+    {
+        return numCaratteri;
+    }
 
     /**Imposta una nuova parola segreta da indovinare */
     public void Nuova(String nuovaParola, Paroliere p)
@@ -26,7 +37,7 @@ public class Controller {
             System.out.println("Parola segreta troppo lunga. La parola deve contenere " + numCaratteri + " lettere.");
         }
         
-        nuovaParola.toUpperCase();
+        nuovaParola=nuovaParola.toUpperCase();
 
         for(int i=0; i<numCaratteri && !flagCorrect; i++)
         {
@@ -70,7 +81,7 @@ public class Controller {
     }
 
     /**Permette di effettuare un tentativo per indovinare la parola segreta */
-    public void Tentativo(Giocatore g, String s, Paroliere p)
+    public void Tentativo(Giocatore g, String s, Paroliere p, Matrice m)
     {
         if(!p.getParolaSegreta().equals(null))
         {
@@ -88,7 +99,7 @@ public class Controller {
                 }
                 else
                 {
-                    s.toUpperCase();
+                    s=s.toUpperCase();
 
                     for(int i=0; i<numCaratteri && !flagCorrect; i++)
                     {
@@ -110,77 +121,72 @@ public class Controller {
             if(s.equals(p.getParolaSegreta()))
             {
                 System.out.println("Parola segreta indovinata in: " + g.getTentativi() + " tentativi.");
-                /**stampa matrice dei tentativi con i colori*/
+                m.stampaMatrice(maxTentativi, numCaratteri);
             }
             else
             {
                 String parolaGiusta = p.getParolaSegreta();
-                ArrayList<Integer> conta = new ArrayList<>(Arrays.asList(0,0,0,0,0));
-                ArrayList<Integer> esito = new ArrayList<>(numCaratteri);
-                contaCaratteri(parolaGiusta, conta);
-                contaVerdi(parolaGiusta, s, conta, esito);
-                for(int i = 0; i < numCaratteri; i++) /**i: controllo parola paroliere */
+                ArrayList<Integer> esito = new ArrayList<>(Arrays.asList(2,2,2,2,2));
+                contaVerdi(parolaGiusta, s, esito);
+                for(int i=0; i<numCaratteri; i++)
                 {
-                    if(conta.get(i) > 0)
+                    if(esito.get(i)!=1)
                     {
-                        for(int j = 0; j < numCaratteri; j++) /**j: controllo parola utente */
+                        if(contaOccorrenze(parolaGiusta, s.charAt(i))-(contaOccorrenzeColore(parolaGiusta, s.charAt(i), esito, 1)+ contaOccorrenzeColore(s, s.charAt(i), esito, 0))>0)
                         {
-                            if(esito.get(j) != 1)
-                            {
-                                if(s.charAt(j) != parolaGiusta.charAt(i))
-                                    esito.set(i, -1);
-                                else
-                                    esito.set(i, 0);
-                            }
+                            esito.set(i, 0);
                         }
                     }
                 }
+
+                m.setTentativi(g.getTentativi(), s);
+                m.impostaColore(esito, g.getTentativi());
+                m.stampaMatrice(maxTentativi, numCaratteri);
             }
-            /**Implementati i controlli sulla correttezza della parola inserita e sullo stato del gioco
-             * Da sviluppare: 
-             * Colori delle lettere;
-             * Implementazione della stampa a video.
-            */
         }
         else 
         {
             System.out.println("Parola segreta mancante. Imposta una parola segreta per giocare.");
         }
     }
-    private void contaCaratteri(String parolaGiusta, ArrayList<Integer> conta)
-    {
-        for(int i = 0; i < numCaratteri; i++)
-        {
-            for(int j = 0; j < numCaratteri; j++)
-            {
-                if(parolaGiusta.charAt(i) == parolaGiusta.charAt(j))
-                {
-                    conta.set(i, conta.get(i) + 1);
-                }
-            }
-        }
-    }
 
-    private void contaVerdi(String parolaGiusta, String parolaUtente, ArrayList<Integer> conta, ArrayList<Integer> esito)
+    /**Trova i caratteri uaguali tra la parola segreta e quella insierita dal giocatore nel tentativo, poi imposta nel arraylist esito in corrispondenza del carattere identico 1 */
+    private void contaVerdi(String parolaGiusta, String parolaUtente, ArrayList<Integer> esito)
     {
         for(int i=0; i<numCaratteri; i++)
         {
             if(parolaGiusta.charAt(i) == parolaUtente.charAt(i))
             {
                 esito.set(i, 1);
-                decrementa(parolaGiusta.charAt(i), parolaGiusta, conta);
             }
         }
     }
 
-    private void decrementa(char carattere, String parolaGiusta, ArrayList<Integer> conta)
+    /**Data una parola e un char conta le sue occorenze */
+    private int contaOccorrenze(String parola, char carattere)
     {
-        for(int i = 0; i < numCaratteri; i++)
+        int occorrenza=0;
+        for(int i=0; i<parola.length(); i++)
         {
-            if(carattere == parolaGiusta.charAt(i))
+            if(parola.charAt(i)==carattere)
             {
-                conta.set(i, conta.get(i) - 1);
+                occorrenza++;
             }
         }
+        return occorrenza;
+    }
+
+    /**Data una parola e un valore numerico che corrisponde a un colore (1=verde, 0=giallo), conta il numero di occorenze presenti in essa in corrispondenza di esito */
+    private int contaOccorrenzeColore(String parola, char carattere, ArrayList<Integer> esito, int val)
+    {
+        int occorrenza=0;
+        for(int i=0; i<parola.length(); i++)
+        {
+            if(parola.charAt(i)==carattere && esito.get(i)==val)
+            {
+                occorrenza++;
+            }
+        }
+        return occorrenza;
     }
 }
