@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="it"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Controller.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">wordle</a> &gt; <a href="index.source.html" class="el_package">it.uniba.app</a> &gt; <span class="el_source">Controller.java</span></div><h1>Controller.java</h1><pre class="source lang-java linenums">package it.uniba.app;
+import java.util.*;
+
+/**&lt;&lt;Controller&gt;&gt;*/
+public class Controller {
+<span class="nc" id="L6">    private final int maxTentativi = 6;</span>
+<span class="nc" id="L7">    private final int numCaratteri = 5;</span>
+
+    /**&lt;&lt;Costruttore&gt;&gt;*/
+    public Controller()
+<span class="nc" id="L11">    {}</span>
+
+    public int getMaxTentativi() 
+    {
+<span class="nc" id="L15">        return maxTentativi;</span>
+    }
+
+    public int getNumCaratteri() 
+    {
+<span class="nc" id="L20">        return numCaratteri;</span>
+    }
+
+    /**Imposta una nuova parola segreta da indovinare */
+    public void Nuova(String nuovaParola, Paroliere p)
+    {
+<span class="nc" id="L26">        boolean flagLength=false, flagCorrect=false;</span>
+
+<span class="nc bnc" id="L28" title="All 2 branches missed.">        if(nuovaParola.length()&lt;numCaratteri)  </span>
+        {
+<span class="nc" id="L30">            flagLength=true;</span>
+<span class="nc" id="L31">            System.out.println(&quot;Parola segreta troppo corta. La parola deve contenere &quot; + numCaratteri + &quot; lettere.&quot;);</span>
+        }
+            
+<span class="nc bnc" id="L34" title="All 2 branches missed.">        else if(nuovaParola.length()&gt;numCaratteri)</span>
+        {
+<span class="nc" id="L36">            flagLength=true;</span>
+<span class="nc" id="L37">            System.out.println(&quot;Parola segreta troppo lunga. La parola deve contenere &quot; + numCaratteri + &quot; lettere.&quot;);</span>
+        }
+        
+<span class="nc" id="L40">        nuovaParola=nuovaParola.toUpperCase();</span>
+
+<span class="nc bnc" id="L42" title="All 4 branches missed.">        for(int i=0; i&lt;numCaratteri &amp;&amp; !flagCorrect; i++)</span>
+        {
+<span class="nc bnc" id="L44" title="All 4 branches missed.">            if(nuovaParola.charAt(i)&lt;'A' || nuovaParola.charAt(i)&gt;'Z')</span>
+            {
+<span class="nc" id="L46">                flagCorrect=true;</span>
+            }
+        }
+<span class="nc bnc" id="L49" title="All 2 branches missed.">        if(flagCorrect)</span>
+<span class="nc" id="L50">            System.out.println(&quot;Parola segreta non valida. La parola può contenere solo caratteri alfabetici.&quot;);</span>
+<span class="nc bnc" id="L51" title="All 4 branches missed.">        if(!flagLength &amp;&amp; !flagCorrect)</span>
+        {
+<span class="nc" id="L53">            System.out.println(&quot;OK!&quot;);</span>
+<span class="nc" id="L54">            p.setParolaSegreta(nuovaParola);</span>
+        }
+<span class="nc" id="L56">    }</span>
+
+    /**Mostra la parola segreta impostata */
+    public void Mostra(Paroliere p)
+    {
+<span class="nc bnc" id="L61" title="All 2 branches missed.">        if(p.getParolaSegreta()==null){</span>
+<span class="nc" id="L62">            System.out.println(&quot;Parola segreta non impostata.&quot;);</span>
+        }else{
+<span class="nc" id="L64">            System.out.println(&quot;La parola segreta è &quot;+p.getParolaSegreta()+&quot;.&quot;);</span>
+        }
+<span class="nc" id="L66">    }</span>
+
+    /**Permette di iniziare una nuova partita */
+    public void Gioca(Giocatore g, Paroliere p, Matrice m)
+    {
+<span class="nc bnc" id="L71" title="All 2 branches missed.">        if(p.getParolaSegreta().equals(null))</span>
+        {
+<span class="nc" id="L73">            System.out.println(&quot;Parola segreta non impostata. Impossibile giocare.&quot;);</span>
+        }
+        else
+<span class="nc bnc" id="L76" title="All 2 branches missed.">        if(g.getTentativi() == 0)</span>
+        {
+            /**Stampa della matrice dei tentativi*/     
+<span class="nc" id="L79">            m.stampaMatrice(maxTentativi, numCaratteri);</span>
+        }
+<span class="nc" id="L81">    }</span>
+
+    /**Permette di effettuare un tentativo per indovinare la parola segreta */
+    public void Tentativo(Giocatore g, String s, Paroliere p, Matrice m)
+    {
+<span class="nc bnc" id="L86" title="All 2 branches missed.">        if(!p.getParolaSegreta().equals(null))</span>
+        {
+<span class="nc bnc" id="L88" title="All 2 branches missed.">            if(g.getTentativi()&lt;maxTentativi)</span>
+            {
+<span class="nc" id="L90">                boolean flagCorrect=false;</span>
+
+<span class="nc bnc" id="L92" title="All 2 branches missed.">                if(s.length()&lt;numCaratteri)  </span>
+                {
+<span class="nc" id="L94">                    System.out.println(&quot;Parola troppo corta. La parola deve contenere &quot; + numCaratteri + &quot; lettere.&quot;);</span>
+                }         
+<span class="nc bnc" id="L96" title="All 2 branches missed.">                else if(s.length()&gt;numCaratteri)</span>
+                {
+<span class="nc" id="L98">                    System.out.println(&quot;Parola troppo lunga. La parola deve contenere &quot; + numCaratteri + &quot; lettere.&quot;);</span>
+                }
+                else
+                {
+<span class="nc" id="L102">                    s=s.toUpperCase();</span>
+
+<span class="nc bnc" id="L104" title="All 4 branches missed.">                    for(int i=0; i&lt;numCaratteri &amp;&amp; !flagCorrect; i++)</span>
+                    {
+<span class="nc bnc" id="L106" title="All 4 branches missed.">                        if(s.charAt(i)&lt;'A' || s.charAt(i)&gt;'Z')</span>
+                        {
+<span class="nc" id="L108">                            flagCorrect=true;</span>
+                        }
+                    }
+<span class="nc bnc" id="L111" title="All 2 branches missed.">                    if(flagCorrect)</span>
+<span class="nc" id="L112">                    System.out.println(&quot;Parola non valida. La parola può contenere solo caratteri alfabetici.&quot;);</span>
+                }
+<span class="nc" id="L114">            }</span>
+            else
+            {
+<span class="nc" id="L117">                System.out.println(&quot;Numero massimo di tentativi raggiunto. Avvia una nuova partita.&quot;);</span>
+            }
+            
+            /** Verifica se la parola è stata indovinata */
+<span class="nc bnc" id="L121" title="All 2 branches missed.">            if(s.equals(p.getParolaSegreta()))</span>
+            {
+<span class="nc" id="L123">                System.out.println(&quot;Parola segreta indovinata in: &quot; + g.getTentativi() + &quot; tentativi.&quot;);</span>
+<span class="nc" id="L124">                m.stampaMatrice(maxTentativi, numCaratteri);</span>
+            }
+            else
+            {
+<span class="nc" id="L128">                String parolaGiusta = p.getParolaSegreta();</span>
+<span class="nc" id="L129">                ArrayList&lt;Integer&gt; esito = new ArrayList&lt;&gt;(Arrays.asList(2,2,2,2,2));</span>
+<span class="nc" id="L130">                contaVerdi(parolaGiusta, s, esito);</span>
+<span class="nc bnc" id="L131" title="All 2 branches missed.">                for(int i=0; i&lt;numCaratteri; i++)</span>
+                {
+<span class="nc bnc" id="L133" title="All 2 branches missed.">                    if(esito.get(i)!=1)</span>
+                    {
+<span class="nc bnc" id="L135" title="All 2 branches missed.">                        if(contaOccorrenze(parolaGiusta, s.charAt(i))-(contaOccorrenzeColore(parolaGiusta, s.charAt(i), esito, 1)+ contaOccorrenzeColore(s, s.charAt(i), esito, 0))&gt;0)</span>
+                        {
+<span class="nc" id="L137">                            esito.set(i, 0);</span>
+                        }
+                    }
+                }
+
+<span class="nc" id="L142">                m.setTentativi(g.getTentativi(), s);</span>
+<span class="nc" id="L143">                m.impostaColore(esito, g.getTentativi());</span>
+<span class="nc" id="L144">                m.stampaMatrice(maxTentativi, numCaratteri);</span>
+<span class="nc" id="L145">            }</span>
+        }
+        else 
+        {
+<span class="nc" id="L149">            System.out.println(&quot;Parola segreta mancante. Imposta una parola segreta per giocare.&quot;);</span>
+        }
+<span class="nc" id="L151">    }</span>
+
+    /**Trova i caratteri uaguali tra la parola segreta e quella insierita dal giocatore nel tentativo, poi imposta nel arraylist esito in corrispondenza del carattere identico 1 */
+    private void contaVerdi(String parolaGiusta, String parolaUtente, ArrayList&lt;Integer&gt; esito)
+    {
+<span class="nc bnc" id="L156" title="All 2 branches missed.">        for(int i=0; i&lt;numCaratteri; i++)</span>
+        {
+<span class="nc bnc" id="L158" title="All 2 branches missed.">            if(parolaGiusta.charAt(i) == parolaUtente.charAt(i))</span>
+            {
+<span class="nc" id="L160">                esito.set(i, 1);</span>
+            }
+        }
+<span class="nc" id="L163">    }</span>
+
+    /**Data una parola e un char conta le sue occorenze */
+    private int contaOccorrenze(String parola, char carattere)
+    {
+<span class="nc" id="L168">        int occorrenza=0;</span>
+<span class="nc bnc" id="L169" title="All 2 branches missed.">        for(int i=0; i&lt;parola.length(); i++)</span>
+        {
+<span class="nc bnc" id="L171" title="All 2 branches missed.">            if(parola.charAt(i)==carattere)</span>
+            {
+<span class="nc" id="L173">                occorrenza++;</span>
+            }
+        }
+<span class="nc" id="L176">        return occorrenza;</span>
+    }
+
+    /**Data una parola e un valore numerico che corrisponde a un colore (1=verde, 0=giallo), conta il numero di occorenze presenti in essa in corrispondenza di esito */
+    private int contaOccorrenzeColore(String parola, char carattere, ArrayList&lt;Integer&gt; esito, int val)
+    {
+<span class="nc" id="L182">        int occorrenza=0;</span>
+<span class="nc bnc" id="L183" title="All 2 branches missed.">        for(int i=0; i&lt;parola.length(); i++)</span>
+        {
+<span class="nc bnc" id="L185" title="All 4 branches missed.">            if(parola.charAt(i)==carattere &amp;&amp; esito.get(i)==val)</span>
+            {
+<span class="nc" id="L187">                occorrenza++;</span>
+            }
+        }
+<span class="nc" id="L190">        return occorrenza;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

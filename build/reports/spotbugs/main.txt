@@ -1,0 +1,5 @@
+M C EC: Call to equals(null) in it.uniba.app.Controller.Gioca(Giocatore, Paroliere, Matrice)  At Controller.java:[line 71]
+M C EC: Call to equals(null) in it.uniba.app.Controller.Tentativo(Giocatore, String, Paroliere, Matrice)  At Controller.java:[line 86]
+M P SS: Unread field: it.uniba.app.Controller.maxTentativi; should this field be static?  At Controller.java:[line 6]
+M P SS: Unread field: it.uniba.app.Controller.numCaratteri; should this field be static?  At Controller.java:[line 7]
+M B Nm: The method name it.uniba.app.Help.StampaHelp() doesn't start with a lower case letter  At Help.java:[lines 6-20]
