@@ -68,7 +68,7 @@ public class Controller {
     /**Permette di iniziare una nuova partita */
     public void Gioca(Giocatore g, Paroliere p, Matrice m)
     {
-        if(p.getParolaSegreta().equals(null))
+        if(p.getParolaSegreta()==null)
         {
             System.out.println("Parola segreta non impostata. Impossibile giocare.");
         }
@@ -83,7 +83,7 @@ public class Controller {
     /**Permette di effettuare un tentativo per indovinare la parola segreta */
     public void Tentativo(Giocatore g, String s, Paroliere p, Matrice m)
     {
-        if(!p.getParolaSegreta().equals(null))
+        if(p.getParolaSegreta()!=null)
         {
             if(g.getTentativi()<maxTentativi)
             {
@@ -188,5 +188,40 @@ public class Controller {
             }
         }
         return occorrenza;
+    }
+
+    public void abbandona(Paroliere p, Giocatore g)
+    {
+        boolean flag=false;
+        if((p.getParolaSegreta()!=null) && g.getTentativi()<maxTentativi) /**Controllo sulla presenza di una partita in corso */
+        {
+            do
+            {
+                flag=false;
+                String prova = MyInput.leggiStringa("Abbandonare la partita?");
+                //Chiede input e lo salva nella stringa "risposta"
+                String risposta=prova.toUpperCase();
+
+                if(risposta.equals("SI"))
+                {
+                    p.setParolaSegreta(null);
+                    g.setTentativi(0);
+                    System.out.println("Partita abbandonata con successo.");
+                }
+                else if(risposta.equals("NO"))
+                {
+                    System.out.println("Partita non abbandonata, in attesa di comandi o nuovo tentativo...");
+                }
+                    else
+                    {
+                        flag=true;
+                        System.out.println("Inserire SI o NO.");
+                    }
+            }while(flag);   
+        }
+        else 
+        {
+            System.out.println("Nessuna partita avviata.");
+        }
     }
 }
