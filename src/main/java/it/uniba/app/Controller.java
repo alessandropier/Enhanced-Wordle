@@ -8,7 +8,9 @@ public class Controller {
 
     /**<<Costruttore>>*/
     public Controller()
-    {}
+    {
+
+    }
 
     public int getMaxTentativi() 
     {
@@ -176,7 +178,7 @@ public class Controller {
         return occorrenza;
     }
 
-    /**Data una parola e un valore numerico che corrisponde a un colore (1=verde, 0=giallo), conta il numero di occorenze presenti in essa in corrispondenza di esito */
+    /**Data una  @param parola e un valore numerico che corrisponde a un colore (1=verde, 0=giallo), conta il numero di occorenze presenti in essa in corrispondenza di esito */
     private int contaOccorrenzeColore(String parola, char carattere, ArrayList<Integer> esito, int val)
     {
         int occorrenza=0;
@@ -223,5 +225,35 @@ public class Controller {
         {
             System.out.println("Nessuna partita avviata.");
         }
+    }
+
+    public void esci(Paroliere p, Giocatore g)
+    {
+        boolean flag=false;
+        
+        do
+        {
+            flag=false;
+            String prova = MyInput.leggiStringa("Uscire dal gioco?");
+            //Chiede input e lo salva nella stringa "risposta"
+            String risposta=prova.toUpperCase();
+
+            if(risposta.equals("SI"))
+            {
+                p.setParolaSegreta(null);
+                g.setTentativi(0);
+                System.exit(0);
+            }
+            else if(risposta.equals("NO"))
+            {
+                System.out.println("In attesa di nuovi comandi o nuovo tentativo...");
+            }
+                else
+                {
+                    flag=true;
+                    System.out.println("Inserire SI o NO.");
+                }
+        }while(flag);   
+        
     }
 }

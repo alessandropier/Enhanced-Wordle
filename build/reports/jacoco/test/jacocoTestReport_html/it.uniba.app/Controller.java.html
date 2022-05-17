@@ -68,7 +68,7 @@ public class Controller {
     /**Permette di iniziare una nuova partita */
     public void Gioca(Giocatore g, Paroliere p, Matrice m)
     {
-<span class="nc bnc" id="L71" title="All 2 branches missed.">        if(p.getParolaSegreta().equals(null))</span>
+<span class="nc bnc" id="L71" title="All 2 branches missed.">        if(p.getParolaSegreta()==null)</span>
         {
 <span class="nc" id="L73">            System.out.println(&quot;Parola segreta non impostata. Impossibile giocare.&quot;);</span>
         }
@@ -83,7 +83,7 @@ public class Controller {
     /**Permette di effettuare un tentativo per indovinare la parola segreta */
     public void Tentativo(Giocatore g, String s, Paroliere p, Matrice m)
     {
-<span class="nc bnc" id="L86" title="All 2 branches missed.">        if(!p.getParolaSegreta().equals(null))</span>
+<span class="nc bnc" id="L86" title="All 2 branches missed.">        if(p.getParolaSegreta()!=null)</span>
         {
 <span class="nc bnc" id="L88" title="All 2 branches missed.">            if(g.getTentativi()&lt;maxTentativi)</span>
             {
@@ -189,5 +189,70 @@ public class Controller {
         }
 <span class="nc" id="L190">        return occorrenza;</span>
     }
+
+    public void abbandona(Paroliere p, Giocatore g)
+    {
+<span class="nc" id="L195">        boolean flag=false;</span>
+<span class="nc bnc" id="L196" title="All 4 branches missed.">        if((p.getParolaSegreta()!=null) &amp;&amp; g.getTentativi()&lt;maxTentativi) /**Controllo sulla presenza di una partita in corso */</span>
+        {
+            do
+            {
+<span class="nc" id="L200">                flag=false;</span>
+<span class="nc" id="L201">                String prova = MyInput.leggiStringa(&quot;Abbandonare la partita?&quot;);</span>
+                //Chiede input e lo salva nella stringa &quot;risposta&quot;
+<span class="nc" id="L203">                String risposta=prova.toUpperCase();</span>
+
+<span class="nc bnc" id="L205" title="All 2 branches missed.">                if(risposta.equals(&quot;SI&quot;))</span>
+                {
+<span class="nc" id="L207">                    p.setParolaSegreta(null);</span>
+<span class="nc" id="L208">                    g.setTentativi(0);</span>
+<span class="nc" id="L209">                    System.out.println(&quot;Partita abbandonata con successo.&quot;);</span>
+                }
+<span class="nc bnc" id="L211" title="All 2 branches missed.">                else if(risposta.equals(&quot;NO&quot;))</span>
+                {
+<span class="nc" id="L213">                    System.out.println(&quot;Partita non abbandonata, in attesa di comandi o nuovo tentativo...&quot;);</span>
+                }
+                    else
+                    {
+<span class="nc" id="L217">                        flag=true;</span>
+<span class="nc" id="L218">                        System.out.println(&quot;Inserire SI o NO.&quot;);</span>
+                    }
+<span class="nc bnc" id="L220" title="All 2 branches missed.">            }while(flag);   </span>
+        }
+        else 
+        {
+<span class="nc" id="L224">            System.out.println(&quot;Nessuna partita avviata.&quot;);</span>
+        }
+<span class="nc" id="L226">    }</span>
+
+    public void esci(Paroliere p, Giocatore g)
+    {
+<span class="nc" id="L230">        boolean flag=false;</span>
+        
+        do
+        {
+<span class="nc" id="L234">            flag=false;</span>
+<span class="nc" id="L235">            String prova = MyInput.leggiStringa(&quot;Uscire dal gioco?&quot;);</span>
+            //Chiede input e lo salva nella stringa &quot;risposta&quot;
+<span class="nc" id="L237">            String risposta=prova.toUpperCase();</span>
+
+<span class="nc bnc" id="L239" title="All 2 branches missed.">            if(risposta.equals(&quot;SI&quot;))</span>
+            {
+<span class="nc" id="L241">                p.setParolaSegreta(null);</span>
+<span class="nc" id="L242">                g.setTentativi(0);</span>
+<span class="nc" id="L243">                System.exit(0);</span>
+            }
+<span class="nc bnc" id="L245" title="All 2 branches missed.">            else if(risposta.equals(&quot;NO&quot;))</span>
+            {
+<span class="nc" id="L247">                System.out.println(&quot;In attesa di nuovi comandi o nuovo tentativo...&quot;);</span>
+            }
+                else
+                {
+<span class="nc" id="L251">                    flag=true;</span>
+<span class="nc" id="L252">                    System.out.println(&quot;Inserire SI o NO.&quot;);</span>
+                }
+<span class="nc bnc" id="L254" title="All 2 branches missed.">        }while(flag);   </span>
+        
+<span class="nc" id="L256">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>
