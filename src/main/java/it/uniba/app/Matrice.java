@@ -9,7 +9,9 @@ public class Matrice {
     private static final String ANSI_GREEN_BACKGROUND = "\u001B[42m";
     private static final String ANSI_YELLOW_BACKGROUND = "\u001B[43m";
     private static final String ANSI_GRAY_BACKGROUND = "\033[97;107m";
-    public static final String ANSI_BLACK_BACKGROUND = "\u001B[40m";
+    private static final String ANSI_BLACK_BACKGROUND = "\u001B[40m";
+    private static final String ANSI_RESET = "\u001B[0m";
+    private static final String ANSI_BLACK = "\u001B[30m";
 
     /**Costruttore */
     public Matrice(int maxT, int maxC) {
@@ -39,7 +41,7 @@ public class Matrice {
             for (int j = 0; j < maxC; j++) 
             {
                 System.out.print(colori.get(i).get(j));
-                System.out.print(this.Tentativi.get(size).charAt(j)+ANSI_BLACK_BACKGROUND);
+                System.out.print(ANSI_BLACK+this.Tentativi.get(size).charAt(j)+ANSI_BLACK_BACKGROUND+ANSI_RESET);
                 if (j != maxC - 1) 
                 {
                     System.out.print("|");
@@ -74,5 +76,19 @@ public class Matrice {
     /**Set tentavi, memorizza la parola inserita all'n-esimo tentativo */
     public void setTentativi(int tentativo, String parola) {
         Tentativi.set(tentativo, parola);
+    }
+
+    public void azzera (int maxC){
+
+        for (int i = 0; i < Tentativi.size(); i++) {
+            Tentativi.set(i, "     ");
+        }
+        for (int i = 0; i < colori.size(); i++) {
+            //colori.set(i, new ArrayList<String>(maxC));
+            for(int j=0; j < maxC; j++)
+            {
+                colori.get(i).set(j, "");
+            }
+        }
     }
 }

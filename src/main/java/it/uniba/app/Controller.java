@@ -1,8 +1,6 @@
 package it.uniba.app;
 import java.util.*;
 
-import javax.lang.model.util.ElementScanner6;
-
 /**<<Controller>>*/
 public class Controller {
     private static final int maxTentativi = 6;
@@ -76,7 +74,7 @@ public class Controller {
         else
         if(g.getTentativi() == 0)
         {
-            /**Stampa della matrice dei tentativi*/     
+            /**Stampa della matrice dei tentativi*/    
             m.stampaMatrice(maxTentativi, numCaratteri);
             flagGioca = true; /** Flag di gioco = true per indicare che il giocatore ha avviato una partita*/
         }
@@ -123,7 +121,7 @@ public class Controller {
                 System.out.println("La parola segreta è " + p.getParolaSegreta() + ".");
                 p.setParolaSegreta(null);
                 g.setTentativi(0);
-
+                m.azzera(numCaratteri);
                 flagGioca = false;
             }
             
@@ -137,7 +135,7 @@ public class Controller {
                 m.stampaMatrice(maxTentativi, numCaratteri);
                 p.setParolaSegreta(null);
                 g.setTentativi(0);
-
+                m.azzera(numCaratteri);
                 flagGioca = false;
             }
             else if(!flagCorrect && !flagLength && flagGioca)
@@ -168,7 +166,7 @@ public class Controller {
                     System.out.println("La parola segreta è " + p.getParolaSegreta() + ".");
                     p.setParolaSegreta(null);
                     g.setTentativi(0);
-
+                    m.azzera(numCaratteri);
                     flagGioca = false;
                 }
             }
@@ -219,7 +217,7 @@ public class Controller {
         return occorrenza;
     }
 
-    public static void abbandona(Paroliere p, Giocatore g)
+    public static void abbandona(Paroliere p, Giocatore g, Matrice m)
     {
         boolean flag=false;
         if((p.getParolaSegreta()!=null) && g.getTentativi()<maxTentativi) /**Controllo sulla presenza di una partita in corso */
@@ -235,7 +233,7 @@ public class Controller {
                 {
                     p.setParolaSegreta(null);
                     g.setTentativi(0);
-
+                    m.azzera(numCaratteri);
                     flagGioca = false;
                     System.out.println("Partita abbandonata con successo.");
                 }
@@ -324,7 +322,7 @@ public class Controller {
                 break;
 
             case "/abbandona":
-                abbandona(p, g);
+                abbandona(p, g, m);
                 break;
 
             case "/esci":

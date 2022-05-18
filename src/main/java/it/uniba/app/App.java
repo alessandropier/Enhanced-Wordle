@@ -11,7 +11,7 @@ public final class App {
      * @return the "Hello World!" string.
      */
     public String getGreeting() {
-        return "Hello World!";
+        return "Benvenuti in Wordle!";
     }
 
     /**
