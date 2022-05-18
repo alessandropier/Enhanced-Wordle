@@ -66,7 +66,7 @@ Per accessibilità e fattibilità di progetto si è scelto di ridurre alcune fun
 
 ## `Modello di dominio`
 
-**To do**
+<center><img src="./drawings/Modello di dominio Wordle.png" alt="drawing" width="600"></center>
 
 ## `Requisiti specifici`
 In questa sezione si vuole definire lo **scopo del progetto**, descrivere **cosa si sta costruendo** e **specificare i requisiti**.
@@ -155,3 +155,12 @@ I **requisiti non funzionali** sono i vincoli e le proprietà relative al sistem
     - RNF7: Il gioco non permette di scegliere il numero di lettere della parola segreta
     - RNF8: Il gioco non permette di caricare una partita per ricominciare a giocare
     - RNF9: Il gioco non mostra il tempo di gioco
+    - RNF10: Il sistema deve poter essere visualizzato correttamente su Windows Terminal, Git Bash e Shell Linux.
+    - RNF11: il container docker dell’app deve essere eseguito da terminali che supportano Unicode con encoding UTF-8 o UTF-16
+
+    ---
+
+## `OO Design`
+
+### `Diagramma delle classi`
+<center><img src="./drawings/UML Wordle.png" alt="drawing" width="600"></center>
