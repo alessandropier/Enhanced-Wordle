@@ -19,7 +19,7 @@ public class Paroliere {
     /**Set parola segreta*/
     public void setParolaSegreta(String p)
     {
-        parolaSegreta=p;
+        parolaSegreta = p;
     }
 
     

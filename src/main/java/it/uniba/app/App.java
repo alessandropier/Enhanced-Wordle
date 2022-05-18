@@ -22,5 +22,14 @@ public final class App {
     public static void main(final String[] args) {
         System.out.println(new App().getGreeting());
         Help.StampaHelp();
+
+        Giocatore g = new Giocatore();
+        Paroliere p = new Paroliere();
+        Matrice m = new Matrice(Controller.getMaxTentativi(), Controller.getNumCaratteri());
+
+        do
+        {
+            Controller.wordle(MyInput.leggiStringa("Inserisci un comando o un tentativo"), g, p, m);
+        }while(true);
     }
 }
