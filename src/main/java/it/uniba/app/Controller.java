@@ -1,29 +1,28 @@
 package it.uniba.app;
 import java.util.*;
 
+import javax.lang.model.util.ElementScanner6;
+
 /**<<Controller>>*/
 public class Controller {
-    private final int maxTentativi = 6;
-    private final int numCaratteri = 5;
+    private static final int maxTentativi = 6;
+    private static final int numCaratteri = 5;
+    private static boolean flagGioca = false;
 
-    /**<<Costruttore>>*/
-    public Controller()
-    {}
-
-    public int getMaxTentativi() 
+    public static int getMaxTentativi() 
     {
         return maxTentativi;
     }
 
-    public int getNumCaratteri() 
+    public static int getNumCaratteri() 
     {
         return numCaratteri;
     }
 
     /**Imposta una nuova parola segreta da indovinare */
-    public void Nuova(String nuovaParola, Paroliere p)
+    public static void Nuova(String nuovaParola, Paroliere p)
     {
-        boolean flagLength=false, flagCorrect=false;
+        boolean flagLength = false, flagCorrect=false;
 
         if(nuovaParola.length()<numCaratteri)  
         {
@@ -39,15 +38,17 @@ public class Controller {
         
         nuovaParola=nuovaParola.toUpperCase();
 
-        for(int i=0; i<numCaratteri && !flagCorrect; i++)
+        for(int i=0; i<numCaratteri && !flagCorrect && !flagLength; i++)
         {
             if(nuovaParola.charAt(i)<'A' || nuovaParola.charAt(i)>'Z')
             {
                 flagCorrect=true;
             }
         }
+
         if(flagCorrect)
             System.out.println("Parola segreta non valida. La parola può contenere solo caratteri alfabetici.");
+
         if(!flagLength && !flagCorrect)
         {
             System.out.println("OK!");
@@ -56,7 +57,7 @@ public class Controller {
     }
 
     /**Mostra la parola segreta impostata */
-    public void Mostra(Paroliere p)
+    public static void Mostra(Paroliere p)
     {
         if(p.getParolaSegreta()==null){
             System.out.println("Parola segreta non impostata.");
@@ -66,7 +67,7 @@ public class Controller {
     }
 
     /**Permette di iniziare una nuova partita */
-    public void Gioca(Giocatore g, Paroliere p, Matrice m)
+    public static void Gioca(Giocatore g, Paroliere p, Matrice m)
     {
         if(p.getParolaSegreta()==null)
         {
@@ -77,25 +78,29 @@ public class Controller {
         {
             /**Stampa della matrice dei tentativi*/     
             m.stampaMatrice(maxTentativi, numCaratteri);
+            flagGioca = true; /** Flag di gioco = true per indicare che il giocatore ha avviato una partita*/
         }
     }
 
     /**Permette di effettuare un tentativo per indovinare la parola segreta */
-    public void Tentativo(Giocatore g, String s, Paroliere p, Matrice m)
+    public static void Tentativo(Giocatore g, String s, Paroliere p, Matrice m)
     {
-        if(p.getParolaSegreta()!=null)
+        boolean flagCorrect = false;
+        boolean flagLength = false;
+
+        if(flagGioca)
         {
             if(g.getTentativi()<maxTentativi)
             {
-                boolean flagCorrect=false;
-
                 if(s.length()<numCaratteri)  
                 {
                     System.out.println("Parola troppo corta. La parola deve contenere " + numCaratteri + " lettere.");
+                    flagLength = true;
                 }         
                 else if(s.length()>numCaratteri)
                 {
                     System.out.println("Parola troppo lunga. La parola deve contenere " + numCaratteri + " lettere.");
+                    flagLength = true;
                 }
                 else
                 {
@@ -115,15 +120,27 @@ public class Controller {
             else
             {
                 System.out.println("Numero massimo di tentativi raggiunto. Avvia una nuova partita.");
+                System.out.println("La parola segreta è " + p.getParolaSegreta() + ".");
+                p.setParolaSegreta(null);
+                g.setTentativi(0);
+
+                flagGioca = false;
             }
             
             /** Verifica se la parola è stata indovinata */
             if(s.equals(p.getParolaSegreta()))
             {
-                System.out.println("Parola segreta indovinata in: " + g.getTentativi() + " tentativi.");
+                System.out.println("Parola segreta indovinata in: " + (g.getTentativi() + 1) + " tentativi");
+                m.setTentativi(g.getTentativi(), s);
+                m.impostaColore(new ArrayList<Integer>(Arrays.asList(1,1,1,1,1)), g.getTentativi());
+
                 m.stampaMatrice(maxTentativi, numCaratteri);
+                p.setParolaSegreta(null);
+                g.setTentativi(0);
+
+                flagGioca = false;
             }
-            else
+            else if(!flagCorrect && !flagLength && flagGioca)
             {
                 String parolaGiusta = p.getParolaSegreta();
                 ArrayList<Integer> esito = new ArrayList<>(Arrays.asList(2,2,2,2,2));
@@ -142,16 +159,28 @@ public class Controller {
                 m.setTentativi(g.getTentativi(), s);
                 m.impostaColore(esito, g.getTentativi());
                 m.stampaMatrice(maxTentativi, numCaratteri);
+
+                g.setTentativi(g.getTentativi() + 1);
+
+                if(g.getTentativi() >= maxTentativi)
+                {
+                    System.out.println("Numero massimo di tentativi raggiunto. Avvia una nuova partita.");
+                    System.out.println("La parola segreta è " + p.getParolaSegreta() + ".");
+                    p.setParolaSegreta(null);
+                    g.setTentativi(0);
+
+                    flagGioca = false;
+                }
             }
         }
         else 
         {
-            System.out.println("Parola segreta mancante. Imposta una parola segreta per giocare.");
+            System.out.println("Digitare '/gioca' per iniziare una partita.");
         }
     }
 
     /**Trova i caratteri uaguali tra la parola segreta e quella insierita dal giocatore nel tentativo, poi imposta nel arraylist esito in corrispondenza del carattere identico 1 */
-    private void contaVerdi(String parolaGiusta, String parolaUtente, ArrayList<Integer> esito)
+    private static void contaVerdi(String parolaGiusta, String parolaUtente, ArrayList<Integer> esito)
     {
         for(int i=0; i<numCaratteri; i++)
         {
@@ -163,7 +192,7 @@ public class Controller {
     }
 
     /**Data una parola e un char conta le sue occorenze */
-    private int contaOccorrenze(String parola, char carattere)
+    private static int contaOccorrenze(String parola, char carattere)
     {
         int occorrenza=0;
         for(int i=0; i<parola.length(); i++)
@@ -176,8 +205,8 @@ public class Controller {
         return occorrenza;
     }
 
-    /**Data una parola e un valore numerico che corrisponde a un colore (1=verde, 0=giallo), conta il numero di occorenze presenti in essa in corrispondenza di esito */
-    private int contaOccorrenzeColore(String parola, char carattere, ArrayList<Integer> esito, int val)
+    /**Data una  @param parola e un valore numerico che corrisponde a un colore (1=verde, 0=giallo), conta il numero di occorenze presenti in essa in corrispondenza di esito */
+    private static int contaOccorrenzeColore(String parola, char carattere, ArrayList<Integer> esito, int val)
     {
         int occorrenza=0;
         for(int i=0; i<parola.length(); i++)
@@ -190,7 +219,7 @@ public class Controller {
         return occorrenza;
     }
 
-    public void abbandona(Paroliere p, Giocatore g)
+    public static void abbandona(Paroliere p, Giocatore g)
     {
         boolean flag=false;
         if((p.getParolaSegreta()!=null) && g.getTentativi()<maxTentativi) /**Controllo sulla presenza di una partita in corso */
@@ -206,6 +235,8 @@ public class Controller {
                 {
                     p.setParolaSegreta(null);
                     g.setTentativi(0);
+
+                    flagGioca = false;
                     System.out.println("Partita abbandonata con successo.");
                 }
                 else if(risposta.equals("NO"))
@@ -222,6 +253,87 @@ public class Controller {
         else 
         {
             System.out.println("Nessuna partita avviata.");
+        }
+    }
+
+    public static void esci(Paroliere p, Giocatore g)
+    {
+        boolean flag=false;
+        
+        do
+        {
+            flag=false;
+            String prova = MyInput.leggiStringa("Uscire dal gioco?");
+            //Chiede input e lo salva nella stringa "risposta"
+            String risposta=prova.toUpperCase();
+
+            if(risposta.equals("SI"))
+            {
+                p.setParolaSegreta(null);
+                g.setTentativi(0);
+                System.exit(0);
+            }
+            else if(risposta.equals("NO"))
+            {
+                System.out.println("In attesa di nuovi comandi o nuovo tentativo...");
+            }
+                else
+                {
+                    flag=true;
+                    System.out.println("Inserire SI o NO.");
+                }
+        }while(flag);   
+    }
+
+    public static void wordle(String s, Giocatore g, Paroliere p, Matrice m)
+    {
+        String comando;
+        String tentativo = null;
+
+        s = s.toLowerCase();
+        int end = s.indexOf(" ", 0);
+        comando = s;
+        
+        if (end != -1 && s.substring(0, end).equals("/nuova")) 
+        {
+            comando = s.substring(0, end);
+            tentativo = s.substring(end + 1);
+        }
+        
+        switch(comando)
+        {
+            case "/nuova":
+                if(tentativo != null){
+                    Nuova(tentativo, p);
+                }
+                else{
+                    System.out.println("Inserira una parola per il tentativo.");
+                }
+                break;
+            
+            case "/mostra":
+                Mostra(p);
+                break;
+            
+            case "/help":
+                Help.StampaHelp();
+                break;
+
+            case "/gioca":
+                Gioca(g, p, m);
+                break;
+
+            case "/abbandona":
+                abbandona(p, g);
+                break;
+
+            case "/esci":
+                esci(p, g);
+                break;
+            
+            default:
+                Tentativo(g, s, p, m);
+                break;
         }
     }
 }
