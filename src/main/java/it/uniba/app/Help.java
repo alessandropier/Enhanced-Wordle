@@ -1,5 +1,6 @@
 package it.uniba.app;
 /**<<noECB>> */
+/**La classe Help stampa a video il menu di aiuto */
 public final class Help {
     
     public static void StampaHelp(){

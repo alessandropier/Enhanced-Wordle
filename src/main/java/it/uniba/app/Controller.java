@@ -1,9 +1,8 @@
 package it.uniba.app;
 import java.util.*;
 
-import javax.lang.model.util.ElementScanner6;
-
 /**<<Controller>>*/
+/**La classe Controller gestisce il gioco in tutti i suoi aspetti e funzionalità.*/
 public class Controller {
     private static final int maxTentativi = 6;
     private static final int numCaratteri = 5;
@@ -76,7 +75,7 @@ public class Controller {
         else
         if(g.getTentativi() == 0)
         {
-            /**Stampa della matrice dei tentativi*/     
+            /**Stampa della matrice dei tentativi*/    
             m.stampaMatrice(maxTentativi, numCaratteri);
             flagGioca = true; /** Flag di gioco = true per indicare che il giocatore ha avviato una partita*/
         }
@@ -123,7 +122,7 @@ public class Controller {
                 System.out.println("La parola segreta è " + p.getParolaSegreta() + ".");
                 p.setParolaSegreta(null);
                 g.setTentativi(0);
-
+                m.azzera(numCaratteri);
                 flagGioca = false;
             }
             
@@ -137,7 +136,7 @@ public class Controller {
                 m.stampaMatrice(maxTentativi, numCaratteri);
                 p.setParolaSegreta(null);
                 g.setTentativi(0);
-
+                m.azzera(numCaratteri);
                 flagGioca = false;
             }
             else if(!flagCorrect && !flagLength && flagGioca)
@@ -168,7 +167,7 @@ public class Controller {
                     System.out.println("La parola segreta è " + p.getParolaSegreta() + ".");
                     p.setParolaSegreta(null);
                     g.setTentativi(0);
-
+                    m.azzera(numCaratteri);
                     flagGioca = false;
                 }
             }
@@ -219,7 +218,8 @@ public class Controller {
         return occorrenza;
     }
 
-    public static void abbandona(Paroliere p, Giocatore g)
+    /**La funzione chiede conferma e in caso positivo permette di abbandonare la partita in corso*/
+    public static void abbandona(Paroliere p, Giocatore g, Matrice m)
     {
         boolean flag=false;
         if((p.getParolaSegreta()!=null) && g.getTentativi()<maxTentativi) /**Controllo sulla presenza di una partita in corso */
@@ -235,7 +235,7 @@ public class Controller {
                 {
                     p.setParolaSegreta(null);
                     g.setTentativi(0);
-
+                    m.azzera(numCaratteri);
                     flagGioca = false;
                     System.out.println("Partita abbandonata con successo.");
                 }
@@ -256,6 +256,7 @@ public class Controller {
         }
     }
 
+    /**La funzione chiede conferma e in caso positivo permette di chiudere l'applicazione */
     public static void esci(Paroliere p, Giocatore g)
     {
         boolean flag=false;
@@ -285,6 +286,7 @@ public class Controller {
         }while(flag);   
     }
 
+    /**La funzione gestisce le esecuzioni dei comandi del Paroliere e del Giocatore e i vari tentativi */
     public static void wordle(String s, Giocatore g, Paroliere p, Matrice m)
     {
         String comando;
@@ -307,7 +309,7 @@ public class Controller {
                     Nuova(tentativo, p);
                 }
                 else{
-                    System.out.println("Inserira una parola per il tentativo.");
+                    System.out.println("Inserire una parola per il tentativo.");
                 }
                 break;
             
@@ -324,7 +326,7 @@ public class Controller {
                 break;
 
             case "/abbandona":
-                abbandona(p, g);
+                abbandona(p, g, m);
                 break;
 
             case "/esci":

@@ -1,6 +1,7 @@
 package it.uniba.app;
 
 /**<<Entity>>*/
+/**La classe Giocatore gestisce l'entità giocatore in tutti i suoi aspetti */
 public class Giocatore {
     private int tentativi;
     
