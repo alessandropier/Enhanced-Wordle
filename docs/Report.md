@@ -21,7 +21,9 @@
 
 5. [`OO Design`](#oo-design)
 
-    – Diagrammi delle classi e diagrammi di sequenza per le user story considerate più importanti
+    – [`Diagramma delle classi`](#diagramma-delle-classi) 
+
+    – [`Diagrammi di sequenza per le user story`](#diagrammi-di-sequenza-per-le-user-story)
 
     – Menzionare l'eventuale applicazione di design pattern (opzionale)
 
@@ -164,3 +166,22 @@ I **requisiti non funzionali** sono i vincoli e le proprietà relative al sistem
 
 ### `Diagramma delle classi`
 <center><img src="./drawings/UML Wordle.png" alt="drawing" width="600"></center>
+
+La classe MyInput è stata progettata con l'obiettivo di semplificare le operazioni di input delle stringhe, affinchè la stringa rispetti i criteri definiti.
+
+### `Diagrammi di sequenza per le user story`
+
+- Nuova
+<center><img src="./drawings/nuova.png" alt="drawing" width="600"></center>
+
+- Gioca
+<center><img src="./drawings/Gioca.png" alt="drawing" width="600"></center>
+
+- Tentativo
+<center><img src="./drawings/tentativo.png" alt="drawing" width="600"></center>
+
+- Abbandona
+<center><img src="./drawings/abbandona.png" alt="drawing" width="600"></center>
+
+- Esci
+<center><img src="./drawings/esci.png" alt="drawing" width="600"></center>
