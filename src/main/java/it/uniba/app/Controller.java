@@ -2,6 +2,7 @@ package it.uniba.app;
 import java.util.*;
 
 /**<<Controller>>*/
+/**La classe Controller gestisce il gioco in tutti i suoi aspetti e funzionalità.*/
 public class Controller {
     private static final int maxTentativi = 6;
     private static final int numCaratteri = 5;
@@ -217,6 +218,7 @@ public class Controller {
         return occorrenza;
     }
 
+    /**La funzione chiede conferma e in caso positivo permette di abbandonare la partita in corso*/
     public static void abbandona(Paroliere p, Giocatore g, Matrice m)
     {
         boolean flag=false;
@@ -254,6 +256,7 @@ public class Controller {
         }
     }
 
+    /**La funzione chiede conferma e in caso positivo permette di chiudere l'applicazione */
     public static void esci(Paroliere p, Giocatore g)
     {
         boolean flag=false;
@@ -283,6 +286,7 @@ public class Controller {
         }while(flag);   
     }
 
+    /**La funzione gestisce le esecuzioni dei comandi del Paroliere e del Giocatore e i vari tentativi */
     public static void wordle(String s, Giocatore g, Paroliere p, Matrice m)
     {
         String comando;
@@ -305,7 +309,7 @@ public class Controller {
                     Nuova(tentativo, p);
                 }
                 else{
-                    System.out.println("Inserira una parola per il tentativo.");
+                    System.out.println("Inserire una parola per il tentativo.");
                 }
                 break;
             

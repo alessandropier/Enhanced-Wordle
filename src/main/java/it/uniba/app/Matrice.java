@@ -3,6 +3,7 @@ package it.uniba.app;
 import java.util.ArrayList;
 
 /** <<Boundary>> */
+/**La classe Matrice stampa a video la matrice dei tentativi */
 public class Matrice {
     private ArrayList<String> Tentativi;
     private ArrayList<ArrayList<String>> colori;
@@ -78,6 +79,7 @@ public class Matrice {
         Tentativi.set(tentativo, parola);
     }
 
+    /**Permette di azzerare i tentativi nella matrice */
     public void azzera (int maxC){
 
         for (int i = 0; i < Tentativi.size(); i++) {

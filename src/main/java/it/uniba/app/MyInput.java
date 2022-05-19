@@ -1,5 +1,7 @@
 package it.uniba.app;
-import java.io.*; //le librerie(PACKAGE) contengono classi. 
+import java.io.*; 
+
+/**La classe MyInput è stata progettata con l'obiettivo di semplificare le operazioni di input delle stringhe, affinchè la stringa rispetti i criteri definiti */
 public class MyInput
 {
     public static String leggiStringa(String msg) //metodo di classe
