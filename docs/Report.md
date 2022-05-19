@@ -175,7 +175,7 @@ La classe MyInput è stata progettata con l'obiettivo di semplificare le operazi
 <center><img src="./drawings/nuova.png" alt="drawing" width="600"></center>
 
 - Gioca
-<center><img src="./drawings/gioca.png" alt="drawing" width="600"></center>
+<center><img src="./drawings/Gioca.PNG" alt="drawing" width="600"></center>
 
 - Tentativo
 <center><img src="./drawings/tentativo.png" alt="drawing" width="600"></center>
