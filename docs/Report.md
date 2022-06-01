@@ -185,3 +185,8 @@ La classe MyInput è stata progettata con l'obiettivo di semplificare le operazi
 
 - Esci
 <center><img src="./drawings/esci.png" alt="drawing" width="600"></center>
+
+## `Analisi Retrospettiva`
+
+### Sprint 1
+<center><img src="./drawings/Whiteboard.png" alt="drawing" width="600"></center>
