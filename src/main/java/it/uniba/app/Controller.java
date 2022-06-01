@@ -318,7 +318,7 @@ public class Controller {
                 break;
             
             case "/help":
-                Help.StampaHelp();
+                Help.stampaHelp();
                 break;
 
             case "/gioca":

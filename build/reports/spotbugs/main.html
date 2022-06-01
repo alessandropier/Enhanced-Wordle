@@ -74,20 +74,20 @@
       <p>SpotBugs version: 4.5.3</p>
       <p>Code analyzed:</p>
       <ul>
-         <li>C:\Users\Utente\progetto2122-allen\build\classes\java\main\it\uniba\app\App.class</li>
-         <li>C:\Users\Utente\progetto2122-allen\build\classes\java\main\it\uniba\app\Controller.class</li>
-         <li>C:\Users\Utente\progetto2122-allen\build\classes\java\main\it\uniba\app\Giocatore.class</li>
-         <li>C:\Users\Utente\progetto2122-allen\build\classes\java\main\it\uniba\app\Help.class</li>
-         <li>C:\Users\Utente\progetto2122-allen\build\classes\java\main\it\uniba\app\Matrice.class</li>
-         <li>C:\Users\Utente\progetto2122-allen\build\classes\java\main\it\uniba\app\MyInput.class</li>
-         <li>C:\Users\Utente\progetto2122-allen\build\classes\java\main\it\uniba\app\Paroliere.class</li>
+         <li>C:\Users\Saverio\progetto2122-allen\build\classes\java\main\it\uniba\app\App.class</li>
+         <li>C:\Users\Saverio\progetto2122-allen\build\classes\java\main\it\uniba\app\Controller.class</li>
+         <li>C:\Users\Saverio\progetto2122-allen\build\classes\java\main\it\uniba\app\Giocatore.class</li>
+         <li>C:\Users\Saverio\progetto2122-allen\build\classes\java\main\it\uniba\app\Help.class</li>
+         <li>C:\Users\Saverio\progetto2122-allen\build\classes\java\main\it\uniba\app\Matrice.class</li>
+         <li>C:\Users\Saverio\progetto2122-allen\build\classes\java\main\it\uniba\app\MyInput.class</li>
+         <li>C:\Users\Saverio\progetto2122-allen\build\classes\java\main\it\uniba\app\Paroliere.class</li>
       </ul>
       <p>
          <br/>
          <br/>
       </p>
       <h2>Metrics</h2>
-      <p>230 lines of code analyzed,
+      <p>295 lines of code analyzed,
 	in 7 classes, 
 	in 1 packages.</p>
       <table width="500" cellpadding="5" cellspacing="2">
@@ -99,22 +99,22 @@
          <tr class="tablerow0">
             <td>High Priority Warnings</td>
             <td align="right">1</td>
-            <td align="right">4.35</td>
+            <td align="right">3.39</td>
          </tr>
          <tr class="tablerow1">
             <td>Medium Priority Warnings</td>
-            <td align="right">8</td>
-            <td align="right">34.78</td>
+            <td align="right">5</td>
+            <td align="right">16.95</td>
          </tr>
          <tr class="$totalClass">
             <td>
                <b>Total Warnings</b>
             </td>
             <td align="right">
-               <b>9</b>
+               <b>6</b>
             </td>
             <td align="right">
-               <b>39.13</b>
+               <b>20.34</b>
             </td>
          </tr>
       </table>
@@ -134,9 +134,6 @@
             <a href="#Warnings_I18N">Internationalization Warnings</a>
          </li>
          <li>
-            <a href="#Warnings_PERFORMANCE">Performance Warnings</a>
-         </li>
-         <li>
             <a href="#Details">Details</a>
          </li>
       </ul>
@@ -150,7 +147,7 @@
             <td>
                <a href="#Warnings_BAD_PRACTICE">Bad practice Warnings</a>
             </td>
-            <td align="right">6</td>
+            <td align="right">5</td>
          </tr>
          <tr class="tablerow1">
             <td>
@@ -160,16 +157,10 @@
          </tr>
          <tr class="tablerow0">
             <td>
-               <a href="#Warnings_PERFORMANCE">Performance Warnings</a>
-            </td>
-            <td align="right">2</td>
-         </tr>
-         <tr class="tablerow1">
-            <td>
                <b>Total</b>
             </td>
             <td align="right">
-               <b>9</b>
+               <b>6</b>
             </td>
          </tr>
       </table>
@@ -185,86 +176,72 @@
          </tr>
          <tr class="tablerow1" onclick="toggleRow('d1e14');">
             <td>
-               <span class="priority-2">Dm</span>
+               <span class="priority-2">Nm</span>
             </td>
-            <td>it.uniba.app.Controller.esci(Paroliere, Giocatore) invokes System.exit(...), which shuts down the entire virtual machine</td>
+            <td>The method name it.uniba.app.Controller.Gioca(Giocatore, Paroliere, Matrice) doesn't start with a lower case letter</td>
          </tr>
          <tr class="detailrow1">
             <td/>
             <td>
                <p id="d1e14" style="display: none;">
-                  <a href="#DM_EXIT">Bug type DM_EXIT (click for details)</a>
-                  <br/>In class it.uniba.app.Controller<br/>In method it.uniba.app.Controller.esci(Paroliere, Giocatore)<br/>At Controller.java:[line 243]</p>
+                  <a href="#NM_METHOD_NAMING_CONVENTION">Bug type NM_METHOD_NAMING_CONVENTION (click for details)</a>
+                  <br/>In class it.uniba.app.Controller<br/>In method it.uniba.app.Controller.Gioca(Giocatore, Paroliere, Matrice)<br/>At Controller.java:[lines 71-82]</p>
             </td>
          </tr>
          <tr class="tablerow0" onclick="toggleRow('d1e26');">
             <td>
                <span class="priority-2">Nm</span>
             </td>
-            <td>The method name it.uniba.app.Controller.Gioca(Giocatore, Paroliere, Matrice) doesn't start with a lower case letter</td>
+            <td>The method name it.uniba.app.Controller.Mostra(Paroliere) doesn't start with a lower case letter</td>
          </tr>
          <tr class="detailrow0">
             <td/>
             <td>
                <p id="d1e26" style="display: none;">
                   <a href="#NM_METHOD_NAMING_CONVENTION">Bug type NM_METHOD_NAMING_CONVENTION (click for details)</a>
-                  <br/>In class it.uniba.app.Controller<br/>In method it.uniba.app.Controller.Gioca(Giocatore, Paroliere, Matrice)<br/>At Controller.java:[lines 71-81]</p>
+                  <br/>In class it.uniba.app.Controller<br/>In method it.uniba.app.Controller.Mostra(Paroliere)<br/>At Controller.java:[lines 61-66]</p>
             </td>
          </tr>
          <tr class="tablerow1" onclick="toggleRow('d1e38');">
             <td>
                <span class="priority-2">Nm</span>
             </td>
-            <td>The method name it.uniba.app.Controller.Mostra(Paroliere) doesn't start with a lower case letter</td>
+            <td>The method name it.uniba.app.Controller.Nuova(String, Paroliere) doesn't start with a lower case letter</td>
          </tr>
          <tr class="detailrow1">
             <td/>
             <td>
                <p id="d1e38" style="display: none;">
                   <a href="#NM_METHOD_NAMING_CONVENTION">Bug type NM_METHOD_NAMING_CONVENTION (click for details)</a>
-                  <br/>In class it.uniba.app.Controller<br/>In method it.uniba.app.Controller.Mostra(Paroliere)<br/>At Controller.java:[lines 61-66]</p>
+                  <br/>In class it.uniba.app.Controller<br/>In method it.uniba.app.Controller.Nuova(String, Paroliere)<br/>At Controller.java:[lines 24-56]</p>
             </td>
          </tr>
          <tr class="tablerow0" onclick="toggleRow('d1e50');">
             <td>
                <span class="priority-2">Nm</span>
             </td>
-            <td>The method name it.uniba.app.Controller.Nuova(String, Paroliere) doesn't start with a lower case letter</td>
+            <td>The method name it.uniba.app.Controller.Tentativo(Giocatore, String, Paroliere, Matrice) doesn't start with a lower case letter</td>
          </tr>
          <tr class="detailrow0">
             <td/>
             <td>
                <p id="d1e50" style="display: none;">
                   <a href="#NM_METHOD_NAMING_CONVENTION">Bug type NM_METHOD_NAMING_CONVENTION (click for details)</a>
-                  <br/>In class it.uniba.app.Controller<br/>In method it.uniba.app.Controller.Nuova(String, Paroliere)<br/>At Controller.java:[lines 26-56]</p>
+                  <br/>In class it.uniba.app.Controller<br/>In method it.uniba.app.Controller.Tentativo(Giocatore, String, Paroliere, Matrice)<br/>At Controller.java:[lines 87-179]</p>
             </td>
          </tr>
          <tr class="tablerow1" onclick="toggleRow('d1e62');">
             <td>
                <span class="priority-2">Nm</span>
             </td>
-            <td>The method name it.uniba.app.Controller.Tentativo(Giocatore, String, Paroliere, Matrice) doesn't start with a lower case letter</td>
+            <td>The method name it.uniba.app.Help.StampaHelp() doesn't start with a lower case letter</td>
          </tr>
          <tr class="detailrow1">
             <td/>
             <td>
                <p id="d1e62" style="display: none;">
                   <a href="#NM_METHOD_NAMING_CONVENTION">Bug type NM_METHOD_NAMING_CONVENTION (click for details)</a>
-                  <br/>In class it.uniba.app.Controller<br/>In method it.uniba.app.Controller.Tentativo(Giocatore, String, Paroliere, Matrice)<br/>At Controller.java:[lines 86-151]</p>
-            </td>
-         </tr>
-         <tr class="tablerow0" onclick="toggleRow('d1e100');">
-            <td>
-               <span class="priority-2">Nm</span>
-            </td>
-            <td>The method name it.uniba.app.Help.StampaHelp() doesn't start with a lower case letter</td>
-         </tr>
-         <tr class="detailrow0">
-            <td/>
-            <td>
-               <p id="d1e100" style="display: none;">
-                  <a href="#NM_METHOD_NAMING_CONVENTION">Bug type NM_METHOD_NAMING_CONVENTION (click for details)</a>
-                  <br/>In class it.uniba.app.Help<br/>In method it.uniba.app.Help.StampaHelp()<br/>At Help.java:[lines 6-20]</p>
+                  <br/>In class it.uniba.app.Help<br/>In method it.uniba.app.Help.StampaHelp()<br/>At Help.java:[lines 9-23]</p>
             </td>
          </tr>
       </table>
@@ -276,7 +253,7 @@
             <th align="left">Code</th>
             <th align="left">Warning</th>
          </tr>
-         <tr class="tablerow1" onclick="toggleRow('d1e112');">
+         <tr class="tablerow1" onclick="toggleRow('d1e74');">
             <td>
                <span class="priority-1">Dm</span>
             </td>
@@ -285,46 +262,9 @@
          <tr class="detailrow1">
             <td/>
             <td>
-               <p id="d1e112" style="display: none;">
-                  <a href="#DM_DEFAULT_ENCODING">Bug type DM_DEFAULT_ENCODING (click for details)</a>
-                  <br/>In class it.uniba.app.MyInput<br/>In method it.uniba.app.MyInput.leggiStringa(String)<br/>Called method new java.io.InputStreamReader(InputStream)<br/>At MyInput.java:[line 7]</p>
-            </td>
-         </tr>
-      </table>
-      <h2>
-         <a name="Warnings_PERFORMANCE">Performance Warnings</a>
-      </h2>
-      <table class="warningtable" width="100%" cellspacing="0">
-         <tr class="tableheader">
-            <th align="left">Code</th>
-            <th align="left">Warning</th>
-         </tr>
-         <tr class="tablerow1" onclick="toggleRow('d1e74');">
-            <td>
-               <span class="priority-2">SS</span>
-            </td>
-            <td>Unread field: it.uniba.app.Controller.maxTentativi; should this field be static?</td>
-         </tr>
-         <tr class="detailrow1">
-            <td/>
-            <td>
                <p id="d1e74" style="display: none;">
-                  <a href="#SS_SHOULD_BE_STATIC">Bug type SS_SHOULD_BE_STATIC (click for details)</a>
-                  <br/>In class it.uniba.app.Controller<br/>Field it.uniba.app.Controller.maxTentativi<br/>At Controller.java:[line 6]</p>
-            </td>
-         </tr>
-         <tr class="tablerow0" onclick="toggleRow('d1e87');">
-            <td>
-               <span class="priority-2">SS</span>
-            </td>
-            <td>Unread field: it.uniba.app.Controller.numCaratteri; should this field be static?</td>
-         </tr>
-         <tr class="detailrow0">
-            <td/>
-            <td>
-               <p id="d1e87" style="display: none;">
-                  <a href="#SS_SHOULD_BE_STATIC">Bug type SS_SHOULD_BE_STATIC (click for details)</a>
-                  <br/>In class it.uniba.app.Controller<br/>Field it.uniba.app.Controller.numCaratteri<br/>At Controller.java:[line 7]</p>
+                  <a href="#DM_DEFAULT_ENCODING">Bug type DM_DEFAULT_ENCODING (click for details)</a>
+                  <br/>In class it.uniba.app.MyInput<br/>In method it.uniba.app.MyInput.leggiStringa(String)<br/>Called method new java.io.InputStreamReader(InputStream)<br/>At MyInput.java:[line 16]</p>
             </td>
          </tr>
       </table>
@@ -332,15 +272,6 @@
          <a name="Details">Details</a>
       </h1>
       <h2>
-         <a name="DM_EXIT">DM_EXIT: Method invokes System.exit(...)</a>
-      </h2>
-
-  <p> Invoking System.exit shuts down the entire Java virtual machine. This
-   should only been done when it is appropriate. Such calls make it
-   hard or impossible for your code to be invoked by other code.
-   Consider throwing a RuntimeException instead.</p>
-
-    <h2>
          <a name="DM_DEFAULT_ENCODING">DM_DEFAULT_ENCODING: Reliance on default encoding</a>
       </h2>
 
@@ -353,14 +284,6 @@
   <p>
 Methods should be verbs, in mixed case with the first letter lowercase, with the first letter of each internal word capitalized.
 </p>
-
-    <h2>
-         <a name="SS_SHOULD_BE_STATIC">SS_SHOULD_BE_STATIC: Unread field: should this field be static?</a>
-      </h2>
-
-  <p> This class contains an instance final field that
-   is initialized to a compile-time static value.
-   Consider making the field static.</p>
 
     </body>
 </html>

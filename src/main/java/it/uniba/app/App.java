@@ -21,7 +21,7 @@ public final class App {
      */
     public static void main(final String[] args) {
         System.out.println(new App().getGreeting());
-        Help.StampaHelp();
+        Help.stampaHelp();
 
         Giocatore g = new Giocatore();
         Paroliere p = new Paroliere();
