@@ -36,7 +36,7 @@
 
 7. [`Manuale utente`](#manuale-utente)
 
-8. [`Processo di sviluppo e organizzazione del lavoro`](#processo-di-sviluppo-e-organizzazione-del-lavoro)
+8. [`Organizzazione del lavoro e Processo di sviluppo`](#organizzazione-del-lavoro-e-processo-di-sviluppo)
 
 9. [`Analisi retrospettiva`](#analisi-retrospettiva)
 
@@ -185,6 +185,132 @@ La classe MyInput è stata progettata con l'obiettivo di semplificare le operazi
 
 - Esci
 <center><img src="./drawings/esci.png" alt="drawing" width="600"></center>
+
+## `Manuale utente`
+
+La corrente sezione del documento ha come obiettivo quello di **documentare** e **guidare l'utente** nell'**utilizzo** del gioco **Wordle**.
+
+Di seguito si esibisce un **tutorial dettagliato** corredato di **immagini autoesplicative**.
+
+### Menù Iniziale 
+
+<center><img src="./img/ReportImgs/Tutorial_1.png" alt="drawing" width="600"></center>
+
+Inizialmente, il gioco si presenta con questa schermata mostrando all'utente una sequenza di comandi che esso può impartire sulla base del suo ruolo (**Giocatore** o **Paroliere**).
+
+Per iniziare una nuova partita è necessario che la parola segreta di **5 caratteri** sia impostata tramite il comando "**/nuova < parola >**".
+
+Per effettuare un tentativo è necessario che sia in corso una partita con il comando "**/gioca**".
+
+Di seguito il gioco rimane in attesa di un comando o di un tentativo da parte dell'utente.
+
+### Gioco
+
+<center><img src="./img/ReportImgs/Tutorial_2.png" alt="drawing" width="600"></center>
+
+Dopo aver impostato la parola segreta, il giocatore è libero di iniziare la partita mediante il comando "**/gioca**" stampando la matrice dei tentativi vuota. 
+
+La **matrice dei tentativi** viene **popolata** e **ristampata** a video ad ogni tentativo in modo da mantenere una **storia visiva** dei tentativi.
+
+#### Tentativo Errato:
+
+<center><img src="./img/ReportImgs/Tutorial_3.png" alt="drawing" width="600"></center>
+
+Ad ogni **tentativo errato** viene mostrata la matrice dei tentativi **aggiornata** che, mediante i colori del background, mostra all'utente se un carattare è in **posizione corretta** (verde), è in **posizione errata** ma presente (giallo) o **non è presente** nella parola segreta (grigio).
+
+<center><img src="./img/ReportImgs/Tutorial_4.png" alt="drawing" width="600"></center>
+
+Se il **giocatore** raggiunge il numero **massimo** di **tentativi** (6) viene stampata a video la matrice dei tentativi e viene informato l'utente che ha **raggiunto** il **massimo dei tentativi** e dovrà **avviare** una **nuova partita**.
+
+Di seguito viene **stampata** a video la **parola segreta**.
+
+#### Tentativo Corretto
+
+<center><img src="./img/ReportImgs/Tutorial_5.png" alt="drawing" width="600"></center>
+
+Se il **giocatore** fornisce un **tentativo corretto**, viene stampata la matrice dei tentativi aggiornata con **verde** come **background color** e si informa l'utente di aver **indovinato** la **parola segreta** fornendo anche il numero di **tentativi impiegati**.
+
+Il **paroliere** dovrà reimpostare la parola segreta con **"/nuova < parola >**" per permettere al **giocatore** di iniziare una **nuova partita** con il comando "**/gioca**".
+
+## Altre Funzionalità
+
+### Help
+
+Il **giocatore** può visionare la **lista** dei **comandi** mediante il comando "**/help**".
+
+### Abbandona 
+
+Il **giocatore** può **abbandonare** la **partita corrente** con il comando "**/abbandona**", di seguito può iniziarne un'altra con "**/gioca**" dopo che il **paroliere** ha **impostato** la **parola segreta**.
+
+### Esci
+
+Il **giocatore** può chiudere il gioco utilizzando il comando "**/esci**".
+
+### Mostra
+
+Il **paroliere** può utilizzare il comando "**/mostra**" per **stampare** a video la **parola segreta** da lui impostata.
+
+## `Organizzazione del lavoro e Processo di sviluppo`
+
+### Organizzazione del Lavoro
+
+Il gruppo "**allen**" composto da **2 membri** per **corso** (A e B) si è riunito in data **08/03/22** per effettuare la **conoscenza** dei **membri** del **gruppo**.
+
+I **componenti** del suddetto si sono **accordati** per utilizzare **discord** per le **riunioni** e **telegram** come **app di messaggistica ufficiale** per le **comunicazioni** e gli **avvisi**.
+
+I **compiti** sono stati **equamente suddivisi** tra i membri, inizialmente favorendo un **lavoro di gruppo** per poi prediligere il **lavoro individuale** con successiva **discussione**, **modifica** e **approvazione** da parte degli altri componenti del gruppo. 
+
+### Processo di Sviluppo
+
+Il **processo di sviluppo** software si è articolato in **diverse fasi** che hanno **coinvolto** tutti i **membri** del **gruppo**.
+
+Ciascuna **funzionalità** è stata **realizzata** seguendo lo **schema** mostrato di seguito:
+
+- Analisi del Problema
+- Lista delle Funzionalità da Garantire
+- Ideazione della Soluzione
+- Progettazione
+- Realizzazione del Codice
+- Testing della Funzionalità
+
+Di seguito viene fornito un **esempio** di **processo di sviluppo** prendendo ad esempio la **realizzazione** della funzione **Tentativo**.
+
+Facendo fede alle prime due fase, il **gruppo** si **riunisce** per **decidere** le **azioni** da **intraprendere** e stila una **lista** delle **funzionalità** che la funzione **Tentativo** deve garantire.
+
+Di seguito, si **procede** con **l'ideazione** della **soluzione** e la **progettazione** della soluzione seguita dalla **realizzazione del codice**.
+
+La fase di **progettazione** ha portato alla **realizzazione** della funzione **tentativo** che si basa sul seguente **algoritmo**:
+
+    Innanzitutto, si procede con il controllo di validità del tentativo inserito dal giocatore.
+
+    Se il controllo di validità della parola non va a buon fine, l'utente viene informato dell'errore e viene richiesto il reinserimento altrimenti si prosegue.
+
+    Se la parola inserita dal giocatore coincide con la parola segreta si informa l'utente di aver indovinato stampando stampa la matrice dei tentativi e resettando tutte le variabili relative al gioco per permettere al giocatore di iniziare una nuova partita. 
+
+    Se la parola inserita non coincide con la parola segreta si procede con il controllo delle lettere secondo le regole di Wordle. 
+
+La realizzazione della **porzione** di **funzione** che si occupa di **controllare** i **caratteri** delle parole e la loro **posizione** si basa sul seguente **algoritmo**:
+
+    Facendo riferimento alla parola segreta, si utilizza un array ausiliare "esito" per memorizzare il colore che ogni carattere della parola inserita dal giocatore dovrà assumere secondo questa legenda:
+        - 1: verde (carattere in posizione corretta)
+        - 0: giallo (carattere presente ma in posizione sbagliata)
+        - 2: grigio (carattere non presente)
+    Per prima cosa si controlla i caratteri che si trovano in posizione corretta. 
+    Laddove il carattere in posizione x della parola segreta, impostata dal paroliere, dovesse corrispondere con il carattere in posizione x della parola inserita dal giocatore allora si inserirebbe il valore "1" nella cella corrispondente al carattere. 
+
+    In seguito si esegue un ciclo for su tutta la lunghezza della parola (5 in questo caso) e si svolge il corpo se e solo se il numero presente nella cella corrente del vettore "esito" è diverso da 1, quindi se quel carattere non è in posizione corretta rispetto alla parola segreta potendo assumere o il colore giallo o il colore grigio.
+
+Se il **valore** all'interno della **cella** di **esito** è **diverso** da **1** allora **si esegue l'if** la cui **condizione** è una semplice **sottrazione** ideata come segue:
+
+    Dato il carattere da controllare, si conta il numero di occorrenze totali nella parola segreta e si sottrae la somma tra il numero di occorrenze in posizione giusta (con esito = 1) e il numero di occorrenze in posizione errata nella parola del giocatore ma presente nella parola segreta (con esito = 0).
+
+    Se il numero ottenuto è maggiore di 0 allora siamo sicuri che il carattere che stiamo considerando è presente nella parola segreta ma non è in posizione corretta, pertanto è corretto impostare il colore a giallo (con esito = 0).
+
+    Così facendo siamo sicuri che, in presenza di "x" caratteri uguali nella parola dell'utente e di "k" (con k < x) caratteri uguali nella parola segreta, ad essere impostati a giallo saranno solo i primi "k" caratteri e non gli altri in maniera da fornire una giusta e precisa informazione al giocatore.
+
+    Per concludere si aggiorna il numero di tentativi, la matrice ed il colore delle singole celle con relativa stampa a video.
+
+Infine si procede con la **fase di testing** delle **funzionalità** e **validazione** del **lavoro svolto**.
 
 ## `Analisi Retrospettiva`
 
