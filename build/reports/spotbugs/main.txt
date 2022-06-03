@@ -1,6 +1,1 @@
-M B Nm: The method name it.uniba.app.Controller.Gioca(Giocatore, Paroliere, Matrice) doesn't start with a lower case letter  At Controller.java:[lines 71-82]
-M B Nm: The method name it.uniba.app.Controller.Mostra(Paroliere) doesn't start with a lower case letter  At Controller.java:[lines 61-66]
-M B Nm: The method name it.uniba.app.Controller.Nuova(String, Paroliere) doesn't start with a lower case letter  At Controller.java:[lines 24-56]
-M B Nm: The method name it.uniba.app.Controller.Tentativo(Giocatore, String, Paroliere, Matrice) doesn't start with a lower case letter  At Controller.java:[lines 87-179]
-M B Nm: The method name it.uniba.app.Help.StampaHelp() doesn't start with a lower case letter  At Help.java:[lines 9-23]
 H I Dm: Found reliance on default encoding in it.uniba.app.MyInput.leggiStringa(String): new java.io.InputStreamReader(InputStream)  At MyInput.java:[line 16]

@@ -7,13 +7,19 @@ import java.io.InputStreamReader;
  * le operazioni di input delle stringhe,
  * affinchè la stringa rispetti i criteri definiti. */
 public class MyInput {
+
+    /**Costruttore. */
+    protected MyInput() {
+    }
+
     /**
      * Permette di leggere stringhe in input da tastiera.
      * @param msg Messaggio stampato a video prima di ricevere input.
      * @return Stringa letta in input.
      */
     public static String leggiStringa(final String msg) {
-        BufferedReader tastiera = new BufferedReader(new InputStreamReader(System.in));
+        BufferedReader tastiera = new BufferedReader(
+                                    new InputStreamReader(System.in));
         boolean err;
         String aux = null;
         do {
@@ -21,8 +27,7 @@ public class MyInput {
             System.out.print(msg + ": ");
             try {
                 aux = tastiera.readLine();
-            }
-            catch (Exception e) {
+            } catch (Exception e) {
                 err = true;
                 System.out.println("Errore dell'input dei dati");
             }

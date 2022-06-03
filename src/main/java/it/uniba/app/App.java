@@ -25,11 +25,13 @@ public final class App {
 
         Giocatore g = new Giocatore();
         Paroliere p = new Paroliere();
-        Matrice m = new Matrice(Controller.getMaxTentativi(), Controller.getNumCaratteri());
+        Matrice m = new Matrice(Controller.getMaxTentativi(),
+                                Controller.getNumCaratteri());
 
-        do
-        {
-            Controller.wordle(MyInput.leggiStringa("Inserisci un comando o un tentativo"), g, p, m);
-        }while(true);
+        do {
+            Controller.wordle(
+                MyInput.leggiStringa("Inserisci un comando o un tentativo"),
+                 g, p, m);
+        } while (true);
     }
 }

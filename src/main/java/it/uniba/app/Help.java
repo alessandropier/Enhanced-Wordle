@@ -4,7 +4,11 @@ package it.uniba.app;
  * La classe Help stampa a video il menu di aiuto.
 */
 
-public final class Help {
+public class Help {
+
+    /**Costruttore. */
+    protected Help() {
+    }
 
     /** Stampa il menu di aiuto. */
     public static void stampaHelp() {
