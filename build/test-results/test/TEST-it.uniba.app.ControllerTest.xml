@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="it.uniba.app.ControllerTest" tests="12" skipped="0" failures="0" errors="0" timestamp="2022-06-03T18:01:45" hostname="DESKTOP-T3UKMB2" time="0.065">
+<testsuite name="it.uniba.app.ControllerTest" tests="12" skipped="0" failures="0" errors="0" timestamp="2022-06-03T18:30:49" hostname="DESKTOP-HIRECKO" time="0.049">
   <properties/>
-  <testcase name="tentativoTest1()" classname="it.uniba.app.ControllerTest" time="0.019"/>
-  <testcase name="tentativoTest2()" classname="it.uniba.app.ControllerTest" time="0.01"/>
-  <testcase name="tentativoTest3()" classname="it.uniba.app.ControllerTest" time="0.008"/>
-  <testcase name="tentativoTest4()" classname="it.uniba.app.ControllerTest" time="0.005"/>
-  <testcase name="tentativoTest5()" classname="it.uniba.app.ControllerTest" time="0.005"/>
-  <testcase name="nuovaTest1()" classname="it.uniba.app.ControllerTest" time="0.007"/>
+  <testcase name="tentativoTest1()" classname="it.uniba.app.ControllerTest" time="0.015"/>
+  <testcase name="tentativoTest2()" classname="it.uniba.app.ControllerTest" time="0.006"/>
+  <testcase name="tentativoTest3()" classname="it.uniba.app.ControllerTest" time="0.006"/>
+  <testcase name="tentativoTest4()" classname="it.uniba.app.ControllerTest" time="0.003"/>
+  <testcase name="tentativoTest5()" classname="it.uniba.app.ControllerTest" time="0.003"/>
+  <testcase name="wordleTest1()" classname="it.uniba.app.ControllerTest" time="0.005"/>
+  <testcase name="nuovaTest1()" classname="it.uniba.app.ControllerTest" time="0.002"/>
   <testcase name="nuovaTest2()" classname="it.uniba.app.ControllerTest" time="0.0"/>
   <testcase name="nuovaTest3()" classname="it.uniba.app.ControllerTest" time="0.001"/>
   <testcase name="giocaTest()" classname="it.uniba.app.ControllerTest" time="0.001"/>
   <testcase name="getNumCaratteriTest()" classname="it.uniba.app.ControllerTest" time="0.0"/>
-  <testcase name="WordleTest1()" classname="it.uniba.app.ControllerTest" time="0.0"/>
   <testcase name="getMaxTentativiTest()" classname="it.uniba.app.ControllerTest" time="0.0"/>
   <system-out><![CDATA[OK!
 [?[30m ?[40m?[0m|?[30m ?[40m?[0m|?[30m ?[40m?[0m|?[30m ?[40m?[0m|?[30m ?[40m?[0m]
@@ -189,13 +189,13 @@ OK!
 OK!
 OK!
 OK!
-[?[30m ?[40m?[0m|?[30m ?[40m?[0m|?[30m ?[40m?[0m|?[30m ?[40m?[0m|?[30m ?[40m?[0m]
-[?[30m ?[40m?[0m|?[30m ?[40m?[0m|?[30m ?[40m?[0m|?[30m ?[40m?[0m|?[30m ?[40m?[0m]
-[?[30m ?[40m?[0m|?[30m ?[40m?[0m|?[30m ?[40m?[0m|?[30m ?[40m?[0m|?[30m ?[40m?[0m]
-[?[30m ?[40m?[0m|?[30m ?[40m?[0m|?[30m ?[40m?[0m|?[30m ?[40m?[0m|?[30m ?[40m?[0m]
-[?[30m ?[40m?[0m|?[30m ?[40m?[0m|?[30m ?[40m?[0m|?[30m ?[40m?[0m|?[30m ?[40m?[0m]
-[?[30m ?[40m?[0m|?[30m ?[40m?[0m|?[30m ?[40m?[0m|?[30m ?[40m?[0m|?[30m ?[40m?[0m]
 OK!
+[?[30m ?[40m?[0m|?[30m ?[40m?[0m|?[30m ?[40m?[0m|?[30m ?[40m?[0m|?[30m ?[40m?[0m]
+[?[30m ?[40m?[0m|?[30m ?[40m?[0m|?[30m ?[40m?[0m|?[30m ?[40m?[0m|?[30m ?[40m?[0m]
+[?[30m ?[40m?[0m|?[30m ?[40m?[0m|?[30m ?[40m?[0m|?[30m ?[40m?[0m|?[30m ?[40m?[0m]
+[?[30m ?[40m?[0m|?[30m ?[40m?[0m|?[30m ?[40m?[0m|?[30m ?[40m?[0m|?[30m ?[40m?[0m]
+[?[30m ?[40m?[0m|?[30m ?[40m?[0m|?[30m ?[40m?[0m|?[30m ?[40m?[0m|?[30m ?[40m?[0m]
+[?[30m ?[40m?[0m|?[30m ?[40m?[0m|?[30m ?[40m?[0m|?[30m ?[40m?[0m|?[30m ?[40m?[0m]
 ]]></system-out>
   <system-err><![CDATA[]]></system-err>
 </testsuite>
