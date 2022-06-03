@@ -1,31 +1,36 @@
 package it.uniba.app;
 
-/**<<Entity>>*/
-/**La classe Giocatore gestisce l'entità giocatore in tutti i suoi aspetti */
+/**
+ * <<Entity>>
+ * La classe Giocatore gestisce l'entità giocatore in tutti i suoi aspetti.
+*/
 public class Giocatore {
+    /** Attributi della classe Giocatore. */
     private int tentativi;
-    
-    /**Costruttore*/
-    public Giocatore()      
-    {
-        tentativi=0;
+
+    /**Costruttore.*/
+    public Giocatore() {
+        tentativi = 0;
     }
 
-    /**Set numero tentativi*/
-    public int getTentativi()
-    {
+    /**
+     * Set numero tentativi.
+     * @return Numero di tentativi.
+     */
+    public int getTentativi() {
         return tentativi;
     }
 
-    /**Get numero tentativi*/
-    public void setTentativi(int t)
-    {
-        tentativi=t;
+    /**
+     * Get numero tentativi.
+     * @param t Numero di tentativi.
+     */
+    public void setTentativi(final int t) {
+        tentativi = t;
     }
 
-    /**Incrementa il numero di tentativi*/
-    public void incrementaTentativi()
-    {
-        setTentativi(getTentativi()+1);
+    /**Incrementa il numero di tentativi.*/
+    public void incrementaTentativi() {
+        setTentativi(getTentativi() + 1);
     }
 }

@@ -1,29 +1,37 @@
 package it.uniba.app;
-import java.io.*; 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
 
-/**La classe MyInput è stata progettata con l'obiettivo di semplificare le operazioni di input delle stringhe, affinchè la stringa rispetti i criteri definiti */
-public class MyInput
-{
-    public static String leggiStringa(String msg) //metodo di classe
-    {
-        BufferedReader tastiera=new BufferedReader(new InputStreamReader(System.in)); 
-        //classe del package java.io, SI FA COSì PER NON OCCUPARE SPAZIO INUTILE PER IL READER
+/**La classe MyInput
+ * è stata progettata con l'obiettivo di semplificare
+ * le operazioni di input delle stringhe,
+ * affinchè la stringa rispetti i criteri definiti. */
+public class MyInput {
+
+    /**Costruttore. */
+    protected MyInput() {
+    }
+
+    /**
+     * Permette di leggere stringhe in input da tastiera.
+     * @param msg Messaggio stampato a video prima di ricevere input.
+     * @return Stringa letta in input.
+     */
+    public static String leggiStringa(final String msg) {
+        BufferedReader tastiera = new BufferedReader(
+                                    new InputStreamReader(System.in));
         boolean err;
-        String aux=null; //aux: variabile oggetto di classe String che contiene un indirizzo, quello del primo carattere della stringa. Per questo posso anche inizializzarla null
-        do
-        {
-            err=false;
-            System.out.print(msg+": ");            
-            try
-            {
-                aux=tastiera.readLine();
-            }
-            catch(Exception e)
-            {
-                err=true;
+        String aux = null;
+        do {
+            err = false;
+            System.out.print(msg + ": ");
+            try {
+                aux = tastiera.readLine();
+            } catch (Exception e) {
+                err = true;
                 System.out.println("Errore dell'input dei dati");
             }
-        } while(err);
+        } while (err);
         return aux;
     }
 }
