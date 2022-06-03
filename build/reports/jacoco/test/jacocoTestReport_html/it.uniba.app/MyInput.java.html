@@ -6,28 +6,33 @@ import java.io.InputStreamReader;
  * è stata progettata con l'obiettivo di semplificare
  * le operazioni di input delle stringhe,
  * affinchè la stringa rispetti i criteri definiti. */
-<span class="nc" id="L9">public class MyInput {</span>
+public class MyInput {
+
+    /**Costruttore. */
+<span class="nc" id="L12">    protected MyInput() {</span>
+<span class="nc" id="L13">    }</span>
+
     /**
      * Permette di leggere stringhe in input da tastiera.
      * @param msg Messaggio stampato a video prima di ricevere input.
      * @return Stringa letta in input.
      */
     public static String leggiStringa(final String msg) {
-<span class="nc" id="L16">        BufferedReader tastiera = new BufferedReader(new InputStreamReader(System.in));</span>
+<span class="nc" id="L21">        BufferedReader tastiera = new BufferedReader(</span>
+                                    new InputStreamReader(System.in));
         boolean err;
-<span class="nc" id="L18">        String aux = null;</span>
+<span class="nc" id="L24">        String aux = null;</span>
         do {
-<span class="nc" id="L20">            err = false;</span>
-<span class="nc" id="L21">            System.out.print(msg + &quot;: &quot;);</span>
+<span class="nc" id="L26">            err = false;</span>
+<span class="nc" id="L27">            System.out.print(msg + &quot;: &quot;);</span>
             try {
-<span class="nc" id="L23">                aux = tastiera.readLine();</span>
-            }
-<span class="nc" id="L25">            catch (Exception e) {</span>
-<span class="nc" id="L26">                err = true;</span>
-<span class="nc" id="L27">                System.out.println(&quot;Errore dell'input dei dati&quot;);</span>
-<span class="nc" id="L28">            }</span>
-<span class="nc bnc" id="L29" title="All 2 branches missed.">        } while (err);</span>
-<span class="nc" id="L30">        return aux;</span>
+<span class="nc" id="L29">                aux = tastiera.readLine();</span>
+<span class="nc" id="L30">            } catch (Exception e) {</span>
+<span class="nc" id="L31">                err = true;</span>
+<span class="nc" id="L32">                System.out.println(&quot;Errore dell'input dei dati&quot;);</span>
+<span class="nc" id="L33">            }</span>
+<span class="nc bnc" id="L34" title="All 2 branches missed.">        } while (err);</span>
+<span class="nc" id="L35">        return aux;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

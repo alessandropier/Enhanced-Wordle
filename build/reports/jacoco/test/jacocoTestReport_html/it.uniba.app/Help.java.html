@@ -1,25 +1,40 @@
 <?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="it"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Help.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">wordle</a> &gt; <a href="index.source.html" class="el_package">it.uniba.app</a> &gt; <span class="el_source">Help.java</span></div><h1>Help.java</h1><pre class="source lang-java linenums">package it.uniba.app;
-/**&lt;&lt;noECB&gt;&gt; 
+
+/**&lt;&lt;noECB&gt;&gt;
  * La classe Help stampa a video il menu di aiuto.
 */
 
-<span class="nc" id="L6">public final class Help {</span>
-    
-    public static void StampaHelp(){
-<span class="nc" id="L9">        System.out.println(&quot;Il giocatore deve indovinare una parola di 5 lettere in 6 tentativi, dopo ogni tentativo, i colori delle tessere cambieranno per mostrare il feedback:&quot;);</span>
-<span class="nc" id="L10">        System.out.println(&quot; - di verde se la lettera è nella parola segreta e nel posto giusto;\n - di giallo se la lettera è nella parola segreta ma nel posto sbagliato;\n - di grigio se la lettera non è nella parola segreta.\n&quot;);</span>
-<span class="nc" id="L11">        System.out.print(&quot;Se sei &quot;);</span>
-<span class="nc" id="L12">        System.out.print(&quot;\033[0;1m&quot; + &quot;GIOCATORE&quot;);</span>
-<span class="nc" id="L13">        System.out.println(&quot; hai a disposizione i seguenti comandi:&quot;);</span>
-<span class="nc" id="L14">        System.out.println(&quot; - /help&quot;);</span>
-<span class="nc" id="L15">        System.out.println(&quot; - /gioca&quot;);</span>
-<span class="nc" id="L16">        System.out.println(&quot; - /abbandona&quot;);</span>
-<span class="nc" id="L17">        System.out.println(&quot; - /esci\n&quot;);</span>
-<span class="nc" id="L18">        System.out.print(&quot;Se sei &quot;);</span>
-<span class="nc" id="L19">        System.out.print(&quot;\033[0;1m&quot; + &quot;PAROLIERE&quot;);</span>
-<span class="nc" id="L20">        System.out.println(&quot; hai a disposizione i seguenti comandi:&quot;);</span>
-<span class="nc" id="L21">        System.out.println(&quot; - /nuova &lt;parola&gt;&quot;);</span>
-<span class="nc" id="L22">        System.out.println(&quot; - /mostra&quot;);</span>
-<span class="nc" id="L23">    }</span>
+public class Help {
+
+    /**Costruttore. */
+<span class="nc" id="L10">    protected Help() {</span>
+<span class="nc" id="L11">    }</span>
+
+    /** Stampa il menu di aiuto. */
+    public static void stampaHelp() {
+<span class="nc" id="L15">        System.out.print(&quot;Il giocatore deve indovinare una parola&quot;);</span>
+<span class="nc" id="L16">        System.out.print(&quot;  di 5 lettere in 6 tentativi,&quot;);</span>
+<span class="nc" id="L17">        System.out.print(&quot; dopo ogni tentativo, i colori delle tessere &quot;);</span>
+<span class="nc" id="L18">        System.out.println(&quot; cambieranno per mostrare il feedback:&quot;);</span>
+<span class="nc" id="L19">        System.out.print(&quot;- di verde se la lettera è nella&quot;);</span>
+<span class="nc" id="L20">        System.out.println(&quot; parola segreta e nel posto giusto; &quot;);</span>
+<span class="nc" id="L21">        System.out.print(&quot;- di giallo se la lettera è nella&quot;);</span>
+<span class="nc" id="L22">        System.out.println(&quot; parola segreta ma nel posto sbagliato;&quot;);</span>
+<span class="nc" id="L23">        System.out.print(&quot;- di grigio se la lettera non&quot;);</span>
+<span class="nc" id="L24">        System.out.println(&quot; è nella parola segreta.&quot;);</span>
+
+<span class="nc" id="L26">        System.out.print(&quot;Se sei &quot;);</span>
+<span class="nc" id="L27">        System.out.print(&quot;\033[0;1m&quot; + &quot;GIOCATORE&quot;);</span>
+<span class="nc" id="L28">        System.out.println(&quot; hai a disposizione i seguenti comandi:&quot;);</span>
+<span class="nc" id="L29">        System.out.println(&quot; - /help&quot;);</span>
+<span class="nc" id="L30">        System.out.println(&quot; - /gioca&quot;);</span>
+<span class="nc" id="L31">        System.out.println(&quot; - /abbandona&quot;);</span>
+<span class="nc" id="L32">        System.out.println(&quot; - /esci\n&quot;);</span>
+<span class="nc" id="L33">        System.out.print(&quot;Se sei &quot;);</span>
+<span class="nc" id="L34">        System.out.print(&quot;\033[0;1m&quot; + &quot;PAROLIERE&quot;);</span>
+<span class="nc" id="L35">        System.out.println(&quot; hai a disposizione i seguenti comandi:&quot;);</span>
+<span class="nc" id="L36">        System.out.println(&quot; - /nuova &lt;parola&gt;&quot;);</span>
+<span class="nc" id="L37">        System.out.println(&quot; - /mostra&quot;);</span>
+<span class="nc" id="L38">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>
