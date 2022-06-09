@@ -17,7 +17,7 @@
 
     – Diagramma dei package, diagramma dei componenti (opzionali)
 
-    – Commentare le decisioni prese (opzionale)
+    – [`Commentare le decisioni prese`](#commentare-le-decisioni-prese)
 
 5. [`OO Design`](#oo-design)
 
@@ -161,6 +161,18 @@ I **requisiti non funzionali** sono i vincoli e le proprietà relative al sistem
     - RNF11: il container docker dell’app deve essere eseguito da terminali che supportano Unicode con encoding UTF-8 o UTF-16
 
     ---
+## `System Design`
+
+### `Commentare le decisioni prese`
+Il gruppo ***allen*** ha individuato i seguenti errori di checkstyle:
+
+- 'x' is a magic number (test)
+- Parameter 'x' should be final (main)
+
+Il gruppo ha deciso di **non** correggere i suddetti errori per i **seguenti motivi**: 
+
+- 'x' is a magic number: i magic number individuati fanno parte dei casi di test;  
+- Parameter 'x' should be final: tali parametri sono stati utilizzati e quindi non si è ritenuto opportuno convertirli in final.
 
 ## `OO Design`
 
@@ -185,6 +197,19 @@ La classe MyInput è stata progettata con l'obiettivo di semplificare le operazi
 
 - Esci
 <center><img src="./drawings/esci.png" alt="drawing" width="600"></center>
+
+## `Riepilogo del test`
+<center><img src="./drawings/jacoco1.png" alt="drawing" width="600"></center>
+
+Non si sono effettuati dei test sulle classi **Help** e **MyInput** in quanto sono classi **Boundary**.
+
+<center><img src="./drawings/jacoco2.png" alt="drawing" width="600"></center>
+
+Le funzioni **Abbandona** ed **Esci** non sono state testate per l'impossibilità di effettuare test riguardanti le stampe a video.
+
+Sulla funzione **Wordle** invece non sono stati effettuati tutti i casi di test in quanto alcuni di essi richiedevano l'implementazione del framework **Mockito**, che sarebbe servito per controllare l'ingresso in una funzione.
+
+Le restanti porzioni di codice non controllate sono **stampe a video**.
 
 ## `Manuale utente`
 

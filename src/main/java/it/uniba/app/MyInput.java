@@ -1,8 +1,11 @@
 package it.uniba.app;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 
-/**La classe MyInput
+/**
+ * <<Boundary>>
+ * La classe MyInput
  * è stata progettata con l'obiettivo di semplificare
  * le operazioni di input delle stringhe,
  * affinchè la stringa rispetti i criteri definiti. */
@@ -19,7 +22,8 @@ public class MyInput {
      */
     public static String leggiStringa(final String msg) {
         BufferedReader tastiera = new BufferedReader(
-                                    new InputStreamReader(System.in));
+                                    new InputStreamReader(
+                                        System.in, StandardCharsets.UTF_8));
         boolean err;
         String aux = null;
         do {

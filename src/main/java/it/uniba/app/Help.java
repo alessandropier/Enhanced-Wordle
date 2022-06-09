@@ -1,6 +1,6 @@
 package it.uniba.app;
 
-/**<<noECB>>
+/**<<Boundary>>
  * La classe Help stampa a video il menu di aiuto.
 */
 
