@@ -185,11 +185,11 @@ public class ControllerTest {
     }
 
     /**
-     * Test 1 per la funzione wordle della classe Controller.
+     * Test per la funzione wordle della classe Controller.
      * CASO: comando "/nuova palla"
      */
     @Test
-    public void wordleTest1() {
+    public void wordleTest() {
         Paroliere p = new Paroliere();
         Controller.wordle("/nuova palla", new Giocatore(),
         p, new Matrice(6, 5));
@@ -197,6 +197,4 @@ public class ControllerTest {
         assertNotEquals(
             "ebete", p.getParolaSegreta());
     }
-
-    // Continuare casi di test per funzione Wordle
 }

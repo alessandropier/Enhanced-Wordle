@@ -28,9 +28,4 @@ public class Giocatore {
     public void setTentativi(final int t) {
         tentativi = t;
     }
-
-    /**Incrementa il numero di tentativi.*/
-    public void incrementaTentativi() {
-        setTentativi(getTentativi() + 1);
-    }
 }
