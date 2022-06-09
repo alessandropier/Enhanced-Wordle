@@ -21,16 +21,18 @@
      */
     public static void main(final String[] args) {
 <span class="nc" id="L23">        System.out.println(new App().getGreeting());</span>
-<span class="nc" id="L24">        Help.StampaHelp();</span>
+<span class="nc" id="L24">        Help.stampaHelp();</span>
 
 <span class="nc" id="L26">        Giocatore g = new Giocatore();</span>
 <span class="nc" id="L27">        Paroliere p = new Paroliere();</span>
-<span class="nc" id="L28">        Matrice m = new Matrice(Controller.getMaxTentativi(), Controller.getNumCaratteri());</span>
+<span class="nc" id="L28">        Matrice m = new Matrice(Controller.getMaxTentativi(),</span>
+<span class="nc" id="L29">                                Controller.getNumCaratteri());</span>
 
-        do
-        {
-<span class="nc" id="L32">            Controller.wordle(MyInput.leggiStringa(&quot;Inserisci un comando o un tentativo&quot;), g, p, m);</span>
-<span class="nc" id="L33">        }while(true);</span>
+        do {
+<span class="nc" id="L32">            Controller.wordle(</span>
+<span class="nc" id="L33">                MyInput.leggiStringa(&quot;Inserisci un comando o un tentativo&quot;),</span>
+                 g, p, m);
+<span class="nc" id="L35">        } while (true);</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

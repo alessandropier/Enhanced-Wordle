@@ -1,6 +1,4 @@
 package it.uniba.app;
-
-
 /**
  * <<Entity>>
  * La classe Paroliere gestisce l'entità paroliere in tutti i suoi aspetti.

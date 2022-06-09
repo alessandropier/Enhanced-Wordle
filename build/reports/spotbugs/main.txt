@@ -1,1 +1,1 @@
-H I Dm: Found reliance on default encoding in it.uniba.app.MyInput.leggiStringa(String): new java.io.InputStreamReader(InputStream)  At MyInput.java:[line 16]
+H I Dm: Found reliance on default encoding in it.uniba.app.MyInput.leggiStringa(String): new java.io.InputStreamReader(InputStream)  At MyInput.java:[line 21]

@@ -33,6 +33,13 @@ public class Controller {
     public static int getNumCaratteri() {
         return NUMCARATTERI;
     }
+    /**
+     * get di flagGioca.
+     * @return flagGioca
+     */
+    public static boolean getFlagGioca() {
+        return flagGioca;
+    }
 
     /**Imposta una nuova parola segreta da indovinare.
      * @param nuovaParola parola da impostare come parola segreta
