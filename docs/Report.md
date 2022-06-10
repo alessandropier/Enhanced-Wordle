@@ -470,6 +470,24 @@ Il **team** ha svolto **riunioni giornaliere** per aggiornarsi sul **progresso**
 
 In seguito, il gruppo ha svolto, **per ogni sprint**, una discussione mirata all'**organizzazione e alla distribuzione equa** del lavoro da svolgere.
 
+Infine abbiamo sviluppato un'**analisi retrospettiva**, ovvero una riunione basata sul metodo scientifico dalla durata di 15-30 minuti a cui **partecipa tutto il team**. 
+
+In tale riunione si discute: 
+
+    - cosa introdurre 
+    - cosa evitare
+    - cosa continuare
+
+nel prossimo sprint.
+
+Inoltre si specifica anche cosa ha fatto sentire:
+
+    - contento
+    - deluso
+    - disperato
+
+nello sprint concluso, secondo la metodologia **Mad, Sad, Glad**.
+
 ## `Analisi Retrospettiva`
 
 ### Sprint 1

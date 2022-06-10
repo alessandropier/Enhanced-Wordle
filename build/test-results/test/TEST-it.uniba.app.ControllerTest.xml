@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="it.uniba.app.ControllerTest" tests="12" skipped="0" failures="0" errors="0" timestamp="2022-06-10T11:20:25" hostname="DESKTOP-HIRECKO" time="0.063">
+<testsuite name="it.uniba.app.ControllerTest" tests="12" skipped="0" failures="0" errors="0" timestamp="2022-06-10T11:36:22" hostname="DESKTOP-HIRECKO" time="0.062">
   <properties/>
-  <testcase name="wordleTest()" classname="it.uniba.app.ControllerTest" time="0.016"/>
-  <testcase name="tentativoTest1()" classname="it.uniba.app.ControllerTest" time="0.009"/>
+  <testcase name="wordleTest()" classname="it.uniba.app.ControllerTest" time="0.014"/>
+  <testcase name="tentativoTest1()" classname="it.uniba.app.ControllerTest" time="0.006"/>
   <testcase name="tentativoTest2()" classname="it.uniba.app.ControllerTest" time="0.009"/>
-  <testcase name="tentativoTest3()" classname="it.uniba.app.ControllerTest" time="0.007"/>
-  <testcase name="tentativoTest4()" classname="it.uniba.app.ControllerTest" time="0.004"/>
-  <testcase name="tentativoTest5()" classname="it.uniba.app.ControllerTest" time="0.004"/>
+  <testcase name="tentativoTest3()" classname="it.uniba.app.ControllerTest" time="0.006"/>
+  <testcase name="tentativoTest4()" classname="it.uniba.app.ControllerTest" time="0.003"/>
+  <testcase name="tentativoTest5()" classname="it.uniba.app.ControllerTest" time="0.005"/>
   <testcase name="nuovaTest1()" classname="it.uniba.app.ControllerTest" time="0.001"/>
-  <testcase name="nuovaTest2()" classname="it.uniba.app.ControllerTest" time="0.0"/>
+  <testcase name="nuovaTest2()" classname="it.uniba.app.ControllerTest" time="0.002"/>
   <testcase name="nuovaTest3()" classname="it.uniba.app.ControllerTest" time="0.002"/>
   <testcase name="giocaTest()" classname="it.uniba.app.ControllerTest" time="0.001"/>
-  <testcase name="getNumCaratteriTest()" classname="it.uniba.app.ControllerTest" time="0.001"/>
+  <testcase name="getNumCaratteriTest()" classname="it.uniba.app.ControllerTest" time="0.002"/>
   <testcase name="getMaxTentativiTest()" classname="it.uniba.app.ControllerTest" time="0.001"/>
   <system-out><![CDATA[OK!
 OK!
