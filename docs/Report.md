@@ -344,9 +344,10 @@ Per lo sviluppo del progetto **Wordle**, il gruppo **allen** è ricorso all'util
 In particolare ci si è affidati al **framework Scrum**, che utilizza un **processo** di sviluppo **iterativo** che si articola in **diversi Sprint**, permettendo un deployment costante del software e un feedback frequente.
 
 Il progetto **Wordle** è stato suddiviso in **3 Sprint**:
-    1. **Sprint 0**: Dimostrare familiarità con GitHub, Git e il processo agile.
-    2. **Sprint 1**: Giocare in modo basico
-    3. **Sprint 2**: Assicurare la qualità del lavoro svolto.
+
+    1. Sprint 0: Dimostrare familiarità con GitHub, Git e il processo agile.
+    2. Sprint 1: Giocare in modo basico
+    3. Sprint 2: Assicurare la qualità del lavoro svolto.
 
 Ogni sprint è **durato** complessivamente circa **2 settimane**; in questo periodo il gruppo ha analizzato, progettato, implementato e testato i requisiti funzionali corrispondenti alle **user stories** del **Product Owner**. 
 
@@ -383,6 +384,91 @@ Di seguito si riporta il **Product Backlog** del progetto **Wordle**:
         - mostrare il tempo di gioco
 
 Di seguito, per ogni **Sprint** è stato definito uno **Sprint Backlog**, rappresentante un set di tutte le **User Stories** che il **Product Owner** ha ritenuto di **maggior priorità** con l'obbiettivo di svilupparle nel periodo di **tempo delimitato** dallo **Sprint** (2 settimane per Sprint). 
+
+Di seguito, viene riportato un **esempio** di Sprint Backlog, relativo allo **Sprint 1**:
+
+### **Sprint 1 Backlog**
+
+    Obiettivo: Giocare in modo basico
+
+    Product backlog: 
+    
+    Attori: Giocatore e Paroliere
+
+    Le seguenti user story inizierebbero con come paroliere voglio:
+
+    - Impostare una parola segreta manualmente
+    - Mostrare la parola segreta
+
+    Le seguenti story inizierebbero con come giocatore voglio:
+
+    - Mostrare l'help con elenco comandi e regole del gioco
+    - Iniziare una nuova partita
+    - Abbandonare una partita
+    - Effettuare un tentativo per indovinare la parola segreta
+    - Chiudere il gioco
+
+    E' stata abbozzata la relazione tecnica:
+
+    Formato: Markdown 
+    Dove: nel repository /docs/ 
+    Nome file: Report.md 
+    Sezioni: 
+
+        1. Introduzione 
+        2. Modello di dominio 
+        3. Requisiti specifici 
+            3.1 Requisiti funzionali 
+            3.2 Requisiti non funzionali 
+        5. OO Design (diagrammi delle classi e diagrammi di sequenza delle user story più importanti con eventuali commenti alle decisioni prese).
+
+    Criteri che devono essere soddisfatti per qualsiasi user story:
+
+    - C'è un issue con label «user story»
+    - La issue è in un Milestone e in una Project Board
+    - Assegnazione a uno o al più due componenti del team
+    - Ogni classe è preceduta da un commento che riassume la responsabilità della classe
+    - Ogni classe è preceduta da un commento per indicare se è di tipo <>, <>, <>, <>
+    - I commenti iniziano con /** e terminano con with */
+    - I commit devono avere una descrizione breve ma significativa
+    - C'è una Pull Request (PR) che corrisponde alla user story
+    - La PR è in un Milestone ma non in una Project Board
+    - C'è un commento che linka la PR all'issue (es. "closes #22")
+    - La PR è accettata a review avvenuto ed esplicito
+    - Build costruito con successo
+    - Docker image caricata con successo
+    - L'esecuzione rispetta i criteri di accettazione
+
+Altro strumento utilizzato dal gruppo **allen** durante il **processo di sviluppo software** è stata la **Scrum Board**, che consiste in una **lavagna** utilizzata per **organizzare le User Stories** relative allo Sprint di riferimento.
+
+### **Esempio di Project Board:** Sprint 1
+<center><img src="./drawings/sprint2Board.png" alt="drawing" width="600"></center>
+
+La **Project Board** è stata divisa in **5 sezioni**, che rappresentano le **5 fasi** in cui le issue possono trovarsi.
+Queste sezioni sono:
+
+    - To Do: issue ancora da iniziare;
+    - In Progress: issue in corso di svolgimento;
+    - Review: issue in attesa di revisione da parte dei membri del team;
+    - Ready: issue approvata dai membri del team e in attesa di revisione da parte del Product Owner;
+    - Done: issue completato con successo dopo l'approvazione del Product Owner.
+
+### **Sprint review**
+Per ogni sprint, è stata effettuata una **riunione** tra i **membri del team di sviluppo** e il **Product Owner**, che fornisce un **feedback** al team di sviluppo sul lavoro svolto durante lo sprint appena concluso. 
+
+Successivamente **si discute su problemi** eventualmente riscontrati e si procede quindi a **risolverli**.
+<br></br>
+
+### **Sprint planning**
+All'inizio del progetto si è stilata una **lista** di tutte le possibili **user story** riguardanti il **progetto**. 
+
+Effettuata la loro definizione, **per ogni sprint** si procede con la **selezione e lo sviluppo** di una parte delle user story, **raggiungendo l'obiettivo** prefissatosi prima dello sprint.
+<br></br>
+
+### **Daily scrum meeting**
+Il **team** ha svolto **riunioni giornaliere** per aggiornarsi sul **progresso** del lavoro svolto, utili ai componenti del gruppo per un **confronto** riguardante **eventuali problematiche** riscontrate, cercando un'eventuale **soluzione**. 
+
+In seguito, il gruppo ha svolto, **per ogni sprint**, una discussione mirata all'**organizzazione e alla distribuzione equa** del lavoro da svolgere.
 
 ## `Analisi Retrospettiva`
 
