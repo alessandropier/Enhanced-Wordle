@@ -469,8 +469,10 @@ Effettuata la loro definizione, **per ogni sprint** si procede con la **selezion
 Il **team** ha svolto **riunioni giornaliere** per aggiornarsi sul **progresso** del lavoro svolto, utili ai componenti del gruppo per un **confronto** riguardante **eventuali problematiche** riscontrate, cercando un'eventuale **soluzione**. 
 
 In seguito, il gruppo ha svolto, **per ogni sprint**, una discussione mirata all'**organizzazione e alla distribuzione equa** del lavoro da svolgere.
+<br></br>
 
-Infine abbiamo sviluppato un'**analisi retrospettiva**, ovvero una riunione basata sul metodo scientifico dalla durata di 15-30 minuti a cui **partecipa tutto il team**. 
+### **Sprint Retrospective**
+Il gruppo ha effettuato un'**analisi retrospettiva**, ovvero una riunione basata sul metodo scientifico dalla durata di 15-30 minuti a cui **partecipa tutto il team**. 
 
 In tale riunione si discute: 
 
