@@ -337,6 +337,53 @@ Se il **valore** all'interno della **cella** di **esito** è **diverso** da **1*
 
 Infine si procede con la **fase di testing** delle **funzionalità** e **validazione** del **lavoro svolto**.
 
+### **Scrum Framework**
+
+Per lo sviluppo del progetto **Wordle**, il gruppo **allen** è ricorso all'utilizzo di un approccio agile per lo sviluppo del software.
+
+In particolare ci si è affidati al **framework Scrum**, che utilizza un **processo** di sviluppo **iterativo** che si articola in **diversi Sprint**, permettendo un deployment costante del software e un feedback frequente.
+
+Il progetto **Wordle** è stato suddiviso in **3 Sprint**:
+    1. **Sprint 0**: Dimostrare familiarità con GitHub, Git e il processo agile.
+    2. **Sprint 1**: Giocare in modo basico
+    3. **Sprint 2**: Assicurare la qualità del lavoro svolto.
+
+Ogni sprint è **durato** complessivamente circa **2 settimane**; in questo periodo il gruppo ha analizzato, progettato, implementato e testato i requisiti funzionali corrispondenti alle **user stories** del **Product Owner**. 
+
+Il **Product Owner** è il **responsabile** del **valore del prodotto** che si occupa di **accettare** o **rifiutare** i **risultati** del lavoro **del team** di sviluppo e di **decidere data** e **contenuto** di una **release**. 
+
+Inizalmente è stato stilato il **Product Backlog** di progetto che **raccoglie** tutte le **richieste del cliente** che il gruppo dovrà sviluppare durante gli sprint.
+
+Il **Product Backlog** è composto da varie **User Stories**, rappresentanti i requisiti funzionali del software e le features che il cliente si aspetta.
+
+Di seguito si riporta il **Product Backlog** del progetto **Wordle**:
+
+    Attori: Giocatore e Paroliere
+
+    Le seguenti user story inizierebbero con "Come paroliere voglio <azione>"
+        - impostare una parola segreta manualmente
+        - scegliere casualmente una parola segreta da utilizzare nella sessione di gioco
+        - mostrare la parola segreta
+        - mostrare la frequenza dei tentativi (x 1 tentativo, ..., y 6 tentativi, z fallimenti) nella sessione di gioco
+        - impostare il tempo di gioco
+        - scegliere la lingua con cui giocare
+        - scegliere il numero di tentativi massimo
+        - scegliere il numero di lettere della parola segreta
+
+    Le seguenti story inizierebbero con "Come giocatore voglio <azione>"
+        - mostrare l'help con elenco comandi e regole del gioco
+        - mostrare la lingua con cui giocare
+        - iniziare una nuova partita
+        - abbandonare una partita
+        - salvare una partita per riprendere a giocare in seguito
+        - caricare una partita per ricominciare a giocare
+        - effettuare un tentativo per indovinare la parola segreta
+        - mostrare la tastiera con le lettere colorate
+        - chiudere il gioco
+        - mostrare il tempo di gioco
+
+Di seguito, per ogni **Sprint** è stato definito uno **Sprint Backlog**, rappresentante un set di tutte le **User Stories** che il **Product Owner** ha ritenuto di **maggior priorità** con l'obbiettivo di svilupparle nel periodo di **tempo delimitato** dallo **Sprint** (2 settimane per Sprint). 
+
 ## `Analisi Retrospettiva`
 
 ### Sprint 1
