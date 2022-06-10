@@ -1,16 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="it"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>MyInput.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">wordle</a> &gt; <a href="index.source.html" class="el_package">it.uniba.app</a> &gt; <span class="el_source">MyInput.java</span></div><h1>MyInput.java</h1><pre class="source lang-java linenums">package it.uniba.app;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 
-/**La classe MyInput
+/**
+ * &lt;&lt;Boundary&gt;&gt;
+ * La classe MyInput
  * è stata progettata con l'obiettivo di semplificare
  * le operazioni di input delle stringhe,
  * affinchè la stringa rispetti i criteri definiti. */
 public class MyInput {
 
     /**Costruttore. */
-<span class="nc" id="L12">    protected MyInput() {</span>
-<span class="nc" id="L13">    }</span>
+<span class="nc" id="L15">    protected MyInput() {</span>
+<span class="nc" id="L16">    }</span>
 
     /**
      * Permette di leggere stringhe in input da tastiera.
@@ -18,21 +21,22 @@ public class MyInput {
      * @return Stringa letta in input.
      */
     public static String leggiStringa(final String msg) {
-<span class="nc" id="L21">        BufferedReader tastiera = new BufferedReader(</span>
-                                    new InputStreamReader(System.in));
+<span class="nc" id="L24">        BufferedReader tastiera = new BufferedReader(</span>
+                                    new InputStreamReader(
+                                        System.in, StandardCharsets.UTF_8));
         boolean err;
-<span class="nc" id="L24">        String aux = null;</span>
+<span class="nc" id="L28">        String aux = null;</span>
         do {
-<span class="nc" id="L26">            err = false;</span>
-<span class="nc" id="L27">            System.out.print(msg + &quot;: &quot;);</span>
+<span class="nc" id="L30">            err = false;</span>
+<span class="nc" id="L31">            System.out.print(msg + &quot;: &quot;);</span>
             try {
-<span class="nc" id="L29">                aux = tastiera.readLine();</span>
-<span class="nc" id="L30">            } catch (Exception e) {</span>
-<span class="nc" id="L31">                err = true;</span>
-<span class="nc" id="L32">                System.out.println(&quot;Errore dell'input dei dati&quot;);</span>
-<span class="nc" id="L33">            }</span>
-<span class="nc bnc" id="L34" title="All 2 branches missed.">        } while (err);</span>
-<span class="nc" id="L35">        return aux;</span>
+<span class="nc" id="L33">                aux = tastiera.readLine();</span>
+<span class="nc" id="L34">            } catch (Exception e) {</span>
+<span class="nc" id="L35">                err = true;</span>
+<span class="nc" id="L36">                System.out.println(&quot;Errore dell'input dei dati&quot;);</span>
+<span class="nc" id="L37">            }</span>
+<span class="nc bnc" id="L38" title="All 2 branches missed.">        } while (err);</span>
+<span class="nc" id="L39">        return aux;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>
