@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="it.uniba.app.AppTest" tests="1" skipped="0" failures="0" errors="0" timestamp="2022-06-13T13:26:29" hostname="DESKTOP-TUPIUME" time="0.046">
+<testsuite name="it.uniba.app.AppTest" tests="1" skipped="0" failures="0" errors="0" timestamp="2022-06-13T17:33:49" hostname="DESKTOP-T3UKMB2" time="0.075">
   <properties/>
-  <testcase name="appHasAGreeting()" classname="it.uniba.app.AppTest" time="0.046"/>
+  <testcase name="appHasAGreeting()" classname="it.uniba.app.AppTest" time="0.075"/>
   <system-out><![CDATA[]]></system-out>
   <system-err><![CDATA[]]></system-err>
 </testsuite>

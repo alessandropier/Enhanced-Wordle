@@ -9,7 +9,7 @@ import java.nio.charset.StandardCharsets;
  * è stata progettata con l'obiettivo di semplificare
  * le operazioni di input delle stringhe,
  * affinchè la stringa rispetti i criteri definiti. */
-public class MyInput {
+public final class MyInput {
 
     /**Costruttore. */
     private MyInput() {

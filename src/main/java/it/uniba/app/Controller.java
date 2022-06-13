@@ -7,7 +7,7 @@ import java.util.Arrays;
  * La classe Controller gestisce
  * il gioco in tutti i suoi aspetti e funzionalità.
  * */
-public class Controller {
+public final class Controller {
     /**Numero massimo di tentativi.*/
     private static final int MAXTENTATIVI = 6;
     /**Numero massimo di caratteri.*/
@@ -144,15 +144,6 @@ public class Controller {
                         + "La parola può contenere solo caratteri alfabetici.");
                     }
                 }
-            } else {
-                System.out.println("Numero massimo di tentativi raggiunto."
-                 + " Avvia una nuova partita.");
-                System.out.println("La parola segreta è "
-                 + p.getParolaSegreta() + ".");
-                p.setParolaSegreta(null);
-                g.setTentativi(0);
-                m.azzera(NUMCARATTERI);
-                flagGioca = false;
             }
             // Verifica se la parola è stata indovinata
             if (s.equals(p.getParolaSegreta())) {
@@ -315,6 +306,7 @@ public class Controller {
             if (risposta.equals("SI")) {
                 p.setParolaSegreta(null);
                 g.setTentativi(0);
+                System.out.println("Uscita in corso...");
                 System.exit(0);
             } else if (risposta.equals("NO")) {
                 System.out.println("In attesa di nuovi"
