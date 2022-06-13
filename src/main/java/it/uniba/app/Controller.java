@@ -16,7 +16,7 @@ public class Controller {
     private static boolean flagGioca = false;
 
     /**Costruttore. */
-    protected Controller() {
+    private Controller() {
     }
 
     /**

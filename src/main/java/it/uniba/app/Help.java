@@ -7,7 +7,7 @@ package it.uniba.app;
 public class Help {
 
     /**Costruttore. */
-    protected Help() {
+    private Help() {
     }
 
     /** Stampa il menu di aiuto. */

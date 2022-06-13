@@ -12,7 +12,7 @@ import java.nio.charset.StandardCharsets;
 public class MyInput {
 
     /**Costruttore. */
-    protected MyInput() {
+    private MyInput() {
     }
 
     /**

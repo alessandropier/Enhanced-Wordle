@@ -16,8 +16,8 @@ public class Controller {
 <span class="fc" id="L16">    private static boolean flagGioca = false;</span>
 
     /**Costruttore. */
-<span class="nc" id="L19">    protected Controller() {</span>
-<span class="nc" id="L20">    }</span>
+    private Controller() {
+    }
 
     /**
      * get numero massimo tentativi.
@@ -49,28 +49,28 @@ public class Controller {
 <span class="fc" id="L49">        boolean flagLength = false;</span>
 <span class="fc" id="L50">        boolean flagCorrect = false;</span>
 
-<span class="pc bpc" id="L52" title="1 of 2 branches missed.">        if (nuovaParola.length() &lt; NUMCARATTERI) {</span>
-<span class="nc" id="L53">            flagLength = true;</span>
-<span class="nc" id="L54">            System.out.println(&quot;Parola segreta troppo corta.&quot;</span>
+<span class="fc bfc" id="L52" title="All 2 branches covered.">        if (nuovaParola.length() &lt; NUMCARATTERI) {</span>
+<span class="fc" id="L53">            flagLength = true;</span>
+<span class="fc" id="L54">            System.out.println(&quot;Parola segreta troppo corta.&quot;</span>
              + &quot; La parola deve contenere &quot;
              + NUMCARATTERI + &quot; lettere.&quot;);
-<span class="pc bpc" id="L57" title="1 of 2 branches missed.">        } else if (nuovaParola.length() &gt; NUMCARATTERI) {</span>
-<span class="nc" id="L58">            flagLength = true;</span>
-<span class="nc" id="L59">            System.out.println(&quot;Parola segreta troppo lunga.&quot;</span>
+<span class="fc bfc" id="L57" title="All 2 branches covered.">        } else if (nuovaParola.length() &gt; NUMCARATTERI) {</span>
+<span class="fc" id="L58">            flagLength = true;</span>
+<span class="fc" id="L59">            System.out.println(&quot;Parola segreta troppo lunga.&quot;</span>
              + &quot; La parola deve contenere &quot;
              + NUMCARATTERI + &quot; lettere.&quot;);
         }
 <span class="fc" id="L63">        nuovaParola = nuovaParola.toUpperCase();</span>
-<span class="pc bpc" id="L64" title="2 of 6 branches missed.">        for (int i = 0; i &lt; NUMCARATTERI &amp;&amp; !flagCorrect &amp;&amp; !flagLength; i++) {</span>
-<span class="pc bpc" id="L65" title="2 of 4 branches missed.">            if (nuovaParola.charAt(i) &lt; 'A' || nuovaParola.charAt(i) &gt; 'Z') {</span>
-<span class="nc" id="L66">                flagCorrect = true;</span>
+<span class="pc bpc" id="L64" title="1 of 6 branches missed.">        for (int i = 0; i &lt; NUMCARATTERI &amp;&amp; !flagCorrect &amp;&amp; !flagLength; i++) {</span>
+<span class="pc bpc" id="L65" title="1 of 4 branches missed.">            if (nuovaParola.charAt(i) &lt; 'A' || nuovaParola.charAt(i) &gt; 'Z') {</span>
+<span class="fc" id="L66">                flagCorrect = true;</span>
             }
         }
-<span class="pc bpc" id="L69" title="1 of 2 branches missed.">        if (flagCorrect) {</span>
-<span class="nc" id="L70">            System.out.println(&quot;Parola segreta non valida.&quot;</span>
+<span class="fc bfc" id="L69" title="All 2 branches covered.">        if (flagCorrect) {</span>
+<span class="fc" id="L70">            System.out.println(&quot;Parola segreta non valida.&quot;</span>
             + &quot;La parola può contenere solo caratteri alfabetici.&quot;);
         }
-<span class="pc bpc" id="L73" title="2 of 4 branches missed.">        if (!flagLength &amp;&amp; !flagCorrect) {</span>
+<span class="fc bfc" id="L73" title="All 4 branches covered.">        if (!flagLength &amp;&amp; !flagCorrect) {</span>
 <span class="fc" id="L74">            System.out.println(&quot;OK!&quot;);</span>
 <span class="fc" id="L75">            p.setParolaSegreta(nuovaParola);</span>
         }
@@ -80,13 +80,13 @@ public class Controller {
      * @param p paroliere
     */
     public static void mostra(final Paroliere p) {
-<span class="nc bnc" id="L83" title="All 2 branches missed.">        if (p.getParolaSegreta() == null) {</span>
-<span class="nc" id="L84">            System.out.println(&quot;Parola segreta non impostata.&quot;);</span>
+<span class="fc bfc" id="L83" title="All 2 branches covered.">        if (p.getParolaSegreta() == null) {</span>
+<span class="fc" id="L84">            System.out.println(&quot;Parola segreta non impostata.&quot;);</span>
         } else {
-<span class="nc" id="L86">            System.out.println(&quot;La parola segreta è &quot;</span>
-<span class="nc" id="L87">             + p.getParolaSegreta() + &quot;.&quot;);</span>
+<span class="fc" id="L86">            System.out.println(&quot;La parola segreta è &quot;</span>
+<span class="fc" id="L87">             + p.getParolaSegreta() + &quot;.&quot;);</span>
         }
-<span class="nc" id="L89">    }</span>
+<span class="fc" id="L89">    }</span>
 
     /**
      * Permette di iniziare una nuova partita.
@@ -96,8 +96,8 @@ public class Controller {
      */
     public static void gioca(final Giocatore g,
      final Paroliere p, final Matrice m) {
-<span class="pc bpc" id="L99" title="1 of 2 branches missed.">        if (p.getParolaSegreta() == null) {</span>
-<span class="nc" id="L100">            System.out.println(&quot;Parola segreta non impostata.&quot;</span>
+<span class="fc bfc" id="L99" title="All 2 branches covered.">        if (p.getParolaSegreta() == null) {</span>
+<span class="fc" id="L100">            System.out.println(&quot;Parola segreta non impostata.&quot;</span>
             + &quot; Impossibile giocare.&quot;);
 <span class="pc bpc" id="L102" title="1 of 2 branches missed.">        } else if (g.getTentativi() == 0) {</span>
             //Stampa della matrice dei tentativi
@@ -119,28 +119,28 @@ public class Controller {
 <span class="fc" id="L119">        boolean flagCorrect = false;</span>
 <span class="fc" id="L120">        boolean flagLength = false;</span>
 
-<span class="pc bpc" id="L122" title="1 of 2 branches missed.">        if (flagGioca) {</span>
+<span class="fc bfc" id="L122" title="All 2 branches covered.">        if (flagGioca) {</span>
 <span class="pc bpc" id="L123" title="1 of 2 branches missed.">            if (g.getTentativi() &lt; MAXTENTATIVI) {</span>
-<span class="pc bpc" id="L124" title="1 of 2 branches missed.">                if (s.length() &lt; NUMCARATTERI) {</span>
-<span class="nc" id="L125">                    System.out.println(&quot;Parola troppo corta.&quot;</span>
+<span class="fc bfc" id="L124" title="All 2 branches covered.">                if (s.length() &lt; NUMCARATTERI) {</span>
+<span class="fc" id="L125">                    System.out.println(&quot;Parola troppo corta.&quot;</span>
                      + &quot; La parola deve contenere &quot;
                      + NUMCARATTERI + &quot; lettere.&quot;);
-<span class="nc" id="L128">                    flagLength = true;</span>
-<span class="pc bpc" id="L129" title="1 of 2 branches missed.">                } else if (s.length() &gt; NUMCARATTERI) {</span>
-<span class="nc" id="L130">                    System.out.println(&quot;Parola troppo lunga.&quot;</span>
+<span class="fc" id="L128">                    flagLength = true;</span>
+<span class="fc bfc" id="L129" title="All 2 branches covered.">                } else if (s.length() &gt; NUMCARATTERI) {</span>
+<span class="fc" id="L130">                    System.out.println(&quot;Parola troppo lunga.&quot;</span>
                      + &quot; La parola deve contenere &quot;
                      + NUMCARATTERI + &quot; lettere.&quot;);
-<span class="nc" id="L133">                    flagLength = true;</span>
+<span class="fc" id="L133">                    flagLength = true;</span>
                 } else {
 <span class="fc" id="L135">                    s = s.toUpperCase();</span>
 
 <span class="pc bpc" id="L137" title="1 of 4 branches missed.">                    for (int i = 0; i &lt; NUMCARATTERI &amp;&amp; !flagCorrect; i++) {</span>
-<span class="pc bpc" id="L138" title="2 of 4 branches missed.">                        if (s.charAt(i) &lt; 'A' || s.charAt(i) &gt; 'Z') {</span>
-<span class="nc" id="L139">                            flagCorrect = true;</span>
+<span class="pc bpc" id="L138" title="1 of 4 branches missed.">                        if (s.charAt(i) &lt; 'A' || s.charAt(i) &gt; 'Z') {</span>
+<span class="fc" id="L139">                            flagCorrect = true;</span>
                         }
                     }
-<span class="pc bpc" id="L142" title="1 of 2 branches missed.">                    if (flagCorrect) {</span>
-<span class="nc" id="L143">                        System.out.println(&quot;Parola non valida. &quot;</span>
+<span class="fc bfc" id="L142" title="All 2 branches covered.">                    if (flagCorrect) {</span>
+<span class="fc" id="L143">                        System.out.println(&quot;Parola non valida. &quot;</span>
                         + &quot;La parola può contenere solo caratteri alfabetici.&quot;);
                     }
                 }
@@ -167,7 +167,7 @@ public class Controller {
 <span class="fc" id="L167">                g.setTentativi(0);</span>
 <span class="fc" id="L168">                m.azzera(NUMCARATTERI);</span>
 <span class="fc" id="L169">                flagGioca = false;</span>
-<span class="pc bpc" id="L170" title="3 of 6 branches missed.">            } else if (!flagCorrect &amp;&amp; !flagLength &amp;&amp; flagGioca) {</span>
+<span class="pc bpc" id="L170" title="1 of 6 branches missed.">            } else if (!flagCorrect &amp;&amp; !flagLength &amp;&amp; flagGioca) {</span>
 <span class="fc" id="L171">                String parolaGiusta = p.getParolaSegreta();</span>
 <span class="fc" id="L172">                ArrayList&lt;Integer&gt; esito = new ArrayList&lt;&gt;(</span>
 <span class="fc" id="L173">                    Arrays.asList(2, 2, 2, 2, 2));</span>
@@ -202,7 +202,7 @@ public class Controller {
                 }
 <span class="fc" id="L203">            }</span>
         } else {
-<span class="nc" id="L205">            System.out.println(&quot;Digitare '/gioca' per iniziare una partita.&quot;);</span>
+<span class="fc" id="L205">            System.out.println(&quot;Digitare '/gioca' per iniziare una partita.&quot;);</span>
         }
 <span class="fc" id="L207">    }</span>
 
@@ -271,9 +271,9 @@ public class Controller {
      * */
     public static void abbandona(final Paroliere p, final Giocatore g,
      final Matrice m) {
-<span class="nc" id="L274">        boolean flag = false;</span>
+<span class="fc" id="L274">        boolean flag = false;</span>
         //Controllo sulla presenza di una partita in corso
-<span class="nc bnc" id="L276" title="All 4 branches missed.">        if ((p.getParolaSegreta() != null) &amp;&amp; g.getTentativi() &lt; MAXTENTATIVI) {</span>
+<span class="pc bpc" id="L276" title="3 of 4 branches missed.">        if ((p.getParolaSegreta() != null) &amp;&amp; g.getTentativi() &lt; MAXTENTATIVI) {</span>
             do {
 <span class="nc" id="L278">                flag = false;</span>
 <span class="nc" id="L279">                String prova = MyInput.leggiStringa(&quot;Abbandonare la partita?&quot;);</span>
@@ -295,9 +295,9 @@ public class Controller {
                 }
 <span class="nc bnc" id="L296" title="All 2 branches missed.">            } while (flag);</span>
         } else {
-<span class="nc" id="L298">            System.out.println(&quot;Nessuna partita avviata.&quot;);</span>
+<span class="fc" id="L298">            System.out.println(&quot;Nessuna partita avviata.&quot;);</span>
         }
-<span class="nc" id="L300">    }</span>
+<span class="fc" id="L300">    }</span>
 
     /**
      * La funzione chiede conferma e
