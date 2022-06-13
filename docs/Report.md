@@ -164,7 +164,7 @@ I **requisiti non funzionali** sono i vincoli e le proprietà relative al sistem
 ## `System Design`
 
 ### `Commentare le decisioni prese`
-Il gruppo ***allen*** ha individuato i seguenti errori di checkstyle:
+Il gruppo ***allen*** ha individuato i seguenti errori di **checkstyle**:
 
 - 'x' is a magic number (test)
 - Parameter 'x' should be final (main)
@@ -199,17 +199,19 @@ La classe MyInput è stata progettata con l'obiettivo di semplificare le operazi
 <center><img src="./drawings/esci.png" alt="drawing" width="600"></center>
 
 ## `Riepilogo del test`
+<center><img src="./drawings/jacoco0.png" alt="drawing" width="600"></center>
+
 <center><img src="./drawings/jacoco1.png" alt="drawing" width="600"></center>
 
 Non si sono effettuati dei test sulle classi **Help** e **MyInput** in quanto sono classi **Boundary**.
 
 <center><img src="./drawings/jacoco2.png" alt="drawing" width="600"></center>
 
-Le funzioni **Abbandona** ed **Esci** non sono state testate per l'impossibilità di effettuare test riguardanti le stampe a video.
+La funzione **esci** non è stata testata al 100% per l'impossibilità di importare la libreria atta a testare il comando "**System.exit(0)**" poichè richiesta la modifica dei file propri di **Junit**.
 
-Sulla funzione **Wordle** invece non sono stati effettuati tutti i casi di test in quanto alcuni di essi richiedevano l'implementazione del framework **Mockito**, che sarebbe servito per controllare l'ingresso in una funzione.
+Di seguito, la libreria per il testing di **System.exit**:
 
-Le restanti porzioni di codice non controllate sono **stampe a video**.
+    org.junit.rules.ExpectedException
 
 ## `Manuale utente`
 
@@ -452,6 +454,13 @@ Queste sezioni sono:
     - Review: issue in attesa di revisione da parte dei membri del team;
     - Ready: issue approvata dai membri del team e in attesa di revisione da parte del Product Owner;
     - Done: issue completato con successo dopo l'approvazione del Product Owner.
+
+**Scrum Framework** si divide nelle seguenti fasi:
+
+    - Sprint Planning
+    - Daily Scrum Meeting
+    - Sprint Review
+    - Sprint Retrospective
 
 ### **Sprint review**
 Per ogni sprint, è stata effettuata una **riunione** tra i **membri del team di sviluppo** e il **Product Owner**, che fornisce un **feedback** al team di sviluppo sul lavoro svolto durante lo sprint appena concluso. 

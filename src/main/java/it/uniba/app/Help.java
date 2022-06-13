@@ -4,10 +4,10 @@ package it.uniba.app;
  * La classe Help stampa a video il menu di aiuto.
 */
 
-public class Help {
+public final class Help {
 
     /**Costruttore. */
-    protected Help() {
+    private Help() {
     }
 
     /** Stampa il menu di aiuto. */
@@ -29,7 +29,7 @@ public class Help {
         System.out.println(" - /help");
         System.out.println(" - /gioca");
         System.out.println(" - /abbandona");
-        System.out.println(" - /esci\n");
+        System.out.println(" - /esci");
         System.out.print("Se sei ");
         System.out.print("\033[0;1m" + "PAROLIERE");
         System.out.println(" hai a disposizione i seguenti comandi:");

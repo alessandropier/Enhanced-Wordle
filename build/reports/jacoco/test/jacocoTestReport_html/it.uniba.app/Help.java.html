@@ -4,37 +4,37 @@
  * La classe Help stampa a video il menu di aiuto.
 */
 
-public class Help {
+public final class Help {
 
     /**Costruttore. */
-<span class="nc" id="L10">    protected Help() {</span>
-<span class="nc" id="L11">    }</span>
+    private Help() {
+    }
 
     /** Stampa il menu di aiuto. */
     public static void stampaHelp() {
-<span class="nc" id="L15">        System.out.print(&quot;Il giocatore deve indovinare una parola&quot;);</span>
-<span class="nc" id="L16">        System.out.print(&quot;  di 5 lettere in 6 tentativi,&quot;);</span>
-<span class="nc" id="L17">        System.out.print(&quot; dopo ogni tentativo, i colori delle tessere &quot;);</span>
-<span class="nc" id="L18">        System.out.println(&quot; cambieranno per mostrare il feedback:&quot;);</span>
-<span class="nc" id="L19">        System.out.print(&quot;- di verde se la lettera è nella&quot;);</span>
-<span class="nc" id="L20">        System.out.println(&quot; parola segreta e nel posto giusto; &quot;);</span>
-<span class="nc" id="L21">        System.out.print(&quot;- di giallo se la lettera è nella&quot;);</span>
-<span class="nc" id="L22">        System.out.println(&quot; parola segreta ma nel posto sbagliato;&quot;);</span>
-<span class="nc" id="L23">        System.out.print(&quot;- di grigio se la lettera non&quot;);</span>
-<span class="nc" id="L24">        System.out.println(&quot; è nella parola segreta.&quot;);</span>
+<span class="fc" id="L15">        System.out.print(&quot;Il giocatore deve indovinare una parola&quot;);</span>
+<span class="fc" id="L16">        System.out.print(&quot;  di 5 lettere in 6 tentativi,&quot;);</span>
+<span class="fc" id="L17">        System.out.print(&quot; dopo ogni tentativo, i colori delle tessere &quot;);</span>
+<span class="fc" id="L18">        System.out.println(&quot; cambieranno per mostrare il feedback:&quot;);</span>
+<span class="fc" id="L19">        System.out.print(&quot;- di verde se la lettera è nella&quot;);</span>
+<span class="fc" id="L20">        System.out.println(&quot; parola segreta e nel posto giusto; &quot;);</span>
+<span class="fc" id="L21">        System.out.print(&quot;- di giallo se la lettera è nella&quot;);</span>
+<span class="fc" id="L22">        System.out.println(&quot; parola segreta ma nel posto sbagliato;&quot;);</span>
+<span class="fc" id="L23">        System.out.print(&quot;- di grigio se la lettera non&quot;);</span>
+<span class="fc" id="L24">        System.out.println(&quot; è nella parola segreta.&quot;);</span>
 
-<span class="nc" id="L26">        System.out.print(&quot;Se sei &quot;);</span>
-<span class="nc" id="L27">        System.out.print(&quot;\033[0;1m&quot; + &quot;GIOCATORE&quot;);</span>
-<span class="nc" id="L28">        System.out.println(&quot; hai a disposizione i seguenti comandi:&quot;);</span>
-<span class="nc" id="L29">        System.out.println(&quot; - /help&quot;);</span>
-<span class="nc" id="L30">        System.out.println(&quot; - /gioca&quot;);</span>
-<span class="nc" id="L31">        System.out.println(&quot; - /abbandona&quot;);</span>
-<span class="nc" id="L32">        System.out.println(&quot; - /esci\n&quot;);</span>
-<span class="nc" id="L33">        System.out.print(&quot;Se sei &quot;);</span>
-<span class="nc" id="L34">        System.out.print(&quot;\033[0;1m&quot; + &quot;PAROLIERE&quot;);</span>
-<span class="nc" id="L35">        System.out.println(&quot; hai a disposizione i seguenti comandi:&quot;);</span>
-<span class="nc" id="L36">        System.out.println(&quot; - /nuova &lt;parola&gt;&quot;);</span>
-<span class="nc" id="L37">        System.out.println(&quot; - /mostra&quot;);</span>
-<span class="nc" id="L38">    }</span>
+<span class="fc" id="L26">        System.out.print(&quot;Se sei &quot;);</span>
+<span class="fc" id="L27">        System.out.print(&quot;\033[0;1m&quot; + &quot;GIOCATORE&quot;);</span>
+<span class="fc" id="L28">        System.out.println(&quot; hai a disposizione i seguenti comandi:&quot;);</span>
+<span class="fc" id="L29">        System.out.println(&quot; - /help&quot;);</span>
+<span class="fc" id="L30">        System.out.println(&quot; - /gioca&quot;);</span>
+<span class="fc" id="L31">        System.out.println(&quot; - /abbandona&quot;);</span>
+<span class="fc" id="L32">        System.out.println(&quot; - /esci&quot;);</span>
+<span class="fc" id="L33">        System.out.print(&quot;Se sei &quot;);</span>
+<span class="fc" id="L34">        System.out.print(&quot;\033[0;1m&quot; + &quot;PAROLIERE&quot;);</span>
+<span class="fc" id="L35">        System.out.println(&quot; hai a disposizione i seguenti comandi:&quot;);</span>
+<span class="fc" id="L36">        System.out.println(&quot; - /nuova &lt;parola&gt;&quot;);</span>
+<span class="fc" id="L37">        System.out.println(&quot; - /mostra&quot;);</span>
+<span class="fc" id="L38">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

@@ -1,20 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <checkstyle version="10.1">
-<file name="C:\Users\nisci\progetto2122-allen\src\test\java\it\uniba\app\AppTest.java">
+<file name="C:\Users\aless\progetto2122-allen\src\test\java\it\uniba\app\AppTest.java">
 </file>
-<file name="C:\Users\nisci\progetto2122-allen\src\test\java\it\uniba\app\ControllerTest.java">
-<error line="23" column="13" severity="error" message="&apos;6&apos; is a magic number." source="com.puppycrawl.tools.checkstyle.checks.coding.MagicNumberCheck"/>
-<error line="32" column="13" severity="error" message="&apos;5&apos; is a magic number." source="com.puppycrawl.tools.checkstyle.checks.coding.MagicNumberCheck"/>
-<error line="121" column="13" severity="error" message="&apos;3&apos; is a magic number." source="com.puppycrawl.tools.checkstyle.checks.coding.MagicNumberCheck"/>
-<error line="195" column="24" severity="error" message="&apos;6&apos; is a magic number." source="com.puppycrawl.tools.checkstyle.checks.coding.MagicNumberCheck"/>
-<error line="195" column="27" severity="error" message="&apos;5&apos; is a magic number." source="com.puppycrawl.tools.checkstyle.checks.coding.MagicNumberCheck"/>
+<file name="C:\Users\aless\progetto2122-allen\src\test\java\it\uniba\app\ControllerTest.java">
+<error line="87" column="13" severity="error" message="&apos;6&apos; is a magic number." source="com.puppycrawl.tools.checkstyle.checks.coding.MagicNumberCheck"/>
+<error line="96" column="13" severity="error" message="&apos;5&apos; is a magic number." source="com.puppycrawl.tools.checkstyle.checks.coding.MagicNumberCheck"/>
+<error line="320" column="13" severity="error" message="&apos;3&apos; is a magic number." source="com.puppycrawl.tools.checkstyle.checks.coding.MagicNumberCheck"/>
 </file>
-<file name="C:\Users\nisci\progetto2122-allen\src\test\java\it\uniba\app\GiocatoreTest.java">
+<file name="C:\Users\aless\progetto2122-allen\src\test\java\it\uniba\app\GiocatoreTest.java">
 <error line="15" column="24" severity="error" message="&apos;6&apos; is a magic number." source="com.puppycrawl.tools.checkstyle.checks.coding.MagicNumberCheck"/>
 <error line="17" column="13" severity="error" message="&apos;6&apos; is a magic number." source="com.puppycrawl.tools.checkstyle.checks.coding.MagicNumberCheck"/>
 </file>
-<file name="C:\Users\nisci\progetto2122-allen\src\test\java\it\uniba\app\ParoliereTest.java">
+<file name="C:\Users\aless\progetto2122-allen\src\test\java\it\uniba\app\ParoliereTest.java">
 </file>
-<file name="C:\Users\nisci\progetto2122-allen\src\test\java\it\uniba\app\package-info.java">
+<file name="C:\Users\aless\progetto2122-allen\src\test\java\it\uniba\app\package-info.java">
 </file>
 </checkstyle>

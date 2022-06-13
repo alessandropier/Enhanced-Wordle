@@ -9,11 +9,11 @@ import java.nio.charset.StandardCharsets;
  * è stata progettata con l'obiettivo di semplificare
  * le operazioni di input delle stringhe,
  * affinchè la stringa rispetti i criteri definiti. */
-public class MyInput {
+public final class MyInput {
 
     /**Costruttore. */
-<span class="nc" id="L15">    protected MyInput() {</span>
-<span class="nc" id="L16">    }</span>
+    private MyInput() {
+    }
 
     /**
      * Permette di leggere stringhe in input da tastiera.
@@ -21,22 +21,22 @@ public class MyInput {
      * @return Stringa letta in input.
      */
     public static String leggiStringa(final String msg) {
-<span class="nc" id="L24">        BufferedReader tastiera = new BufferedReader(</span>
+<span class="fc" id="L24">        BufferedReader tastiera = new BufferedReader(</span>
                                     new InputStreamReader(
                                         System.in, StandardCharsets.UTF_8));
         boolean err;
-<span class="nc" id="L28">        String aux = null;</span>
+<span class="fc" id="L28">        String aux = null;</span>
         do {
-<span class="nc" id="L30">            err = false;</span>
-<span class="nc" id="L31">            System.out.print(msg + &quot;: &quot;);</span>
+<span class="fc" id="L30">            err = false;</span>
+<span class="fc" id="L31">            System.out.print(msg + &quot;: &quot;);</span>
             try {
-<span class="nc" id="L33">                aux = tastiera.readLine();</span>
+<span class="fc" id="L33">                aux = tastiera.readLine();</span>
 <span class="nc" id="L34">            } catch (Exception e) {</span>
 <span class="nc" id="L35">                err = true;</span>
 <span class="nc" id="L36">                System.out.println(&quot;Errore dell'input dei dati&quot;);</span>
-<span class="nc" id="L37">            }</span>
-<span class="nc bnc" id="L38" title="All 2 branches missed.">        } while (err);</span>
-<span class="nc" id="L39">        return aux;</span>
+<span class="fc" id="L37">            }</span>
+<span class="pc bpc" id="L38" title="1 of 2 branches missed.">        } while (err);</span>
+<span class="fc" id="L39">        return aux;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>
