@@ -1,2 +1,0 @@
-C:\Users\aless\progetto2122-allen\build\classes\java\test\it\uniba\app\AppTest.class
-C:\Users\aless\progetto2122-allen\build\classes\java\test\it\uniba\app\ControllerTest.class

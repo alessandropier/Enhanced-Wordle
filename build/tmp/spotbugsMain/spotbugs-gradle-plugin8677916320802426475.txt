@@ -1,7 +1,0 @@
-C:\Users\Saverio\progetto2122-allen\build\classes\java\main\it\uniba\app\App.class
-C:\Users\Saverio\progetto2122-allen\build\classes\java\main\it\uniba\app\Controller.class
-C:\Users\Saverio\progetto2122-allen\build\classes\java\main\it\uniba\app\Giocatore.class
-C:\Users\Saverio\progetto2122-allen\build\classes\java\main\it\uniba\app\Help.class
-C:\Users\Saverio\progetto2122-allen\build\classes\java\main\it\uniba\app\Matrice.class
-C:\Users\Saverio\progetto2122-allen\build\classes\java\main\it\uniba\app\MyInput.class
-C:\Users\Saverio\progetto2122-allen\build\classes\java\main\it\uniba\app\Paroliere.class
