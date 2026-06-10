@@ -13,7 +13,7 @@ public class Matrice {
     /**Colore background verde. */
     private static final String ANSI_GREEN_BACKGROUND = "\u001B[42m";
     /**Colore background giallo. */
-    private static final String ANSI_YELLOW_BACKGROUND = "\u001B[43m";
+    private static final String ANSI_YELLOW_BACKGROUND = "\u001B[103m";
     /**Colore background grigio. */
     private static final String ANSI_GRAY_BACKGROUND = "\033[97;107m";
     /**Colore background nero. */

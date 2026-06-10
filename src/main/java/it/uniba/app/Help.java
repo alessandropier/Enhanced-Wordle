@@ -6,6 +6,10 @@ package it.uniba.app;
 
 public final class Help {
 
+    // Costanti per rendere il codice più pulito (puoi metterle in cima alla classe)
+    final static String ANSI_RESET = "\u001B[0m";
+    final static String ANSI_BOLD = "\u001B[1m";
+
     /**Costruttore. */
     private Help() {
     }
@@ -23,17 +27,20 @@ public final class Help {
         System.out.print("- di grigio se la lettera non");
         System.out.println(" è nella parola segreta.");
 
-        System.out.print("Se sei ");
-        System.out.print("\033[0;1m" + "GIOCATORE");
+        System.out.print("\nIl ");
+        System.out.print(ANSI_BOLD + "GIOCATORE" + ANSI_RESET);
         System.out.println(" hai a disposizione i seguenti comandi:");
         System.out.println(" - /help");
         System.out.println(" - /gioca");
         System.out.println(" - /abbandona");
         System.out.println(" - /esci");
-        System.out.print("Se sei ");
-        System.out.print("\033[0;1m" + "PAROLIERE");
+
+        System.out.print("\nIl ");
+        System.out.print(ANSI_BOLD + "PAROLIERE" + ANSI_RESET);
         System.out.println(" hai a disposizione i seguenti comandi:");
         System.out.println(" - /nuova <parola>");
         System.out.println(" - /mostra");
+
+        System.out.println("\u001B[31m" + ANSI_BOLD + "\nnota: prima di iniziare la partita è necessario impostare una parola" + "\u001B[0m" + ANSI_RESET);
     }
 }

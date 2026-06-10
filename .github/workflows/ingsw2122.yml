@@ -1,65 +1,39 @@
-name: CI/CD
+name: Build and Publish Release
 
 on:
   push:
-    branches:
-      - master
+    tags:
+      - 'v*'
 
 jobs:
-
-  # ==========
-  # GRADLE job
-  # ==========
-
-  gradleTasksAndDockerPush:
-
+  build-and-release:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
 
     steps:
+    - name: Checkout del codice
+      uses: actions/checkout@v4
 
-      # Check-out the repo under $GITHUB_WORKSPACE, so this workflow can access it.
-    - name: Checkout repository
-      uses: actions/checkout@v2
-
-      # Set up JDK
-    - name: Set up JDK 17
-      uses: actions/setup-java@v1
+    - name: Configura Java JDK 17
+      uses: actions/setup-java@v4
       with:
-        java-version: 17
+        java-version: '17'
+        distribution: 'temurin'
+        cache: 'gradle'
 
-    - name: Grant execute permission for gradlew
-      run: chmod +x gradlew
+    - name: Permessi di esecuzione per Gradle
+      run: chmod +x ./gradlew
 
-      # Gradle build task
-    - name: Invoke gradle task - BUILD
-      run: ./gradlew build
+    - name: Esegui Test (JUnit & JaCoCo) e Compila Progetto
+      run: ./gradlew build -x checkstyleMain -x checkstyleTest
 
-    - name: Coveralls
-      run: |
-        export COVERALLS_REPO_TOKEN="${{ secrets.COVERALLS_REPO_TOKEN }}"
-        ./gradlew jacocoTestReport coveralls
+    - name: Genera il report di copertura JaCoCo
+      run: ./gradlew jacocoTestReport
 
-
-    # ==========
-    # DOCKER job
-    # ==========
-
-      # Build Docker image
-    - name: Build image
-      run: docker image build . --file Dockerfile --tag image --label "org.opencontainers.image.source=https://github.com/${{ github.repository }}"
-
-      # Log into registry (DockerHub)
-    - name: Log into registry
-      run: echo "${{ secrets.GH_ACCESS_TOKEN }}" | docker login ghcr.io -u ${{ secrets.GH_USERNAME }} --password-stdin
-
-      # Build Docker image and push it to GitHub Packages
-    - name: Push image
-      run: |
-        TEAM_NAME="$(echo $GITHUB_REPOSITORY | cut -d'/' -f 2 | cut -d'-' -f 2)"
-        IMAGE_ID=ghcr.io/${{ github.repository_owner }}/wordle-${TEAM_NAME}
-
-        # Convert IMAGE_ID to lowercase (repository name must be lowercase)
-        IMAGE_ID=$(echo "$IMAGE_ID" | tr "[:upper:]" "[:lower:]")
-
-        docker tag image $IMAGE_ID:latest
-        docker push $IMAGE_ID:latest
+    - name: Crea la Release e carica il file .jar Eseguibile
+      uses: softprops/action-gh-release@v2
+      with:
+        files: build/libs/*-all.jar
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

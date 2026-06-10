@@ -151,13 +151,15 @@ public final class Controller {
                  + (g.getTentativi() + 1) + " tentativi");
                 m.setTentativi(g.getTentativi(), s);
                 m.impostaColore(new ArrayList<Integer>(
-                    Arrays.asList(1, 1, 1, 1, 1)), g.getTentativi());
-
+                    Arrays.asList(1, 1, 1, 1, 1)), g.getTentativi());                
+                
                 m.stampaMatrice(MAXTENTATIVI, NUMCARATTERI);
                 p.setParolaSegreta(null);
                 g.setTentativi(0);
                 m.azzera(NUMCARATTERI);
                 flagGioca = false;
+
+                System.out.println("\u001B[32m" + "Complimenti! Hai indovinato la parola!" + "\u001B[0m");
             } else if (!flagCorrect && !flagLength && flagGioca) {
                 String parolaGiusta = p.getParolaSegreta();
                 ArrayList<Integer> esito = new ArrayList<>(
@@ -272,6 +274,7 @@ public final class Controller {
                 String risposta = prova.toUpperCase();
 
                 if (risposta.equals("SI")) {
+                    System.out.println("La parola segreta era: " + "\u001B[1m" + "\u001B[31m" + p.getParolaSegreta() + "\n" + "\u001B[0m" + "\u001B[0m");
                     p.setParolaSegreta(null);
                     g.setTentativi(0);
                     m.azzera(NUMCARATTERI);

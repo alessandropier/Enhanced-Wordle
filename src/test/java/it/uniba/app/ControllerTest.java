@@ -15,7 +15,6 @@ import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.io.PrintStream;
 import java.io.UnsupportedEncodingException;
-import java.nio.charset.StandardCharsets;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 /**
@@ -68,8 +67,12 @@ public class ControllerTest {
     /**Metodo setUpStreams.*/
     @BeforeEach
     public void setUpStreams() {
-            System.setOut(new PrintStream(outContent,
-            true, StandardCharsets.UTF_8));
+        this.outContent.reset(); 
+        try {
+            System.setOut(new PrintStream(this.outContent, true, "UTF-8"));
+        } catch (java.io.UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
     }
 
     /**Metodo restoreStreams.*/
