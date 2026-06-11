@@ -4,6 +4,9 @@
 # Cartella build
 build/
 
+# Cartella bat n sh files
+bat n sh files/
+
 ### Eclipse ###
 .metadata
 bin/
