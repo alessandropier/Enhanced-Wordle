@@ -53,7 +53,7 @@ public class ControllerTest {
      * Value = aereo.
     */
     private static final String RIGAPIENA =
-    "[\u001B[43m\u001B[30mA\u001B[40m\u001B[0m|"
+    "[\u001B[103m\u001B[30mA\u001B[40m\u001B[0m|"
     + "\033[97;107m\u001B[30mE\u001B[40m\u001B[0m|"
     + "\033[97;107m\u001B[30mR\u001B[40m\u001B[0m|"
     + "\033[97;107m\u001B[30mE\u001B[40m\u001B[0m|"
@@ -410,8 +410,8 @@ public class ControllerTest {
         + RIGAPIENA + RIGAPIENA + RIGAPIENA + RIGAPIENA + RIGAVUOTA + RIGAVUOTA
         + RIGAPIENA + RIGAPIENA + RIGAPIENA + RIGAPIENA + RIGAPIENA + RIGAVUOTA
         + RIGAPIENA + RIGAPIENA + RIGAPIENA + RIGAPIENA + RIGAPIENA + RIGAPIENA
-        + "Numero massimo di tentativi raggiunto."
-        + " Avvia una nuova partita.\n" + "La parola segreta è PALLA.\n"
+        + "Numero massimo di tentativi raggiunto. Avvia una nuova partita.\n"
+        + "La parola segreta è PALLA.\n"
         + "Digitare '/gioca' per iniziare una partita.\n";
 
         try {
@@ -524,8 +524,12 @@ public class ControllerTest {
         System.setIn(in);
 
         Controller.abbandona(p, g, m);
-        String expectedOutput = "OK!\n" + MATRICEVUOTA
-        + "Abbandonare la partita?: " + "Partita abbandonata con successo.\n";
+        String expectedOutput = "OK!\n"
+        + MATRICEVUOTA
+        + "Abbandonare la partita?: "
+        + "La parola segreta era: " 
+        + "\u001B[1m\u001B[31mPALLA\n\u001B[0m\u001B[0m\n"
+        + "Partita abbandonata con successo.\n";
 
         assertEquals(expectedOutput,
             outContent.toString("UTF-8").replaceAll("\r", ""));
@@ -642,18 +646,21 @@ public class ControllerTest {
         + " parola segreta ma nel posto sbagliato;\n"
         + "- di grigio se la lettera non"
         + " è nella parola segreta.\n"
-        + "Se sei "
-        + "\033[0;1m" + "GIOCATORE"
-        + " hai a disposizione i seguenti comandi:\n"
+        + "\nIl "
+        + "\u001B[1m" + "GIOCATORE" + "\u001B[0m"
+        + " ha a disposizione i seguenti comandi:\n"
         + " - /help\n"
         + " - /gioca\n"
         + " - /abbandona\n"
         + " - /esci\n"
-        + "Se sei "
-        + "\033[0;1m" + "PAROLIERE"
-        + " hai a disposizione i seguenti comandi:\n"
+        + "\nIl "
+        + "\u001B[1m" + "PAROLIERE" + "\u001B[0m"
+        + " ha a disposizione i seguenti comandi:\n"
         + " - /nuova <parola>\n"
-        + " - /mostra\n";
+        + " - /mostra\n"
+        + "\u001B[31m" + "\u001B[1m" 
+        + "\nnota: prima di iniziare la partita è necessario impostare una parola"
+        + "\u001B[0m" + "\u001B[0m\n";
 
         assertEquals(expectedOutput,
             outContent.toString("UTF-8").replaceAll("\r", ""));

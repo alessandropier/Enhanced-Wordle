@@ -29,7 +29,7 @@ public final class Help {
 
         System.out.print("\nIl ");
         System.out.print(ANSI_BOLD + "GIOCATORE" + ANSI_RESET);
-        System.out.println(" hai a disposizione i seguenti comandi:");
+        System.out.println(" ha a disposizione i seguenti comandi:");
         System.out.println(" - /help");
         System.out.println(" - /gioca");
         System.out.println(" - /abbandona");
@@ -37,7 +37,7 @@ public final class Help {
 
         System.out.print("\nIl ");
         System.out.print(ANSI_BOLD + "PAROLIERE" + ANSI_RESET);
-        System.out.println(" hai a disposizione i seguenti comandi:");
+        System.out.println(" ha a disposizione i seguenti comandi:");
         System.out.println(" - /nuova <parola>");
         System.out.println(" - /mostra");
 
