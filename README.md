@@ -2,7 +2,9 @@
 [![Open in Visual Studio Code](https://classroom.github.com/assets/open-in-vscode-f059dc9a6f8d3a56e377f745f24479a46679e63a5d9fe6f495e02850cd0d8118.svg)](https://classroom.github.com/online_ide?assignment_repo_id=7362941&assignment_repo_type=AssignmentRepo)
 # Wordle [![Build and Publish Release](https://github.com/alessandropier/Wordle/actions/workflows/ingsw2122.yml/badge.svg)](https://github.com/alessandropier/Wordle/actions/workflows/ingsw2122.yml) [![Coverage Status](https://coveralls.io/repos/github/alessandropier/Wordle/badge.svg?branch=v1.0)](https://coveralls.io/github/alessandropier/Wordle?branch=v1.0)
 
-### Esecuzione del Gioco
+Wordle è un'implementazione del celebre gioco di indovinelli basata interamente su linea di comando (CLI).
+
+## Esecuzione del Gioco
 
 Il gioco è distribuito come file `.jar` eseguibile. Per avviare il Wordle, assicurati di avere installato **Java (JRE/JDK 11 o superiore)**.
 
@@ -18,7 +20,7 @@ Il gioco è distribuito come file `.jar` eseguibile. Per avviare il Wordle, assi
    `chmod +x avvia_wordle.sh`
 4. Avvia il gioco con: `./avvia_wordle.sh`
 
-### Struttura della Repository
+## Struttura della Repository
 
 La struttura della repository si presenta nel seguente modo:
 ```
