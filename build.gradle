@@ -70,6 +70,20 @@ spotbugs {
 *   JaCoCo
 */
 jacocoTestReport {
+    // Definiamo quali classi escludere dal testing
+    def fileFilter = [
+        '**/App.class', // Esclude la classe App
+        '**/App$*.class' // Esclude eventuali classi interne di App
+
+        // Escludo App perché il main è difficilmente testabile e 
+        // andrebbe solo a ridurre la percentuale di coverage senza senso
+    ]
+
+    // Applichiamo il filtro alle classi compilate
+    classDirectories.setFrom(files(classDirectories.files.collect {
+        fileTree(dir: it, exclude: fileFilter)
+    }))
+
     // Show code coverage results
     group = "Reporting"
     description = "Generate Jacoco coverage reports after running tests."
