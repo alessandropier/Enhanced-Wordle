@@ -1,9 +1,28 @@
 
 [![Open in Visual Studio Code](https://classroom.github.com/assets/open-in-vscode-f059dc9a6f8d3a56e377f745f24479a46679e63a5d9fe6f495e02850cd0d8118.svg)](https://classroom.github.com/online_ide?assignment_repo_id=7362941&assignment_repo_type=AssignmentRepo)
-# Wordle [![CI/CD](https://github.com/softeng2122-inf-uniba/progetto2122-allen/actions/workflows/ingsw2122.yml/badge.svg)](https://github.com/softeng2122-inf-uniba/progetto2122-allen/actions/workflows/ingsw2122.yml) [![Coverage Status](https://coveralls.io/repos/github/softeng2122-inf-uniba/progetto2122-allen/badge.svg?branch=master&t=8D7Qzu)](https://coveralls.io/github/softeng2122-inf-uniba/progetto2122-allen?branch=master)
+# Wordle [![Build and Publish Release](https://github.com/alessandropier/Wordle/actions/workflows/ingsw2122.yml/badge.svg)](https://github.com/alessandropier/Wordle/actions/workflows/ingsw2122.yml) [![Coverage Status](https://coveralls.io/repos/github/softeng2122-inf-uniba/progetto2122-allen/badge.svg?branch=master&t=8D7Qzu)](https://coveralls.io/github/softeng2122-inf-uniba/progetto2122-allen?branch=master)
+
+### Esecuzione del Gioco
+
+Il gioco è distribuito come file `.jar` eseguibile. Per avviare il Wordle, assicurati di avere installato **Java (JRE/JDK 11 o superiore)**.
+
+### Windows
+1. Scarica il file `wordle-all.jar` e `avvia_wordle.bat` dalla sezione [Releases](https://github.com/alessandropier/Wordle/releases).
+2. Posiziona i due file nella stessa cartella.
+3. Fai doppio click su `avvia_gioco.bat`.
+
+### Linux / Mac
+1. Scarica il file `wordle-all.jar` e `avvia_wordle.sh` dalla sezione [Releases](https://github.com/alessandropier/Wordle/releases).
+2. Posiziona i due file nella stessa cartella.
+3. Apri il terminale, posizionati nella cartella e rendi eseguibile lo script con: 
+   `chmod +x avvia_gioco.sh`
+4. Avvia il gioco con: `./avvia_gioco.sh`
+
+### Struttura della Repository
+
 La struttura della repository si presenta nel seguente modo:
 ```
-|-- .github
+|-- .github 
 |    |-- workflows
 |    |      |-- ingsw2122.yml
 |-- build
