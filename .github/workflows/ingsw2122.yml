@@ -30,6 +30,12 @@ jobs:
 
     - name: Genera il report di copertura JaCoCo
       run: ./gradlew jacocoTestReport
+      
+    - name: Invia coverage a Coveralls
+      uses: coverallsapp/github-action@v2
+      with:
+        github-token: ${{ secrets.GITHUB_TOKEN }}
+        path-to-lcov: build/reports/jacoco/test/jacocoTestReport.xml
 
     - name: Crea la Release e carica il file .jar Eseguibile
       uses: softprops/action-gh-release@v2

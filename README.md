@@ -15,8 +15,8 @@ Il gioco è distribuito come file `.jar` eseguibile. Per avviare il Wordle, assi
 1. Scarica il file `wordle-all.jar` e `avvia_wordle.sh` dalla sezione [Releases](https://github.com/alessandropier/Wordle/releases).
 2. Posiziona i due file nella stessa cartella.
 3. Apri il terminale, posizionati nella cartella e rendi eseguibile lo script con: 
-   `chmod +x avvia_gioco.sh`
-4. Avvia il gioco con: `./avvia_gioco.sh`
+   `chmod +x avvia_wordle.sh`
+4. Avvia il gioco con: `./avvia_wordle.sh`
 
 ### Struttura della Repository
 
