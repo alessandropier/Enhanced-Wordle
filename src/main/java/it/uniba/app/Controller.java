@@ -364,13 +364,14 @@ public final class Controller {
                         return;
                     }
 
-                        String linea_letta;
-                        while ((linea_letta = reader.readLine()) != null) {
-                            if (linea_letta.length() == 5) {
-                                words.add(linea_letta);
+                    String linea_letta;
+                    while ((linea_letta = reader.readLine()) != null) {
+                        if (linea_letta.length() == 5) {
+                            words.add(linea_letta);
                         }
-                        }// (to delete)
-                        //System.out.println("🟢 SUCCESSO: Lette " + words.size() + " parole valide!");
+                    }
+                    // (to delete)
+                    //System.out.println("🟢 SUCCESSO: Lette " + words.size() + " parole valide!");
                     } catch (Exception e) {
                         System.err.println("🔴 Errore nella lettura del file parole.txt: " + e.getMessage());
                     }
@@ -384,10 +385,11 @@ public final class Controller {
                 // (to delete) Stampa delle Parole
                 //System.out.println(words);
 
-                // Genero il numero casuale
+                // Generazione numero casuale
                 Random random = new Random();
                 int randomIndex = random.nextInt(words.size());
-                // Prendo la parola corrispondente a quell'indice
+
+                // Prende la parola corrispondente all'indice generato
                 String nuova_parola = words.get(randomIndex);
 
                 // Parola assegnata al paroliere
@@ -396,7 +398,7 @@ public final class Controller {
                 // (to delete) for quick development
                 // System.out.println("La Parola Segreta è: " + p.getParolaSegreta());
 
-                // Perfeziono la parola con il metodo "nuova"
+                // Perfezionamento della parola con il metodo "nuova"
                 nuova(nuova_parola, p);
                 break;
             case "/mostra":
