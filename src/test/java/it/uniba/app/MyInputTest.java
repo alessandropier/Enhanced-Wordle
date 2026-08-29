@@ -57,7 +57,7 @@ public class MyInputTest {
         assertEquals("testo_prova", risultato);
     }
 
-/**
+    /**
      * Testa la gestione dell'eccezione (blocco catch) in MyInput.
      */
     @Test
