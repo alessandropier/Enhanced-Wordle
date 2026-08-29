@@ -6,6 +6,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 
 /**
  * <<Controller>>
@@ -49,11 +52,12 @@ public final class Controller {
     /**Imposta una nuova parola segreta da indovinare.
      * @param nuovaParola parola da impostare come parola segreta
      * @param p paroliere
-     * 
      * NOTA: questo codice serve a controllare che "nuovaParola" sia corretta
      * perché prima veniva inserita dall'utente, ora non più quindi può essere
-     * snellito. Comunque, lo mantengo perché potrei voler inserire la possibilità 
-     * di aggiungere una parola (tramite GUI) ed inserirla nel PROPRIO file .txt
+     * snellito. Comunque, lo mantengo perché potrei 
+     * voler inserire la possibilità
+     * di aggiungere una parola (tramite GUI) ed 
+     * inserirla nel PROPRIO file .txt
      * memorizzato localmente per personalizzare la propria esperienza di gioco
     */
     public static void nuova(String nuovaParola, final Paroliere p) {
@@ -113,7 +117,7 @@ public final class Controller {
             + " Impossibile giocare.");
         } else if (g.getTentativi() == 0) {
             // Reset della matrice
-            m.azzera(5);
+            m.azzera(NUMCARATTERI);
             //Stampa della matrice dei tentativi
             m.stampaMatrice(MAXTENTATIVI, NUMCARATTERI);
 
@@ -166,8 +170,8 @@ public final class Controller {
                  + (g.getTentativi() + 1) + " tentativi");
                 m.setTentativi(g.getTentativi(), s);
                 m.impostaColore(new ArrayList<Integer>(
-                    Arrays.asList(1, 1, 1, 1, 1)), g.getTentativi());                
-                
+                    Arrays.asList(1, 1, 1, 1, 1)), g.getTentativi());
+
                 m.stampaMatrice(MAXTENTATIVI, NUMCARATTERI);
                 p.setParolaSegreta(null);
                 g.setTentativi(0);
@@ -344,27 +348,32 @@ public final class Controller {
      * @param p paroliere
      * @param m matrice
      * */
-    public static void wordle(String s, final Giocatore g,
+    public static void wordle(final String s, final Giocatore g,
      final Paroliere p, final Matrice m) {
         String comando = s.toLowerCase();
         switch (comando) {
             case "/nuova":
                 List<String> words = new ArrayList<>();
-                try {
-                    // Legge tutte le righe direttamente dalla cartella del progetto (senza passare per il ClassLoader)
-                    List<String> allLines = Files.readAllLines(Paths.get("src/main/resources/parole.txt"), StandardCharsets.UTF_8);
+                
+                // Carica il file tramite il ClassLoader per supportare l'esecuzione da file .jar
+                InputStream inputStream = App.class.getClassLoader().getResourceAsStream("parole.txt");
+                try (BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream, StandardCharsets.UTF_8))) {
                     
-                    for (String line : allLines) {
-                        String word = line.trim();
-                        // Controlla che la parola sia valida (esattamente 5 lettere, ignorando eventuali righe vuote)
-                        if (word.length() == 5) {
-                            words.add(word);
+                    if (inputStream == null) {
+                        System.out.println("Errore: file delle parole non trovato nel JAR!");
+                        return;
+                    }
+
+                        String linea_letta;
+                        while ((linea_letta = reader.readLine()) != null) {
+                            if (linea_letta.length() == 5) {
+                                words.add(linea_letta);
                         }
-                    } // (to delete)
-                    System.out.println("🟢 SUCCESSO: Lette " + words.size() + " parole valide!");
-                } catch (Exception e) {
-                    System.err.println("🔴 Errore nella lettura del file parole.txt: " + e.getMessage());
-                }
+                        }// (to delete)
+                        //System.out.println("🟢 SUCCESSO: Lette " + words.size() + " parole valide!");
+                    } catch (Exception e) {
+                        System.err.println("🔴 Errore nella lettura del file parole.txt: " + e.getMessage());
+                    }
 
                 // Controllo di sicurezza: se la lista è vuota, blocchiamo l'esecuzione prima del crash
                 if (words.isEmpty()) {
@@ -373,17 +382,21 @@ public final class Controller {
                 }
 
                 // (to delete) Stampa delle Parole
-                System.out.println(words);
+                //System.out.println(words);
 
                 // Genero il numero casuale
                 Random random = new Random();
                 int randomIndex = random.nextInt(words.size());
+                // Prendo la parola corrispondente a quell'indice
                 String nuova_parola = words.get(randomIndex);
 
+                // Parola assegnata al paroliere
                 p.setParolaSegreta(nuova_parola);
-                
+
                 // (to delete) for quick development
-                System.out.println("La Parola Segreta è: " + p.getParolaSegreta());
+                // System.out.println("La Parola Segreta è: " + p.getParolaSegreta());
+
+                // Perfeziono la parola con il metodo "nuova"
                 nuova(nuova_parola, p);
                 break;
             case "/mostra":

@@ -41,6 +41,8 @@ public final class Help {
         System.out.println(" - /nuova <parola>");
         System.out.println(" - /mostra");
 
-        System.out.println("\u001B[31m" + ANSI_BOLD + "\nnota: prima di iniziare la partita è necessario impostare una parola" + "\u001B[0m" + ANSI_RESET);
+        System.out.println("\u001B[31m" + ANSI_BOLD + "\nnota: prima di " +
+        "iniziare la partita è necessario impostare una parola" + 
+        "\u001B[0m" + ANSI_RESET);
     }
 }

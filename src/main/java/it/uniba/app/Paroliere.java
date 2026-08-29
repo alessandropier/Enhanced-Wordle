@@ -1,7 +1,8 @@
 package it.uniba.app;
 /**
  * <<Entity>>
- * La classe Paroliere gestisce l'entità paroliere occupandosi della parola da indovinare.
+ * La classe Paroliere gestisce l'entità paroliere
+ * occupandosi della parola da indovinare.
  */
 public class Paroliere {
     /** Attributi della classe Paroliere. */

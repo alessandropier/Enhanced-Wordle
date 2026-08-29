@@ -24,14 +24,16 @@ public final class App {
         if (System.getProperty("os.name").toLowerCase().contains("win")) {
             try {
                 // Questa chiamata abilità il processore ANSI integrato in Windows
-                new ProcessBuilder("cmd", "/c", "echo off").inheritIO().start().waitFor();
+                new ProcessBuilder("cmd", "/c", "echo off"
+                ).inheritIO().start().waitFor();
                 // In alternativa, per forzare l'abilitazione:
-                Runtime.getRuntime().exec("reg add HKCU\\Console /v VirtualTerminalLevel /t REG_DWORD /d 1 /f");
+                Runtime.getRuntime().exec(
+                    "reg add HKCU\\Console /v VirtualTerminalLevel /t REG_DWORD /d 1 /f");
             } catch (Exception e) {
                 // Se non va resterà in bianco e nero
             }
         }
-        
+
         System.out.println(new App().getGreeting());
         Help.stampaHelp();
 
