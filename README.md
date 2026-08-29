@@ -4,8 +4,8 @@ Repository per l'implementazione del gioco _Wordle_ tramite Command Line Interfa
 
 Successivamente, ho continuato il progetto per integrare funzionalità aggiuntive come:
 - _Generazione_ automatica e _casuale_ della _parola da indovinare_
-- Possibilità di _aggiungere nuove parole_ (futura)
-- _User Interface_ (in sviluppo)
+- _User Interface_
+- Permettere all'utente di _aggiungere nuove parole_ (futura)
 
 ## Esecuzione del Gioco
 
