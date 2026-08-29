@@ -1,7 +1,8 @@
 package it.uniba.app;
 /**
  * <<Entity>>
- * La classe Paroliere gestisce l'entità paroliere in tutti i suoi aspetti.
+ * La classe Paroliere gestisce l'entità paroliere
+ * occupandosi della parola da indovinare.
  */
 public class Paroliere {
     /** Attributi della classe Paroliere. */
@@ -24,7 +25,7 @@ public class Paroliere {
 
     /**
      * Set parola segreta.
-     * @param p Parola segreta inserita dall'utente.
+     * @param p Parola segreta presa da file.
      */
     public void setParolaSegreta(final String p) {
         parolaSegreta = p;
