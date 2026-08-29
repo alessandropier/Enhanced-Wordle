@@ -31,6 +31,7 @@ public final class App {
                     "reg add HKCU\\Console /v VirtualTerminalLevel /t REG_DWORD /d 1 /f");
             } catch (Exception e) {
                 // Se non va resterà in bianco e nero
+                e.printStackTrace();
             }
         }
 
@@ -44,7 +45,7 @@ public final class App {
 
         do {
             Controller.wordle(
-                MyInput.leggiStringa("Inserisci un comando o un tentativo"),
+                MyInput.leggiStringa("Inserisci un comando o un tentativo: "),
                  g, p, m);
         } while (true);
     }

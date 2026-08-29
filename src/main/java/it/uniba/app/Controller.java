@@ -20,6 +20,9 @@ public final class Controller {
     private static final int NUMCARATTERI = 5;
     /**Indica se è in corso una partita. */
     private static boolean flagGioca = false;
+    /**Variabile per la generazione del numero
+     *  ranom per la parola del Paroliere.*/
+    private static final Random RANDOM = new Random();
 
     /**Costruttore. */
     private Controller() {
@@ -384,8 +387,7 @@ public final class Controller {
                 //System.out.println(words);
 
                 // Generazione numero casuale
-                Random random = new Random();
-                int randomIndex = random.nextInt(words.size());
+                int randomIndex = RANDOM.nextInt(words.size());
 
                 // Prende la parola corrispondente all'indice generato
                 String nuova_parola = words.get(randomIndex);
