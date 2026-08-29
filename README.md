@@ -1,6 +1,6 @@
 # Wordle [![Build and Publish Release](https://github.com/alessandropier/Wordle/actions/workflows/ingsw2122.yml/badge.svg)](https://github.com/alessandropier/Wordle/actions/workflows/ingsw2122.yml) [![Coverage Status](https://coveralls.io/repos/github/alessandropier/Wordle/badge.svg?branch=v1.0)](https://coveralls.io/github/alessandropier/Wordle?branch=v1.0)
 
-Repository per l'implementazione del gioco _Wordle_ tramite Command Line Interface _(CLI)_ realizzata durante il corso di _Ingegneria del Software_ utilizzando il framework _Agile SCRUM_ e utilizzando le _GitHub Actions_ per la _CI/CD_.
+Inizialmente, questa è nata come una repository per l'implementazione del gioco _Wordle_ tramite Command Line Interface _(CLI)_ realizzata durante il corso di _Ingegneria del Software_ utilizzando il framework _Agile SCRUM_ e utilizzando le _GitHub Actions_ per la _CI/CD_.
 
 Successivamente, ho continuato il progetto per integrare funzionalità aggiuntive come:
 - _Generazione_ automatica e _casuale_ della _parola da indovinare_
