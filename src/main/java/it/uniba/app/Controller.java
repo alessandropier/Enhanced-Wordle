@@ -1,6 +1,11 @@
 package it.uniba.app;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
+import java.util.Random;
 
 /**
  * <<Controller>>
@@ -96,12 +101,16 @@ public final class Controller {
      */
     public static void gioca(final Giocatore g,
      final Paroliere p, final Matrice m) {
+        g.setTentativi(0);
         if (p.getParolaSegreta() == null) {
             System.out.println("Parola segreta non impostata."
             + " Impossibile giocare.");
         } else if (g.getTentativi() == 0) {
+            // Reset della matrice
+            m.azzera(5);
             //Stampa della matrice dei tentativi
             m.stampaMatrice(MAXTENTATIVI, NUMCARATTERI);
+
             //FlagGioca=true per indicare che giocatore ha avviato una partita
             flagGioca = true;
         }
@@ -331,22 +340,41 @@ public final class Controller {
      * */
     public static void wordle(String s, final Giocatore g,
      final Paroliere p, final Matrice m) {
-        String comando;
-        String tentativo = null;
-        s = s.toLowerCase();
-        int end = s.indexOf(" ", 0);
-        comando = s;
-        if (end != -1 && s.substring(0, end).equals("/nuova")) {
-            comando = s.substring(0, end);
-            tentativo = s.substring(end + 1);
-        }
+        String comando = s.toLowerCase();
         switch (comando) {
             case "/nuova":
-                if (tentativo != null) {
-                    nuova(tentativo, p);
-                } else {
-                    System.out.println("Inserire una parola per il tentativo.");
+                List<String> words = new ArrayList<>();
+                try {
+                    // Legge tutte le righe direttamente dalla cartella del progetto (senza passare per il ClassLoader)
+                    List<String> allLines = Files.readAllLines(Paths.get("src/main/resources/parole.txt"), StandardCharsets.UTF_8);
+                    
+                    for (String line : allLines) {
+                        String word = line.trim();
+                        // Controlla che la parola sia valida (esattamente 5 lettere, ignorando eventuali righe vuote)
+                        if (word.length() == 5) {
+                            words.add(word);
+                        }
+                    }
+                    System.out.println("🟢 SUCCESSO: Lette " + words.size() + " parole valide!");
+                } catch (Exception e) {
+                    System.err.println("🔴 Errore nella lettura del file parole.txt: " + e.getMessage());
                 }
+
+                // Controllo di sicurezza: se la lista è vuota, blocchiamo l'esecuzione prima del crash
+                if (words.isEmpty()) {
+                    System.err.println("Impossibile continuare: la lista delle parole è vuota!");
+                    return;
+                }
+
+                // Genero il numero casuale in sicurezza
+                Random random = new Random();
+                int randomIndex = random.nextInt(words.size());
+                String nuova_parola = words.get(randomIndex);
+
+                System.out.println("La Parola Segreta è: " + nuova_parola);
+                p.setParolaSegreta(nuova_parola);
+                System.out.println("La Parola Segreta del Paroliere è: " + p.getParolaSegreta());
+                nuova(nuova_parola, p);
                 break;
             case "/mostra":
                 mostra(p);
