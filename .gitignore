@@ -1,9 +1,11 @@
 # Created by https://www.toptal.com/developers/gitignore/api/java,gradle,eclipse,visualstudiocode,intellij,macos,windows
 # Edit at https://www.toptal.com/developers/gitignore?templates=java,gradle,eclipse,visualstudiocode,intellij,macos,windows
 
-# Cartelle build e lib
+# Cartelle inutili
 build/
 lib/
+res/
+drawings/
 
 # Cartella bat n sh files
 bat n sh files/
