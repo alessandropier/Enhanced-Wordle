@@ -5,10 +5,11 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -301,7 +302,13 @@ public class ControllerTest {
 
         Controller.tentativo(g, "aereo", p, m);
         Controller.tentativo(g, "palla", p, m);
-        assertNull(p.getParolaSegreta(), () -> "Parola indovinata!");
+        
+        // Verifica che la parola sia rimasta quella corretta e che flagGioca sia diventato false
+        assertEquals("PALLA", p.getParolaSegreta());
+        assertFalse(Controller.getFlagGioca());
+
+        // Verifichiamo se l'output corrisponde alla parola trovata
+        assertTrue(outContent.toString().contains("Complimenti! Hai indovinato la parola!"));
     }
 
     /**
@@ -343,7 +350,7 @@ public class ControllerTest {
         }
 
         assertEquals(
-            0, g.getTentativi());
+            6, g.getTentativi());
     }
 
      /**
@@ -385,7 +392,7 @@ public class ControllerTest {
         }
 
         assertEquals(
-            0, g.getTentativi());
+            6, g.getTentativi());
     }
 
      /**

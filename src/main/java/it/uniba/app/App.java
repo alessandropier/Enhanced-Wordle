@@ -1,5 +1,9 @@
 package it.uniba.app;
 
+// Librerie per GUI
+import com.formdev.flatlaf.FlatDarkLaf;
+import javax.swing.SwingUtilities;
+
 /**
  * Main class of the application.
  */
@@ -20,7 +24,7 @@ public final class App {
      * @param args command line arguments
      */
     public static void main(final String[] args) {
-        // ABILITA I COLORI ANSI SU WINDOWS (Windows 10/11)
+                // ABILITA I COLORI ANSI SU WINDOWS (Windows 10/11)
         if (System.getProperty("os.name").toLowerCase().contains("win")) {
             try {
                 // Questa chiamata abilità il processore ANSI integrato in Windows
@@ -43,9 +47,18 @@ public final class App {
         Matrice m = new Matrice(Controller.getMaxTentativi(),
                                 Controller.getNumCaratteri());
 
+        // 1. Inizializza FlatLaf prima di tutto
+        FlatDarkLaf.setup();
+
+        // 2. Avvio della GUI in modo sicuro per i thread di Swing
+        SwingUtilities.invokeLater(() -> {
+            WordleFrame finestra = new WordleFrame(g, p, m);
+            finestra.setVisible(true);
+        });
+
         do {
             Controller.wordle(
-                MyInput.leggiStringa("Inserisci un comando o un tentativo: "),
+                MyInput.leggiStringa("Inserisci un comando o un tentativo"),
                  g, p, m);
         } while (true);
     }
