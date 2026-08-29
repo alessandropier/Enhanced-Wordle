@@ -174,9 +174,9 @@ public final class Controller {
                     Arrays.asList(1, 1, 1, 1, 1)), g.getTentativi());
 
                 m.stampaMatrice(MAXTENTATIVI, NUMCARATTERI);
-                p.setParolaSegreta(null);
-                g.setTentativi(0);
-                m.azzera(NUMCARATTERI);
+                //p.setParolaSegreta(null);
+                //g.setTentativi(0);
+                //m.azzera(NUMCARATTERI);
                 flagGioca = false;
 
                 System.out.println("\u001B[32m" + "Complimenti! Hai indovinato la parola!" + "\u001B[0m");
@@ -208,9 +208,9 @@ public final class Controller {
                      + " raggiunto. Avvia una nuova partita.");
                     System.out.println("La parola segreta è "
                      + p.getParolaSegreta() + ".");
-                    p.setParolaSegreta(null);
-                    g.setTentativi(0);
-                    m.azzera(NUMCARATTERI);
+                    //p.setParolaSegreta(null);
+                    //g.setTentativi(0);
+                    //m.azzera(NUMCARATTERI);
                     flagGioca = false;
                 }
             }

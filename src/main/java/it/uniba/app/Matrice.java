@@ -108,4 +108,20 @@ public class Matrice {
             }
         }
     }
+
+    /**
+     * Restituisce la lista dei tentativi inseriti.
+     * @return ArrayList di stringhe contenente i tentativi.
+     */
+    public ArrayList<String> getTentativiList() {
+        return this.tentativi;
+    }
+
+    /**
+     * Restituisce la matrice dei colori ANSI associati.
+     * @return Matrice dei colori.
+     */
+    public ArrayList<ArrayList<String>> getColoriList() {
+        return this.colori;
+    }
 }
