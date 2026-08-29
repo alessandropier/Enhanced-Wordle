@@ -49,6 +49,12 @@ public final class Controller {
     /**Imposta una nuova parola segreta da indovinare.
      * @param nuovaParola parola da impostare come parola segreta
      * @param p paroliere
+     * 
+     * NOTA: questo codice serve a controllare che "nuovaParola" sia corretta
+     * perché prima veniva inserita dall'utente, ora non più quindi può essere
+     * snellito. Comunque, lo mantengo perché potrei voler inserire la possibilità 
+     * di aggiungere una parola (tramite GUI) ed inserirla nel PROPRIO file .txt
+     * memorizzato localmente per personalizzare la propria esperienza di gioco
     */
     public static void nuova(String nuovaParola, final Paroliere p) {
         boolean flagLength = false;
@@ -354,7 +360,7 @@ public final class Controller {
                         if (word.length() == 5) {
                             words.add(word);
                         }
-                    }
+                    } // (to delete)
                     System.out.println("🟢 SUCCESSO: Lette " + words.size() + " parole valide!");
                 } catch (Exception e) {
                     System.err.println("🔴 Errore nella lettura del file parole.txt: " + e.getMessage());
@@ -366,14 +372,18 @@ public final class Controller {
                     return;
                 }
 
-                // Genero il numero casuale in sicurezza
+                // (to delete) Stampa delle Parole
+                System.out.println(words);
+
+                // Genero il numero casuale
                 Random random = new Random();
                 int randomIndex = random.nextInt(words.size());
                 String nuova_parola = words.get(randomIndex);
 
-                System.out.println("La Parola Segreta è: " + nuova_parola);
                 p.setParolaSegreta(nuova_parola);
-                System.out.println("La Parola Segreta del Paroliere è: " + p.getParolaSegreta());
+                
+                // (to delete) for quick development
+                System.out.println("La Parola Segreta è: " + p.getParolaSegreta());
                 nuova(nuova_parola, p);
                 break;
             case "/mostra":

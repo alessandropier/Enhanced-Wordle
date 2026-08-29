@@ -187,6 +187,7 @@ regno
 resto
 ricco
 rosso
+rozzo
 ruota
 salto
 santo
@@ -227,3 +228,4 @@ vista
 volpe
 vuoto
 zaino
+zorro
