@@ -25,11 +25,13 @@ public class WordleFrame extends JFrame {
     private static int COLONNE;
 
     private JLabel[][] celleGrid;
+    private JLabel lblParolaSegreta; // Etichetta per mostrare la parola segreta
     private Map<Character, JButton> tastiVirtuali = new HashMap<>();
 
     private JPanel panelBottoni;
     private JPanel panelGriglia;
     private JPanel panelTastiera;
+    private JPanel panelSud; // Pannello contenitore per etichetta parola e tastiera
     private JButton btnNuovaPartita;
     private JButton btnMostra;
     private JButton btnEsci;
@@ -68,7 +70,7 @@ public class WordleFrame extends JFrame {
         COLONNE = Controller.getNumCaratteri();
 
         setTitle("Wordle Java");
-        setSize(500, 720); 
+        setSize(500, 750); // Leggermente aumentato per fare spazio alla label
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
 
@@ -116,9 +118,18 @@ public class WordleFrame extends JFrame {
         }
         add(panelGriglia, BorderLayout.CENTER);
 
-        // --- 3. TASTIERA VIRTUALE IN BASSO ---
+        // --- 3. LABEL PAROLA SEGRETA E TASTIERA VIRTUALE IN BASSO ---
+        lblParolaSegreta = new JLabel("", JLabel.CENTER);
+        lblParolaSegreta.setFont(new Font("SansSerif", Font.BOLD, 18));
+        lblParolaSegreta.setVisible(false); // Nascosta all'avvio
+        lblParolaSegreta.setBorder(BorderFactory.createEmptyBorder(5, 0, 5, 0));
+
         panelTastiera = creaPannelloTastiera();
-        add(panelTastiera, BorderLayout.SOUTH);
+
+        panelSud = new JPanel(new BorderLayout());
+        panelSud.add(lblParolaSegreta, BorderLayout.NORTH);
+        panelSud.add(panelTastiera, BorderLayout.CENTER);
+        add(panelSud, BorderLayout.SOUTH);
 
         // --- 4. GESTIONE EVENTI DEI BOTTONI ---
         btnNuovaPartita.addActionListener(e -> gestisciNuovaPartita());
@@ -217,8 +228,12 @@ public class WordleFrame extends JFrame {
         panelBottoni.setBackground(coloreSfondo);
         panelGriglia.setBackground(coloreSfondo);
         panelTastiera.setBackground(coloreSfondo);
+        panelSud.setBackground(coloreSfondo);
 
-        // Aggiorna dinamicamente i bordi delle celle della griglia in base al tema selezionato
+        // Aggiorna colore testo label parola segreta in base al tema
+        lblParolaSegreta.setForeground(isNotte ? Color.WHITE : TESTO_BOTTONE_GIORNO);
+
+        // Aggiorna dinamicamente i bordi delle celle della griglia
         for (int i = 0; i < RIGHE; i++) {
             for (int j = 0; j < COLONNE; j++) {
                 celleGrid[i][j].setBorder(BorderFactory.createLineBorder(coloreBordoCella, 2));
@@ -286,7 +301,12 @@ public class WordleFrame extends JFrame {
         String parolaSegreta = paroliere.getParolaSegreta();
         tastieraBloccata = true;
         wasSecretWordShown = true;
-        JOptionPane.showMessageDialog(this, "La parola segreta era: " + parolaSegreta, "Resa", JOptionPane.INFORMATION_MESSAGE);
+        
+        // Mostra la parola nella GUI tra la griglia e la tastiera
+        lblParolaSegreta.setText(parolaSegreta);
+        lblParolaSegreta.setVisible(true);
+
+        // JOptionPane.showMessageDialog(this, "La parola segreta era: " + parolaSegreta, "Resa", JOptionPane.INFORMATION_MESSAGE);
     }
 
     private void gestisciEsci() {
@@ -312,6 +332,10 @@ public class WordleFrame extends JFrame {
         rigaCorrente = 0;
         colonnaCorrente = 0;
         tastieraBloccata = false; 
+
+        // Resetta l'etichetta della parola segreta
+        lblParolaSegreta.setText("");
+        lblParolaSegreta.setVisible(false);
 
         boolean isNotte = tglModalita.isSelected();
         Color coloreBordoCella = isNotte ? BORDO_CELLA_NOTTE : BORDO_CELLA_GIORNO;
@@ -437,7 +461,12 @@ public class WordleFrame extends JFrame {
         } else if (tentativoFatto >= RIGHE - 1) {
             tastieraBloccata = true; 
             wasSecretWordShown = true;
-            JOptionPane.showMessageDialog(this, "Tentativi terminati! La parola era: " + paroliere.getParolaSegreta(), "Game Over", JOptionPane.INFORMATION_MESSAGE);
+            
+            // Mostra la parola nella GUI anche in caso di sconfitta (tentativi esauriti)
+            lblParolaSegreta.setText(paroliere.getParolaSegreta());
+            lblParolaSegreta.setVisible(true);
+
+            JOptionPane.showMessageDialog(this, "Tentativi terminati!", "Game Over", JOptionPane.INFORMATION_MESSAGE);
         } else {
             rigaCorrente++;
             colonnaCorrente = 0;
