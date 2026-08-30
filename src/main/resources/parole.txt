@@ -40,6 +40,7 @@ bruno
 buono
 burro
 cacio
+cagna
 caldo
 calma
 campo
@@ -48,7 +49,6 @@ carne
 carro
 carta
 causa
-celta
 cenno
 certo
 cielo
@@ -132,6 +132,10 @@ lista
 lieve
 madre
 magia
+mallo
+malta
+malto
+mamma
 manca
 mango
 marca
@@ -199,7 +203,6 @@ sogno
 sonno
 sopra
 spada
-speso
 spina
 stare
 stato
@@ -208,6 +211,7 @@ succo
 tempo
 terra
 testa
+testo
 tetto
 tigre
 tocco

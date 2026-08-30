@@ -28,6 +28,7 @@ public class WordleFrame extends JFrame {
     // IMPOSTATO A TRUE: All'avvio la tastiera è bloccata finché non si preme "NUOVA PARTITA"
     private boolean tastieraBloccata = true;
     private boolean hasWon = false;
+    private boolean wasSecretWordShown = false;
 
     private Giocatore giocatore;
     private Paroliere paroliere;
@@ -123,6 +124,7 @@ public class WordleFrame extends JFrame {
         giocatore.setTentativi(0);
         paroliere.setParolaSegreta(null);
         hasWon = false;
+        wasSecretWordShown = false;
         
         Controller.wordle("/nuova", giocatore, paroliere, matrice);
         Controller.wordle("/gioca", giocatore, paroliere, matrice);
@@ -141,6 +143,7 @@ public class WordleFrame extends JFrame {
         Controller.wordle("/mostra", giocatore, paroliere, matrice);
         String parolaSegreta = paroliere.getParolaSegreta();
         tastieraBloccata = true;
+        wasSecretWordShown = true;
         JOptionPane.showMessageDialog(this, "La parola segreta era: " + parolaSegreta, "Resa", JOptionPane.INFORMATION_MESSAGE);
     }
 
@@ -160,7 +163,7 @@ public class WordleFrame extends JFrame {
         if (scelta == JOptionPane.YES_OPTION) {
 
             // Mostro la parola segreta
-            if(paroliere.getParolaSegreta() != null && !hasWon)
+            if(paroliere.getParolaSegreta() != null && !hasWon && !wasSecretWordShown)
                 JOptionPane.showMessageDialog(this, "La parola segreta era: " + paroliere.getParolaSegreta(), "Uscita", JOptionPane.INFORMATION_MESSAGE);
             
             System.exit(0);
@@ -257,6 +260,7 @@ public class WordleFrame extends JFrame {
             JOptionPane.showMessageDialog(this, "Complimenti, hai indovinato la parola!", "Vittoria", JOptionPane.INFORMATION_MESSAGE);
         } else if (tentativoFatto >= RIGHE - 1) {
             tastieraBloccata = true; // Blocca la tastiera
+            wasSecretWordShown = true;
             JOptionPane.showMessageDialog(this, "Tentativi terminati! La parola era: " + paroliere.getParolaSegreta(), "Game Over", JOptionPane.INFORMATION_MESSAGE);
         } else {
             // Avanziamo alla riga successiva
