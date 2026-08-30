@@ -356,7 +356,7 @@ public final class Controller {
             case "/nuova":
                 List<String> words = new ArrayList<>();
                 
-                // Carica il file tramite il ClassLoader per supportare l'esecuzione da file .jar
+                // 1. Carica il file tramite il ClassLoader per supportare l'esecuzione da file .jar
                 InputStream inputStream = App.class.getClassLoader().getResourceAsStream("parole.txt");
                 try (BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream, StandardCharsets.UTF_8))) {
                     
@@ -372,10 +372,33 @@ public final class Controller {
                         }
                     }
                     // (to delete)
-                    //System.out.println("🟢 SUCCESSO: Lette " + words.size() + " parole valide!");
+                    // System.out.println("🟢 SUCCESSO: Lette " + words.size() + " parole valide!");
                     } catch (Exception e) {
                         System.err.println("🔴 Errore nella lettura del file parole.txt: " + e.getMessage());
                     }
+
+                // 2. Carica il file esterno "parole_extra.txt" se esiste nella cartella locale
+                java.io.File extraFile = new java.io.File("parole_extra.txt");
+                if (extraFile.exists()) {
+                    try (BufferedReader reader = new BufferedReader(new InputStreamReader(new java.io.FileInputStream(extraFile), StandardCharsets.UTF_8))) {
+                        String linea_letta;
+                        while ((linea_letta = reader.readLine()) != null) {
+                            linea_letta = linea_letta.trim().toUpperCase();
+                            if (linea_letta.length() == NUMCARATTERI) {
+                                // Evita duplicati se la parola è già presente
+                                if (!words.contains(linea_letta)) {
+                                    words.add(linea_letta);
+                                }
+                            }
+                        }
+                    } catch (Exception e) {
+                        System.err.println("Errore nella lettura del file parole_extra.txt: " + e.getMessage());
+                    }
+                }
+
+                // (to delete) for testing
+                //System.out.println("🟢 SUCCESSO: Lette " + words.size() + " parole valide!");
+                //System.out.println(words);
 
                 // Controllo di sicurezza: se la lista è vuota, blocchiamo l'esecuzione prima del crash
                 if (words.isEmpty()) {
@@ -419,6 +442,88 @@ public final class Controller {
             default:
                 tentativo(g, s, p, m);
                 break;
+        }
+    }
+
+    /**
+     * Controlla se una parola esiste già nel file interno o nel file extra.
+     * @param parola parola da verificare
+     * @return true se esiste, false altrimenti
+     */
+    public static boolean esisteParola(String parola) {
+        if (parola == null) {
+            return false;
+        }
+        parola = parola.trim().toUpperCase();
+        List<String> tutteLeParole = new ArrayList<>();
+
+        // 1. Controlla nel file interno al JAR
+        InputStream inputStream = App.class.getClassLoader().getResourceAsStream("parole.txt");
+        if (inputStream != null) {
+            try (BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream, StandardCharsets.UTF_8))) {
+                String linea;
+                while ((linea = reader.readLine()) != null) {
+                    linea = linea.trim().toUpperCase();
+                    if (linea.length() == NUMCARATTERI) {
+                        tutteLeParole.add(linea);
+                    }
+                }
+            } catch (Exception ignored) {}
+        }
+
+        // 2. Controlla nel file esterno "parole_extra.txt" se esiste
+        java.io.File extraFile = new java.io.File("parole_extra.txt");
+        if (extraFile.exists()) {
+            try (BufferedReader reader = new BufferedReader(new InputStreamReader(new java.io.FileInputStream(extraFile), StandardCharsets.UTF_8))) {
+                String linea;
+                while ((linea = reader.readLine()) != null) {
+                    linea = linea.trim().toUpperCase();
+                    if (linea.length() == NUMCARATTERI) {
+                        tutteLeParole.add(linea);
+                    }
+                }
+            } catch (Exception ignored) {}
+        }
+
+        return tutteLeParole.contains(parola);
+    }
+
+    /**
+     * Aggiunge una parola personalizzata salvandola nel file locale "parole_extra.txt"
+     * solo se non è già presente in nessun dizionario.
+     * @param nuovaParola parola inserita dall'utente
+     * @return true se aggiunta con successo, false se già esiste o non valida
+     */
+    public static boolean aggiungiParolaExtra(String nuovaParola) {
+        if (nuovaParola == null) {
+            return false;
+        }
+        nuovaParola = nuovaParola.trim().toUpperCase();
+
+        // Validazione lunghezza e caratteri
+        if (nuovaParola.length() != NUMCARATTERI) {
+            return false;
+        }
+        for (int i = 0; i < NUMCARATTERI; i++) {
+            if (nuovaParola.charAt(i) < 'A' || nuovaParola.charAt(i) > 'Z') {
+                return false;
+            }
+        }
+
+        // Verifica preliminare di duplicazione su entrambi i file
+        if (esisteParola(nuovaParola)) {
+            return false;
+        }
+
+        // Scrittura in append su "parole_extra.txt" in codifica UTF-8
+        try (java.io.OutputStreamWriter writer = new java.io.OutputStreamWriter(
+                new java.io.FileOutputStream("parole_extra.txt", true), StandardCharsets.UTF_8);
+            java.io.PrintWriter pw = new java.io.PrintWriter(writer)) {
+            pw.println(nuovaParola);
+            return true;
+        } catch (Exception e) {
+            System.err.println("Errore nel salvataggio della parola extra: " + e.getMessage());
+            return false;
         }
     }
 }

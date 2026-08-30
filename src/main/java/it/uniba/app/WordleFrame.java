@@ -36,6 +36,8 @@ public class WordleFrame extends JFrame {
     private JButton btnMostra;
     private JButton btnEsci;
     private JToggleButton tglModalita;
+    private JButton btnAggiungi;
+    private JPanel separatore; // Lineetta separatrice tra bottoni di gioco e di sistema
 
     private int rigaCorrente = 0;
     private int colonnaCorrente = 0;
@@ -70,7 +72,7 @@ public class WordleFrame extends JFrame {
         COLONNE = Controller.getNumCaratteri();
 
         setTitle("Wordle Java");
-        setSize(500, 750); // Leggermente aumentato per fare spazio alla label
+        setSize(580, 870);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
 
@@ -80,21 +82,36 @@ public class WordleFrame extends JFrame {
         panelBottoni = new JPanel(new FlowLayout(FlowLayout.CENTER, 5, 10));
 
         btnNuovaPartita = new JButton("NUOVA");
-        btnMostra = new JButton("MOSTRA");
+        btnMostra = new JButton("ARRENDITI");
         btnEsci = new JButton("ESCI");
-
+        btnAggiungi = new JButton("AGGIUNGI PAROLA");    
+        
         tglModalita = new JToggleButton("Notte");
         tglModalita.setSelected(true);
 
         styleButton(btnNuovaPartita);
         styleButton(btnMostra);
         styleButton(btnEsci);
+        styleButton(btnAggiungi);
         styleButton(tglModalita);
+
+        // Dimensione bottone "Aggiungi"
+        btnAggiungi.setPreferredSize(new Dimension(120, 32));
+
+        // Dimensione bottone (Giorno/Notte)
+        tglModalita.setPreferredSize(new Dimension(55, 32));
 
         panelBottoni.add(btnNuovaPartita);
         panelBottoni.add(btnMostra);
         panelBottoni.add(btnEsci);
+
+        // Separatore visivo tra azioni di gioco e comandi di sistema
+        separatore = new JPanel();
+        separatore.setPreferredSize(new Dimension(2, 32)); // Stessa altezza dei bottoni
+        panelBottoni.add(separatore);
+
         panelBottoni.add(tglModalita);
+        panelBottoni.add(btnAggiungi);
         add(panelBottoni, BorderLayout.NORTH);
 
         // --- 2. GRIGLIA di TENTATIVI ---
@@ -135,6 +152,7 @@ public class WordleFrame extends JFrame {
         btnNuovaPartita.addActionListener(e -> gestisciNuovaPartita());
         btnMostra.addActionListener(e -> gestisciMostraParola());
         btnEsci.addActionListener(e -> gestisciEsci());
+        btnAggiungi.addActionListener(e -> gestisciAggiungiParola());
 
         // Gestione dinamica del cambio tema tramite il Toggle Button
         tglModalita.addActionListener(e -> {
@@ -182,17 +200,17 @@ public class WordleFrame extends JFrame {
     }
 
     private JPanel creaRigaTasti(String[] lettere) {
-        JPanel rigaPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 4, 0));
+        JPanel rigaPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 5, 4));
 
         for (String s : lettere) {
             JButton btn = new JButton(s);
-            btn.setFont(new Font("SansSerif", Font.BOLD, 12));
+            btn.setFont(new Font("SansSerif", Font.BOLD, 15));
             btn.setFocusPainted(false);
 
             if (s.equals("INVIO") || s.equals("⌫")) {
-                btn.setPreferredSize(new Dimension(55, 45));
+                btn.setPreferredSize(new Dimension(75, 55));
             } else {
-                btn.setPreferredSize(new Dimension(38, 45));
+                btn.setPreferredSize(new Dimension(46, 55));
             }
 
             btn.addActionListener(e -> {
@@ -233,6 +251,11 @@ public class WordleFrame extends JFrame {
         // Aggiorna colore testo label parola segreta in base al tema
         lblParolaSegreta.setForeground(isNotte ? Color.WHITE : TESTO_BOTTONE_GIORNO);
 
+        // Aggiorna il colore del separatore in base al tema
+        if (separatore != null) {
+            separatore.setBackground(coloreBordo);
+        }
+
         // Aggiorna dinamicamente i bordi delle celle della griglia
         for (int i = 0; i < RIGHE; i++) {
             for (int j = 0; j < COLONNE; j++) {
@@ -261,7 +284,7 @@ public class WordleFrame extends JFrame {
         }
 
         // Aggiorna i bottoni superiori standard
-        AbstractButton[] bottoniSuperiori = {btnNuovaPartita, btnMostra, btnEsci};
+        AbstractButton[] bottoniSuperiori = {btnNuovaPartita, btnMostra, btnEsci, btnAggiungi};
         for (AbstractButton b : bottoniSuperiori) {
             b.setBackground(coloreBottoniBg);
             b.setForeground(coloreBottoniFg);
@@ -302,11 +325,8 @@ public class WordleFrame extends JFrame {
         tastieraBloccata = true;
         wasSecretWordShown = true;
         
-        // Mostra la parola nella GUI tra la griglia e la tastiera
         lblParolaSegreta.setText(parolaSegreta);
         lblParolaSegreta.setVisible(true);
-
-        // JOptionPane.showMessageDialog(this, "La parola segreta era: " + parolaSegreta, "Resa", JOptionPane.INFORMATION_MESSAGE);
     }
 
     private void gestisciEsci() {
@@ -333,7 +353,6 @@ public class WordleFrame extends JFrame {
         colonnaCorrente = 0;
         tastieraBloccata = false; 
 
-        // Resetta l'etichetta della parola segreta
         lblParolaSegreta.setText("");
         lblParolaSegreta.setVisible(false);
 
@@ -462,7 +481,6 @@ public class WordleFrame extends JFrame {
             tastieraBloccata = true; 
             wasSecretWordShown = true;
             
-            // Mostra la parola nella GUI anche in caso di sconfitta (tentativi esauriti)
             lblParolaSegreta.setText(paroliere.getParolaSegreta());
             lblParolaSegreta.setVisible(true);
 
@@ -471,5 +489,38 @@ public class WordleFrame extends JFrame {
             rigaCorrente++;
             colonnaCorrente = 0;
         }
+    }
+
+    private void gestisciAggiungiParola() {
+        String input = JOptionPane.showInputDialog(
+            this, 
+            "Inserisci una nuova parola di " + COLONNE + " lettere da aggiungere nel sistema:", 
+            "Aggiungi Parola Personalizzata", 
+            JOptionPane.QUESTION_MESSAGE
+        );
+
+        if (input != null && !input.trim().isEmpty()) {
+            String parola = input.trim().toUpperCase();
+
+            if (parola.length() != COLONNE) {
+                JOptionPane.showMessageDialog(this, "La parola deve essere di esattamente " + COLONNE + " lettere!", "Errore", JOptionPane.ERROR_MESSAGE);
+                requestFocusInWindow();
+                return;
+            }
+
+            if (!parola.matches("[A-Z]+")) {
+                JOptionPane.showMessageDialog(this, "La parola deve contenere solo lettere dell'alfabeto!", "Caratteri non validi", JOptionPane.ERROR_MESSAGE);
+                requestFocusInWindow();
+                return;
+            }
+
+            boolean salvata = Controller.aggiungiParolaExtra(parola);
+            if (salvata) {
+                JOptionPane.showMessageDialog(this, "Parola aggiunta con successo!", "Successo", JOptionPane.INFORMATION_MESSAGE);
+            } else {
+                JOptionPane.showMessageDialog(this, "La parola è già presente nel dizionario (interno o extra)!", "Attenzione", JOptionPane.WARNING_MESSAGE);
+            }
+        }
+        requestFocusInWindow();
     }
 }
