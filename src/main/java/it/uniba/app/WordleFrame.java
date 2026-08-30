@@ -1,11 +1,13 @@
 package it.uniba.app;
 
+import javax.swing.AbstractButton;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JOptionPane;
+import javax.swing.JToggleButton;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -21,13 +23,21 @@ public class WordleFrame extends JFrame {
 
     private static int RIGHE;
     private static int COLONNE;
-    
+
     private JLabel[][] celleGrid;
     private Map<Character, JButton> tastiVirtuali = new HashMap<>();
-    
+
+    private JPanel panelBottoni;
+    private JPanel panelGriglia;
+    private JPanel panelTastiera;
+    private JButton btnNuovaPartita;
+    private JButton btnMostra;
+    private JButton btnEsci;
+    private JToggleButton tglModalita;
+
     private int rigaCorrente = 0;
     private int colonnaCorrente = 0;
-    
+
     private boolean tastieraBloccata = true;
     private boolean hasWon = false;
     private boolean wasSecretWordShown = false;
@@ -36,8 +46,18 @@ public class WordleFrame extends JFrame {
     private Paroliere paroliere;
     private Matrice matrice;
 
-    // Sfondo grigio scuro / effetto notte
-    private final Color COLORE_SFONDO = new Color(48, 52, 55);
+    // Palette Notte
+    private final Color SFONDO_NOTTE = new Color(48, 52, 55);
+    private final Color BOTTONE_NOTTE = new Color(65, 70, 75);
+    private final Color BORDO_BOTTONE_NOTTE = new Color(95, 100, 105);
+    private final Color BORDO_CELLA_NOTTE = new Color(70, 75, 80);
+
+    // Palette Giorno
+    private final Color SFONDO_GIORNO = new Color(240, 240, 240);
+    private final Color BOTTONE_GIORNO = Color.WHITE;
+    private final Color TESTO_BOTTONE_GIORNO = new Color(30, 30, 30);
+    private final Color BORDO_BOTTONE_GIORNO = new Color(180, 180, 180);
+    private final Color BORDO_CELLA_GIORNO = new Color(200, 204, 208);
 
     public WordleFrame(Giocatore g, Paroliere p, Matrice m) {
         this.giocatore = g;
@@ -51,35 +71,36 @@ public class WordleFrame extends JFrame {
         setSize(500, 720); 
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
-        
-        // 0 spazi orizzontali e verticali tra i componenti del BorderLayout
+
         setLayout(new BorderLayout(0, 0));
-        getContentPane().setBackground(COLORE_SFONDO);
 
-        // --- 1. PANNELLO SUPERIORE CON I BOTTONI ---
-        JPanel panelBottoni = new JPanel(new FlowLayout(FlowLayout.CENTER, 8, 10));
-        panelBottoni.setBackground(COLORE_SFONDO);
+        // --- 1. PANNELLO SUPERIORE CON I BOTTONI E IL TOGGLE ---
+        panelBottoni = new JPanel(new FlowLayout(FlowLayout.CENTER, 5, 10));
 
-        JButton btnNuovaPartita = new JButton("NUOVA PARTITA");
-        JButton btnMostra = new JButton("MOSTRA PAROLA");
-        JButton btnEsci = new JButton("ESCI");
+        btnNuovaPartita = new JButton("NUOVA");
+        btnMostra = new JButton("MOSTRA");
+        btnEsci = new JButton("ESCI");
+
+        tglModalita = new JToggleButton("Notte");
+        tglModalita.setSelected(true);
 
         styleButton(btnNuovaPartita);
         styleButton(btnMostra);
         styleButton(btnEsci);
+        styleButton(tglModalita);
 
         panelBottoni.add(btnNuovaPartita);
         panelBottoni.add(btnMostra);
         panelBottoni.add(btnEsci);
+        panelBottoni.add(tglModalita);
         add(panelBottoni, BorderLayout.NORTH);
 
         // --- 2. GRIGLIA di TENTATIVI ---
-        JPanel panelGriglia = new JPanel(new GridLayout(RIGHE, COLONNE, 6, 6));
-        panelGriglia.setBackground(COLORE_SFONDO); 
+        panelGriglia = new JPanel(new GridLayout(RIGHE, COLONNE, 6, 6));
         panelGriglia.setBorder(BorderFactory.createEmptyBorder(5, 40, 5, 40));
-        
+
         celleGrid = new JLabel[RIGHE][COLONNE];
-        
+
         for (int i = 0; i < RIGHE; i++) {
             for (int j = 0; j < COLONNE; j++) {
                 JLabel cella = new JLabel("", JLabel.CENTER);
@@ -87,8 +108,8 @@ public class WordleFrame extends JFrame {
                 cella.setOpaque(true);
                 cella.setBackground(Color.WHITE);
                 cella.setForeground(new Color(30, 30, 30));
-                cella.setBorder(BorderFactory.createLineBorder(new Color(70, 75, 80), 2));
-                
+                cella.setBorder(BorderFactory.createLineBorder(BORDO_CELLA_NOTTE, 2));
+
                 celleGrid[i][j] = cella;
                 panelGriglia.add(cella);
             }
@@ -96,13 +117,28 @@ public class WordleFrame extends JFrame {
         add(panelGriglia, BorderLayout.CENTER);
 
         // --- 3. TASTIERA VIRTUALE IN BASSO ---
-        JPanel panelTastiera = creaPannelloTastiera();
+        panelTastiera = creaPannelloTastiera();
         add(panelTastiera, BorderLayout.SOUTH);
 
         // --- 4. GESTIONE EVENTI DEI BOTTONI ---
         btnNuovaPartita.addActionListener(e -> gestisciNuovaPartita());
         btnMostra.addActionListener(e -> gestisciMostraParola());
         btnEsci.addActionListener(e -> gestisciEsci());
+
+        // Gestione dinamica del cambio tema tramite il Toggle Button
+        tglModalita.addActionListener(e -> {
+            if (tglModalita.isSelected()) {
+                tglModalita.setText("Notte");
+                applicaTema(true);
+            } else {
+                tglModalita.setText("Giorno");
+                applicaTema(false);
+            }
+            requestFocusInWindow();
+        });
+
+        // Di base parte in modalità Notte
+        applicaTema(true);
 
         // --- 5. ASCOLTATORE DELLA TASTIERA ---
         addKeyListener(new KeyAdapter() {
@@ -119,34 +155,29 @@ public class WordleFrame extends JFrame {
     }
 
     private JPanel creaPannelloTastiera() {
-        JPanel panelTastiera = new JPanel();
-        panelTastiera.setLayout(new GridLayout(3, 1, 0, 5));
-        panelTastiera.setBorder(BorderFactory.createEmptyBorder(5, 10, 15, 10));
-        panelTastiera.setBackground(COLORE_SFONDO);
+        JPanel panel = new JPanel();
+        panel.setLayout(new GridLayout(3, 1, 0, 5));
+        panel.setBorder(BorderFactory.createEmptyBorder(5, 10, 15, 10));
 
         String[] riga1 = {"Q", "W", "E", "R", "T", "Y", "U", "I", "O", "P"};
         String[] riga2 = {"A", "S", "D", "F", "G", "H", "J", "K", "L"};
         String[] riga3 = {"INVIO", "Z", "X", "C", "V", "B", "N", "M", "⌫"};
 
-        panelTastiera.add(creaRigaTasti(riga1));
-        panelTastiera.add(creaRigaTasti(riga2));
-        panelTastiera.add(creaRigaTasti(riga3));
+        panel.add(creaRigaTasti(riga1));
+        panel.add(creaRigaTasti(riga2));
+        panel.add(creaRigaTasti(riga3));
 
-        return panelTastiera;
+        return panel;
     }
 
     private JPanel creaRigaTasti(String[] lettere) {
         JPanel rigaPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 4, 0));
-        rigaPanel.setBackground(COLORE_SFONDO);
 
         for (String s : lettere) {
             JButton btn = new JButton(s);
             btn.setFont(new Font("SansSerif", Font.BOLD, 12));
             btn.setFocusPainted(false);
-            btn.setBackground(Color.WHITE); 
-            btn.setForeground(new Color(50, 50, 50));
-            btn.setBorder(BorderFactory.createLineBorder(new Color(110, 115, 120), 1));
-            
+
             if (s.equals("INVIO") || s.equals("⌫")) {
                 btn.setPreferredSize(new Dimension(55, 45));
             } else {
@@ -168,14 +199,69 @@ public class WordleFrame extends JFrame {
         return rigaPanel;
     }
 
-    private void styleButton(JButton btn) {
-        btn.setFont(new Font("SansSerif", Font.BOLD, 12));
+    private void styleButton(AbstractButton btn) {
+        btn.setFont(new Font("SansSerif", Font.BOLD, 11));
         btn.setFocusPainted(false);
-        btn.setBackground(Color.WHITE); 
-        btn.setForeground(new Color(50, 50, 50));
-        btn.setBorder(BorderFactory.createLineBorder(new Color(110, 115, 120), 1));
-        btn.setPreferredSize(new Dimension(130, 35));
+        btn.setPreferredSize(new Dimension(100, 32)); 
         btn.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR)); 
+    }
+
+    private void applicaTema(boolean isNotte) {
+        Color coloreSfondo = isNotte ? SFONDO_NOTTE : SFONDO_GIORNO;
+        Color coloreBottoniBg = isNotte ? BOTTONE_NOTTE : BOTTONE_GIORNO;
+        Color coloreBottoniFg = isNotte ? Color.WHITE : TESTO_BOTTONE_GIORNO;
+        Color coloreBordo = isNotte ? BORDO_BOTTONE_NOTTE : BORDO_BOTTONE_GIORNO;
+        Color coloreBordoCella = isNotte ? BORDO_CELLA_NOTTE : BORDO_CELLA_GIORNO;
+
+        getContentPane().setBackground(coloreSfondo);
+        panelBottoni.setBackground(coloreSfondo);
+        panelGriglia.setBackground(coloreSfondo);
+        panelTastiera.setBackground(coloreSfondo);
+
+        // Aggiorna dinamicamente i bordi delle celle della griglia in base al tema selezionato
+        for (int i = 0; i < RIGHE; i++) {
+            for (int j = 0; j < COLONNE; j++) {
+                celleGrid[i][j].setBorder(BorderFactory.createLineBorder(coloreBordoCella, 2));
+            }
+        }
+
+        // Aggiorna la tastiera virtuale
+        for (java.awt.Component comp : panelTastiera.getComponents()) {
+            if (comp instanceof JPanel) {
+                comp.setBackground(coloreSfondo);
+                for (java.awt.Component subComp : ((JPanel) comp).getComponents()) {
+                    if (subComp instanceof JButton) {
+                        JButton btn = (JButton) subComp;
+                        Color bgAttuale = btn.getBackground();
+                        if (!bgAttuale.equals(new Color(106, 170, 100)) && 
+                            !bgAttuale.equals(new Color(201, 180, 88)) && 
+                            !bgAttuale.equals(new Color(120, 124, 126))) {
+                            btn.setBackground(coloreBottoniBg);
+                            btn.setForeground(coloreBottoniFg);
+                            btn.setBorder(BorderFactory.createLineBorder(coloreBordo, 1));
+                        }
+                    }
+                }
+            }
+        }
+
+        // Aggiorna i bottoni superiori standard
+        AbstractButton[] bottoniSuperiori = {btnNuovaPartita, btnMostra, btnEsci};
+        for (AbstractButton b : bottoniSuperiori) {
+            b.setBackground(coloreBottoniBg);
+            b.setForeground(coloreBottoniFg);
+            b.setBorder(BorderFactory.createLineBorder(coloreBordo, 1));
+        }
+
+        // Gestione specifica per il Toggle Button della modalità
+        if (isNotte) {
+            tglModalita.setBackground(new Color(38, 42, 45));
+            tglModalita.setForeground(Color.WHITE);
+        } else {
+            tglModalita.setBackground(coloreBottoniBg);
+            tglModalita.setForeground(coloreBottoniFg);
+        }
+        tglModalita.setBorder(BorderFactory.createLineBorder(coloreBordo, 1));
     }
 
     private void gestisciNuovaPartita() {
@@ -184,7 +270,7 @@ public class WordleFrame extends JFrame {
         paroliere.setParolaSegreta(null);
         hasWon = false;
         wasSecretWordShown = false;
-        
+
         Controller.wordle("/nuova", giocatore, paroliere, matrice);
         Controller.wordle("/gioca", giocatore, paroliere, matrice);
 
@@ -215,7 +301,7 @@ public class WordleFrame extends JFrame {
         if (scelta == JOptionPane.YES_OPTION) {
             if(paroliere.getParolaSegreta() != null && !hasWon && !wasSecretWordShown)
                 JOptionPane.showMessageDialog(this, "La parola segreta era: " + paroliere.getParolaSegreta(), "Uscita", JOptionPane.INFORMATION_MESSAGE);
-            
+
             System.exit(0);
         }
 
@@ -227,17 +313,26 @@ public class WordleFrame extends JFrame {
         colonnaCorrente = 0;
         tastieraBloccata = false; 
 
+        boolean isNotte = tglModalita.isSelected();
+        Color coloreBordoCella = isNotte ? BORDO_CELLA_NOTTE : BORDO_CELLA_GIORNO;
+
         for (int i = 0; i < RIGHE; i++) {
             for (int j = 0; j < COLONNE; j++) {
                 celleGrid[i][j].setText("");
                 celleGrid[i][j].setBackground(Color.WHITE);
                 celleGrid[i][j].setForeground(new Color(30, 30, 30));
+                celleGrid[i][j].setBorder(BorderFactory.createLineBorder(coloreBordoCella, 2));
             }
         }
 
+        Color defaultBg = isNotte ? BOTTONE_NOTTE : BOTTONE_GIORNO;
+        Color defaultFg = isNotte ? Color.WHITE : TESTO_BOTTONE_GIORNO;
+        Color defaultBordo = isNotte ? BORDO_BOTTONE_NOTTE : BORDO_BOTTONE_GIORNO;
+
         for (JButton btn : tastiVirtuali.values()) {
-            btn.setBackground(Color.WHITE);
-            btn.setForeground(new Color(50, 50, 50));
+            btn.setBackground(defaultBg);
+            btn.setForeground(defaultFg);
+            btn.setBorder(BorderFactory.createLineBorder(defaultBordo, 1));
         }
 
         requestFocusInWindow();
@@ -334,7 +429,7 @@ public class WordleFrame extends JFrame {
                 }
             }
         }
-        
+
         if (tutteVerdi) {
             tastieraBloccata = true; 
             hasWon = true;
