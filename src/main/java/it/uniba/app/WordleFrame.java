@@ -18,6 +18,7 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.prefs.Preferences;
 
 public class WordleFrame extends JFrame {
 
@@ -87,7 +88,6 @@ public class WordleFrame extends JFrame {
         btnAggiungi = new JButton("AGGIUNGI PAROLA");    
         
         tglModalita = new JToggleButton("Notte");
-        tglModalita.setSelected(true);
 
         styleButton(btnNuovaPartita);
         styleButton(btnMostra);
@@ -154,9 +154,14 @@ public class WordleFrame extends JFrame {
         btnEsci.addActionListener(e -> gestisciEsci());
         btnAggiungi.addActionListener(e -> gestisciAggiungiParola());
 
-        // Gestione dinamica del cambio tema tramite il Toggle Button
+        // Gestione dinamica del cambio tema tramite il Toggle Button e salvataggio preferenza
         tglModalita.addActionListener(e -> {
-            if (tglModalita.isSelected()) {
+            boolean isNotte = tglModalita.isSelected();
+            
+            Preferences prefs = Preferences.userNodeForPackage(WordleFrame.class);
+            prefs.putBoolean("dark_mode", isNotte);
+
+            if (isNotte) {
                 tglModalita.setText("Notte");
                 applicaTema(true);
             } else {
@@ -166,8 +171,13 @@ public class WordleFrame extends JFrame {
             requestFocusInWindow();
         });
 
-        // Di base parte in modalità Notte
-        applicaTema(true);
+        // Caricamento preferenza tema salvata (default: true / Notte)
+        Preferences prefs = Preferences.userNodeForPackage(WordleFrame.class);
+        boolean savedDarkMode = prefs.getBoolean("dark_mode", true);
+
+        tglModalita.setSelected(savedDarkMode);
+        tglModalita.setText(savedDarkMode ? "Notte" : "Giorno");
+        applicaTema(savedDarkMode);
 
         // --- 5. ASCOLTATORE DELLA TASTIERA ---
         addKeyListener(new KeyAdapter() {
