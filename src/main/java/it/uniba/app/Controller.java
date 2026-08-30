@@ -495,35 +495,58 @@ public final class Controller {
      * @return true se aggiunta con successo, false se già esiste o non valida
      */
     public static boolean aggiungiParolaExtra(String nuovaParola) {
-        if (nuovaParola == null) {
-            return false;
-        }
-        nuovaParola = nuovaParola.trim().toUpperCase();
+    if (nuovaParola == null) {
+        return false;
+    }
+    nuovaParola = nuovaParola.trim().toUpperCase();
 
-        // Validazione lunghezza e caratteri
-        if (nuovaParola.length() != NUMCARATTERI) {
-            return false;
-        }
-        for (int i = 0; i < NUMCARATTERI; i++) {
-            if (nuovaParola.charAt(i) < 'A' || nuovaParola.charAt(i) > 'Z') {
-                return false;
-            }
-        }
-
-        // Verifica preliminare di duplicazione su entrambi i file
-        if (esisteParola(nuovaParola)) {
-            return false;
-        }
-
-        // Scrittura in append su "parole_extra.txt" in codifica UTF-8
-        try (java.io.OutputStreamWriter writer = new java.io.OutputStreamWriter(
-                new java.io.FileOutputStream("parole_extra.txt", true), StandardCharsets.UTF_8);
-            java.io.PrintWriter pw = new java.io.PrintWriter(writer)) {
-            pw.println(nuovaParola);
-            return true;
-        } catch (Exception e) {
-            System.err.println("Errore nel salvataggio della parola extra: " + e.getMessage());
+    // Validazione lunghezza e caratteri
+    if (nuovaParola.length() != NUMCARATTERI) {
+        return false;
+    }
+    for (int i = 0; i < NUMCARATTERI; i++) {
+        if (nuovaParola.charAt(i) < 'A' || nuovaParola.charAt(i) > 'Z') {
             return false;
         }
     }
+
+    // Verifica preliminare di duplicazione su entrambi i file
+    if (esisteParola(nuovaParola)) {
+        return false;
+    }
+
+    java.io.File file = new java.io.File("parole_extra.txt");
+    boolean needsNewline = false;
+
+    // 1. Controlliamo se l'ultimo carattere del file non è un invio
+    if (file.exists() && file.length() > 0) {
+        try (java.io.RandomAccessFile raf = new java.io.RandomAccessFile(file, "r")) {
+            raf.seek(file.length() - 1);
+            int lastByte = raf.read();
+            if (lastByte != '\n' && lastByte != '\r') {
+                needsNewline = true; // Manca l'invio alla fine
+            }
+        } catch (Exception e) {
+            // problema di lettura -> ignoriamo o gestiamo
+        }
+    }
+
+    // 2. Scrittura in append su "parole_extra.txt" in codifica UTF-8
+    try (java.io.OutputStreamWriter writer = new java.io.OutputStreamWriter(
+            new java.io.FileOutputStream(file, true), StandardCharsets.UTF_8);
+         java.io.PrintWriter pw = new java.io.PrintWriter(writer)) {
+        
+        // Se l'utente è entrato nel file per cambiare qualcosa e si è dimenticato
+        // l'invio, me ne occupo io aggiungendolo
+        if (needsNewline) {
+            pw.println();
+        }
+        
+        pw.println(nuovaParola);
+        return true;
+    } catch (Exception e) {
+        System.err.println("Errore nel salvataggio della parola extra: " + e.getMessage());
+        return false;
+    }
+}
 }
