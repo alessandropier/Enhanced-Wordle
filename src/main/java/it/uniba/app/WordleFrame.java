@@ -8,11 +8,14 @@ import javax.swing.JPanel;
 import javax.swing.JOptionPane;
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.util.HashMap;
+import java.util.Map;
 
 public class WordleFrame extends JFrame {
 
@@ -20,12 +23,11 @@ public class WordleFrame extends JFrame {
     private static int COLONNE;
     
     private JLabel[][] celleGrid;
+    private Map<Character, JButton> tastiVirtuali = new HashMap<>();
     
-    // Tengono traccia di dove sta scrivendo l'utente
     private int rigaCorrente = 0;
     private int colonnaCorrente = 0;
     
-    // IMPOSTATO A TRUE: All'avvio la tastiera è bloccata finché non si preme "NUOVA PARTITA"
     private boolean tastieraBloccata = true;
     private boolean hasWon = false;
     private boolean wasSecretWordShown = false;
@@ -33,6 +35,9 @@ public class WordleFrame extends JFrame {
     private Giocatore giocatore;
     private Paroliere paroliere;
     private Matrice matrice;
+
+    // Sfondo grigio scuro / effetto notte
+    private final Color COLORE_SFONDO = new Color(48, 52, 55);
 
     public WordleFrame(Giocatore g, Paroliere p, Matrice m) {
         this.giocatore = g;
@@ -43,14 +48,17 @@ public class WordleFrame extends JFrame {
         COLONNE = Controller.getNumCaratteri();
 
         setTitle("Wordle Java");
-        setSize(460, 620);
+        setSize(500, 720); 
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
-        setLayout(new BorderLayout());
+        
+        // 0 spazi orizzontali e verticali tra i componenti del BorderLayout
+        setLayout(new BorderLayout(0, 0));
+        getContentPane().setBackground(COLORE_SFONDO);
 
         // --- 1. PANNELLO SUPERIORE CON I BOTTONI ---
         JPanel panelBottoni = new JPanel(new FlowLayout(FlowLayout.CENTER, 8, 10));
-        panelBottoni.setBackground(new Color(54, 57, 58));
+        panelBottoni.setBackground(COLORE_SFONDO);
 
         JButton btnNuovaPartita = new JButton("NUOVA PARTITA");
         JButton btnMostra = new JButton("MOSTRA PAROLA");
@@ -67,7 +75,8 @@ public class WordleFrame extends JFrame {
 
         // --- 2. GRIGLIA di TENTATIVI ---
         JPanel panelGriglia = new JPanel(new GridLayout(RIGHE, COLONNE, 6, 6));
-        panelGriglia.setBorder(BorderFactory.createEmptyBorder(10, 20, 20, 20));
+        panelGriglia.setBackground(COLORE_SFONDO); 
+        panelGriglia.setBorder(BorderFactory.createEmptyBorder(5, 40, 5, 40));
         
         celleGrid = new JLabel[RIGHE][COLONNE];
         
@@ -78,7 +87,7 @@ public class WordleFrame extends JFrame {
                 cella.setOpaque(true);
                 cella.setBackground(Color.WHITE);
                 cella.setForeground(new Color(30, 30, 30));
-                cella.setBorder(BorderFactory.createLineBorder(new Color(211, 214, 218), 2));
+                cella.setBorder(BorderFactory.createLineBorder(new Color(70, 75, 80), 2));
                 
                 celleGrid[i][j] = cella;
                 panelGriglia.add(cella);
@@ -86,12 +95,16 @@ public class WordleFrame extends JFrame {
         }
         add(panelGriglia, BorderLayout.CENTER);
 
-        // --- 3. GESTIONE EVENTI DEI BOTTONI ---
+        // --- 3. TASTIERA VIRTUALE IN BASSO ---
+        JPanel panelTastiera = creaPannelloTastiera();
+        add(panelTastiera, BorderLayout.SOUTH);
+
+        // --- 4. GESTIONE EVENTI DEI BOTTONI ---
         btnNuovaPartita.addActionListener(e -> gestisciNuovaPartita());
         btnMostra.addActionListener(e -> gestisciMostraParola());
         btnEsci.addActionListener(e -> gestisciEsci());
 
-        // --- 4. ASCOLTATORE DELLA TASTIERA ---
+        // --- 5. ASCOLTATORE DELLA TASTIERA ---
         addKeyListener(new KeyAdapter() {
             @Override
             public void keyPressed(KeyEvent e) {
@@ -105,20 +118,66 @@ public class WordleFrame extends JFrame {
         requestFocusInWindow();
     }
 
-    private void styleButton(JButton btn) {
-    btn.setFont(new Font("SansSerif", Font.BOLD, 12));
-    btn.setFocusPainted(false);
-    btn.setBackground(new Color(54, 57, 58)); // Grigio scuro moderno
-    btn.setForeground(Color.WHITE);
-    
-    // Effetto "Mano" del Mouse
-    btn.setBorder(BorderFactory.createEmptyBorder(8, 15, 8, 15)); 
-    btn.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR)); 
-}
+    private JPanel creaPannelloTastiera() {
+        JPanel panelTastiera = new JPanel();
+        panelTastiera.setLayout(new GridLayout(3, 1, 0, 5));
+        panelTastiera.setBorder(BorderFactory.createEmptyBorder(5, 10, 15, 10));
+        panelTastiera.setBackground(COLORE_SFONDO);
 
-    /**
-     * Gestisce il click sul bottone "NUOVA PARTITA"
-     */
+        String[] riga1 = {"Q", "W", "E", "R", "T", "Y", "U", "I", "O", "P"};
+        String[] riga2 = {"A", "S", "D", "F", "G", "H", "J", "K", "L"};
+        String[] riga3 = {"INVIO", "Z", "X", "C", "V", "B", "N", "M", "⌫"};
+
+        panelTastiera.add(creaRigaTasti(riga1));
+        panelTastiera.add(creaRigaTasti(riga2));
+        panelTastiera.add(creaRigaTasti(riga3));
+
+        return panelTastiera;
+    }
+
+    private JPanel creaRigaTasti(String[] lettere) {
+        JPanel rigaPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 4, 0));
+        rigaPanel.setBackground(COLORE_SFONDO);
+
+        for (String s : lettere) {
+            JButton btn = new JButton(s);
+            btn.setFont(new Font("SansSerif", Font.BOLD, 12));
+            btn.setFocusPainted(false);
+            btn.setBackground(Color.WHITE); 
+            btn.setForeground(new Color(50, 50, 50));
+            btn.setBorder(BorderFactory.createLineBorder(new Color(110, 115, 120), 1));
+            
+            if (s.equals("INVIO") || s.equals("⌫")) {
+                btn.setPreferredSize(new Dimension(55, 45));
+            } else {
+                btn.setPreferredSize(new Dimension(38, 45));
+            }
+
+            btn.addActionListener(e -> {
+                if (!tastieraBloccata) {
+                    gestisciInputVirtuale(s);
+                }
+            });
+
+            if (s.length() == 1) {
+                tastiVirtuali.put(s.charAt(0), btn);
+            }
+
+            rigaPanel.add(btn);
+        }
+        return rigaPanel;
+    }
+
+    private void styleButton(JButton btn) {
+        btn.setFont(new Font("SansSerif", Font.BOLD, 12));
+        btn.setFocusPainted(false);
+        btn.setBackground(Color.WHITE); 
+        btn.setForeground(new Color(50, 50, 50));
+        btn.setBorder(BorderFactory.createLineBorder(new Color(110, 115, 120), 1));
+        btn.setPreferredSize(new Dimension(130, 35));
+        btn.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR)); 
+    }
+
     private void gestisciNuovaPartita() {
         matrice.azzera(COLONNE);
         giocatore.setTentativi(0);
@@ -133,9 +192,6 @@ public class WordleFrame extends JFrame {
         JOptionPane.showMessageDialog(this, "Nuova partita avviata! Inizia a digitare.", "Nuova Partita", JOptionPane.INFORMATION_MESSAGE);
     }
 
-    /**
-     * Gestisce il click sul bottone "MOSTRA PAROLA"
-     */
     private void gestisciMostraParola() {
         if (tastieraBloccata) {
             return;
@@ -147,9 +203,6 @@ public class WordleFrame extends JFrame {
         JOptionPane.showMessageDialog(this, "La parola segreta era: " + parolaSegreta, "Resa", JOptionPane.INFORMATION_MESSAGE);
     }
 
-    /**
-     * Gestisce il click sul bottone "ESCI" con finestra di dialogo
-     */
     private void gestisciEsci() {
         int scelta = JOptionPane.showConfirmDialog(
             this, 
@@ -159,28 +212,20 @@ public class WordleFrame extends JFrame {
             JOptionPane.QUESTION_MESSAGE
         );
 
-        // Se l'utente clicca su "Si" (YES_OPTION)
         if (scelta == JOptionPane.YES_OPTION) {
-
-            // Mostro la parola segreta
             if(paroliere.getParolaSegreta() != null && !hasWon && !wasSecretWordShown)
                 JOptionPane.showMessageDialog(this, "La parola segreta era: " + paroliere.getParolaSegreta(), "Uscita", JOptionPane.INFORMATION_MESSAGE);
             
             System.exit(0);
         }
-        // Se l'utente clicca su "No", la finestra si chiude da sola e la partita continua
 
-        // Impostiamo nuovamente il focus sulla matrice dei tentativi
         requestFocusInWindow();
     }
 
-    /**
-     * Resetta la griglia grafica e le variabili di stato per una nuova partita
-     */
     private void resettaInterfacciaGrafica() {
         rigaCorrente = 0;
         colonnaCorrente = 0;
-        tastieraBloccata = false; // Sblocca la tastiera
+        tastieraBloccata = false; 
 
         for (int i = 0; i < RIGHE; i++) {
             for (int j = 0; j < COLONNE; j++) {
@@ -189,6 +234,12 @@ public class WordleFrame extends JFrame {
                 celleGrid[i][j].setForeground(new Color(30, 30, 30));
             }
         }
+
+        for (JButton btn : tastiVirtuali.values()) {
+            btn.setBackground(Color.WHITE);
+            btn.setForeground(new Color(50, 50, 50));
+        }
+
         requestFocusInWindow();
     }
 
@@ -199,14 +250,32 @@ public class WordleFrame extends JFrame {
         if (keyCode == KeyEvent.VK_ENTER) {
             inviaTentativo();
         } else if (keyCode == KeyEvent.VK_BACK_SPACE) {
-            if (colonnaCorrente > 0) {
-                colonnaCorrente--;
-                celleGrid[rigaCorrente][colonnaCorrente].setText("");
-            }
+            cancellaLettera();
         } else if (Character.isLetter(keyChar) && colonnaCorrente < COLONNE) {
-            char lettera = Character.toUpperCase(keyChar);
-            celleGrid[rigaCorrente][colonnaCorrente].setText(String.valueOf(lettera));
-            colonnaCorrente++;
+            aggiungiLettera(Character.toUpperCase(keyChar));
+        }
+    }
+
+    private void gestisciInputVirtuale(String comando) {
+        if (comando.equals("INVIO")) {
+            inviaTentativo();
+        } else if (comando.equals("⌫")) {
+            cancellaLettera();
+        } else if (colonnaCorrente < COLONNE) {
+            aggiungiLettera(comando.charAt(0));
+        }
+        requestFocusInWindow();
+    }
+
+    private void aggiungiLettera(char lettera) {
+        celleGrid[rigaCorrente][colonnaCorrente].setText(String.valueOf(lettera));
+        colonnaCorrente++;
+    }
+
+    private void cancellaLettera() {
+        if (colonnaCorrente > 0) {
+            colonnaCorrente--;
+            celleGrid[rigaCorrente][colonnaCorrente].setText("");
         }
     }
 
@@ -222,48 +291,59 @@ public class WordleFrame extends JFrame {
         }
         String parolaInserita = sb.toString();
 
-        // Salviamo il tentativo fatto PRIMA di processarlo perché ci serve 
-        // come indice per i controlli successivi
         int tentativoFatto = giocatore.getTentativi();
-
-        // Eseguiamo il tentativo nel backend
         Controller.tentativo(giocatore, parolaInserita, paroliere, matrice);
 
         boolean tutteVerdi = true;
 
-        // Aggiorniamo la riga corrente con i colori restituiti dalla matrice
         for (int j = 0; j < COLONNE; j++) {
             char lettera = matrice.getTentativiList().get(tentativoFatto).charAt(j);
             celleGrid[tentativoFatto][j].setText(String.valueOf(lettera));
 
             String codiceColoreANSI = matrice.getColoriList().get(tentativoFatto).get(j);
+            Color coloreCella;
+            int prioritaColore = 0; 
 
             if (codiceColoreANSI.equals("\u001B[42m")) { // Verde
-                celleGrid[tentativoFatto][j].setBackground(new Color(106, 170, 100));
-                celleGrid[tentativoFatto][j].setForeground(Color.WHITE);
+                coloreCella = new Color(106, 170, 100);
+                prioritaColore = 3;
             } else {
-                tutteVerdi = false; // Se anche una sola lettera non è verde, non è vittoria piena
+                tutteVerdi = false; 
                 if (codiceColoreANSI.equals("\u001B[103m")) { // Giallo
-                    celleGrid[tentativoFatto][j].setBackground(new Color(201, 180, 88));
-                    celleGrid[tentativoFatto][j].setForeground(Color.WHITE);
+                    coloreCella = new Color(201, 180, 88);
+                    prioritaColore = 2;
                 } else { // Grigio
-                    celleGrid[tentativoFatto][j].setBackground(new Color(120, 124, 126));
-                    celleGrid[tentativoFatto][j].setForeground(Color.WHITE);
+                    coloreCella = new Color(120, 124, 126);
+                    prioritaColore = 1;
+                }
+            }
+
+            celleGrid[tentativoFatto][j].setBackground(coloreCella);
+            celleGrid[tentativoFatto][j].setForeground(Color.WHITE);
+
+            JButton tastoBtn = tastiVirtuali.get(lettera);
+            if (tastoBtn != null) {
+                Color coloreAttuale = tastoBtn.getBackground();
+                boolean aggiorna = true;
+                if (coloreAttuale.equals(new Color(106, 170, 100))) aggiorna = false; 
+                else if (coloreAttuale.equals(new Color(201, 180, 88)) && prioritaColore < 3) aggiorna = false; 
+
+                if (aggiorna) {
+                    tastoBtn.setBackground(coloreCella);
+                    tastoBtn.setForeground(Color.WHITE);
                 }
             }
         }
         
-        // Verifichiamo se la partita è terminata (Vittoria o Game Over sull'ultima riga)
         if (tutteVerdi) {
-            tastieraBloccata = true; // Blocca la tastiera
+            tastieraBloccata = true; 
             hasWon = true;
             JOptionPane.showMessageDialog(this, "Complimenti, hai indovinato la parola!", "Vittoria", JOptionPane.INFORMATION_MESSAGE);
         } else if (tentativoFatto >= RIGHE - 1) {
-            tastieraBloccata = true; // Blocca la tastiera
+            tastieraBloccata = true; 
             wasSecretWordShown = true;
             JOptionPane.showMessageDialog(this, "Tentativi terminati! La parola era: " + paroliere.getParolaSegreta(), "Game Over", JOptionPane.INFORMATION_MESSAGE);
         } else {
-            // Avanziamo alla riga successiva
             rigaCorrente++;
             colonnaCorrente = 0;
         }
