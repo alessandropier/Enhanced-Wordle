@@ -11,12 +11,12 @@ Subsequently, I continued the project to integrate additional features such as:
 
 ## 🕹️ Playing the Game
 
-<!--<div align="center">
+<div align="center">
   <figure>
     <img src="resources/video.gif" width="500" alt="Demo Wordle">
     <figcaption><i>Demo Wordle</i></figcaption>
   </figure>
-</div>--->
+</div>
 
 1. **Main Game Window**
    * **Grid Area**: Displays your guesses attempt by attempt, coloring each letter to show your progress.
@@ -38,7 +38,7 @@ The game is distributed as an executable `.jar` file. To launch Wordle, make sur
 1. Download the `Wordle.jar` file from the [Releases](https://github.com/alessandropier/Wordle/releases) section.
 2. Double-click on the file.
 
-## Resolution issues or window too large?
+## ⚠️ Resolution issues or window too large?
 If the window appears scaled incorrectly on your operating system, you can force the correct display by using the dedicated startup script:
 - **On Windows:** download the `avvia_wordle.bat`, save it in the game folder and double-click on it.
 - **On Linux / macOS:** download the `avvia_wordle.sh`, open the terminal in the game folder and launch the `.sh` script with:
@@ -47,6 +47,11 @@ If the window appears scaled incorrectly on your operating system, you can force
   chmod +x avvia.sh
   ./avvia_wordle.sh
   ```
+
+## Future Developments
+1. Deleting accented letters 
+2. Check if the guess is an Italian word by using a dictionary of all 5-letter Italian words.
+3. Add a light bulb button that provides a hint to the user (only once per game).
 
 ## Repository Structure
 
