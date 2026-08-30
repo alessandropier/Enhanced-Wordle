@@ -1,31 +1,33 @@
-# Wordle [![Build and Publish Release](https://github.com/alessandropier/Wordle/actions/workflows/ingsw2122.yml/badge.svg)](https://github.com/alessandropier/Wordle/actions/workflows/ingsw2122.yml) [![Coverage Status](https://coveralls.io/repos/github/alessandropier/Wordle/badge.svg?branch=v1.0)](https://coveralls.io/github/alessandropier/Wordle?branch=v1.0)
+# Offline UI Personalized Wordle 
+[![Build and Publish Release](https://github.com/alessandropier/Wordle/actions/workflows/ingsw2122.yml/badge.svg)](https://github.com/alessandropier/Wordle/actions/workflows/ingsw2122.yml) [![Coverage Status](https://coveralls.io/repos/github/alessandropier/Wordle/badge.svg?branch=v1.0)](https://coveralls.io/github/alessandropier/Wordle?branch=v1.0)
 
-Inizialmente, questa è nata come una repository per l'implementazione del gioco _Wordle_ tramite Command Line Interface _(CLI)_ realizzata durante il corso di _Ingegneria del Software_ utilizzando il framework _Agile SCRUM_ e utilizzando le _GitHub Actions_ per la _CI/CD_.
+Initially, this started as a repository for the implementation of the _Wordle_ game via Command Line Interface _(CLI)_ created during the _Software Engineering_ course using the _Agile SCRUM_ framework and using _GitHub Actions_ for _CI/CD_.
 
-Successivamente, ho continuato il progetto per integrare funzionalità aggiuntive come:
-- _Generazione_ automatica e _casuale_ della _parola da indovinare_
-- _User Interface_ completa realizzata con _Java Swing_ e _FlatLaf_
-- Permettere all'utente di _aggiungere nuove parole_ (futura)
+Subsequently, I continued the project to integrate additional features such as:
+- **Automatic** and **_random generation_** of the _word to guess_
+- **Complete _User Interface_** built with _Java Swing_ and _FlatLaf_
+- Allowing the user to **_add new words_** by customizing the game experience
 
-## Esecuzione del Gioco
+## 🎮 Playing the Game
+The game is distributed as an executable `.jar` file. To launch Wordle, make sure you have **Java (JRE/JDK 11 or higher)** installed.
 
-Il gioco è distribuito come file `.jar` eseguibile. Per avviare il Wordle, assicurati di avere installato **Java (JRE/JDK 11 o superiore)**.
+### 💻 Windows, Linux and Mac
+1. Download the `Wordle.jar` file from the [Releases](https://github.com/alessandropier/Wordle/releases) section.
+2. Double-click on the file.
 
-### Windows
-1. Scarica il file `wordle-all.jar` e `avvia_wordle.bat` dalla sezione [Releases](https://github.com/alessandropier/Wordle/releases).
-2. Posiziona i due file nella stessa cartella.
-3. Fai doppio click su `avvia_gioco.bat`.
+## Resolution issues or window too large?
+If the window appears scaled incorrectly on your operating system, you can force the correct display by using the dedicated startup script:
+- **On Windows:** download the `avvia_wordle.bat`, save it in the game folder and double-click on it.
+- **On Linux / macOS:** download the `avvia_wordle.sh`, open the terminal in the game folder and launch the `.sh` script with:
 
-### Linux / Mac
-1. Scarica il file `wordle-all.jar` e `avvia_wordle.sh` dalla sezione [Releases](https://github.com/alessandropier/Wordle/releases).
-2. Posiziona i due file nella stessa cartella.
-3. Apri il terminale, posizionati nella cartella e rendi eseguibile lo script con: 
-   `chmod +x avvia_wordle.sh`
-4. Avvia il gioco con: `./avvia_wordle.sh`
+  ```bash
+  chmod +x avvia.sh
+  ./avvia_wordle.sh
+  ```
 
-## Struttura della Repository
+## Repository Structure
 
-La struttura della repository si presenta nel seguente modo:
+The repository structure is as follows:
 ```
 |-- .github 
 |    |-- workflows
@@ -37,7 +39,7 @@ La struttura della repository si presenta nel seguente modo:
 |    |      |-- tests/test
 |–– config
 |    |–– checkstyle
-|–– docs _(doc relativa alla versione v1.0 per l'esame di Ing. Softw.)_
+|–– docs _(documentation related to version v1.0 for the Soft. Eng. exam)_
 |    |–– Assegnazione progetto.md
 |    |–– Guida per lo studente.md
 |    |–– img
@@ -54,18 +56,18 @@ La struttura della repository si presenta nel seguente modo:
 |–– settings.gradle
 ```
 
-Nel seguito si dettagliano i ruoli dei diversi componenti:
+The roles of the various components are detailed below:
 
-- `.github/workflows/ingsw2122.yml`: dettaglia le direttive per assicurare la *continuous integration* attraverso l’uso di GitHub Actions;
-- `config/`: ospita i file di configurazione. L’unica configurazione di base richiesta è quella per il tool checkstyle;
-- `docs/`: ospita la documentazione di progetto, incluse le figure (nella sottocartella `img/`).
-<br>Il file `Report.md` verrà usato per redigere la relazione finale del progetto.
-<br>La cartella raccoglie inoltre:
-    - `Assegnazione progetto.md`: contenente la descrizione dettagliata del progetto assegnato;
-    - `Guida per lo studente.md`: contenente la descrizione di tutti i passi di configurazione necessari per l'attivazione del flusso di lavoro a supporto dello sviluppo del progetto;
-- `gradle/`: ospita il `.jar` relativo al sistema di gestione delle dipendenze *Gradle*.
-- `src`: cartella principale del progetto, in cui scrivere tutto il codice dell’applicazione. In `main/` ci saranno i file sorgente e `test/` conterrà i test di unità previsti.
-- `.gitignore`: specifica tutti i file che devono essere esclusi dal sistema di controllo versione.
-- `build.gradle`: esplicita le direttive e la configurazione di *Gradle*.
-- `gradlew` e `gradlew.bat`: eseguibili di *Gradle*, rispettivamente dedicati a Unix e Windows.
-- `settings.gradle`: file di configurazione di *Gradle*.
+- `.github/workflows/ingsw2122.yml`: details the directives to ensure *continuous integration* through the use of GitHub Actions;
+- `config/`: hosts configuration files. The only basic configuration required is the one for the checkstyle tool;
+- `docs/`: hosts the project documentation, including figures (in the `img/` subfolder).
+<br>The `Report.md` file will be used to draft the final project report.
+<br>The folder also collects:
+    - `Assegnazione progetto.md`: containing the detailed description of the assigned project;
+    - `Guida per lo studente.md`: containing the description of all configuration steps necessary to activate the workflow supporting project development;
+- `gradle/`: hosts the `.jar` related to the *Gradle* dependency management system.
+- `src`: main project folder, where all application code is written. `main/` will contain the source files and `test/` will contain the expected unit tests.
+- `.gitignore`: specifies all files that must be excluded from the version control system.
+- `build.gradle`: outlines the directives and configuration for *Gradle*.
+- `gradlew` and `gradlew.bat`: *Gradle* executables, dedicated to Unix and Windows respectively.
+- `settings.gradle`: *Gradle* configuration file.
