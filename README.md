@@ -4,7 +4,7 @@ Inizialmente, questa è nata come una repository per l'implementazione del gioco
 
 Successivamente, ho continuato il progetto per integrare funzionalità aggiuntive come:
 - _Generazione_ automatica e _casuale_ della _parola da indovinare_
-- _User Interface_ tramite _Java Swing_ e _FlatLaf_
+- _User Interface_ completa realizzata con _Java Swing_ e _FlatLaf_
 - Permettere all'utente di _aggiungere nuove parole_ (futura)
 
 ## Esecuzione del Gioco
