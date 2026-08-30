@@ -1,14 +1,31 @@
-# Offline UI Personalized Wordle 
+# Personalized Wordle Offline
 [![Build and Publish Release](https://github.com/alessandropier/Wordle/actions/workflows/ingsw2122.yml/badge.svg)](https://github.com/alessandropier/Wordle/actions/workflows/ingsw2122.yml) [![Coverage Status](https://coveralls.io/repos/github/alessandropier/Wordle/badge.svg?branch=v1.0)](https://coveralls.io/github/alessandropier/Wordle?branch=v1.0)
 
-Initially, this started as a repository for the implementation of the _Wordle_ game via Command Line Interface _(CLI)_ created during the _Software Engineering_ course using the _Agile SCRUM_ framework and using _GitHub Actions_ for _CI/CD_.
+Initially, this started as a repository for the implementation of the _Wordle_ game _(in Italian)_ via Command Line Interface _(CLI)_ created during the _Software Engineering_ course using the _Agile SCRUM_ framework and using _GitHub Actions_ for _CI/CD_.
 
 Subsequently, I continued the project to integrate additional features such as:
 - **Automatic** and **_random generation_** of the _word to guess_
 - **Complete _User Interface_** built with _Java Swing_ and _FlatLaf_
 - Allowing the user to **_add new words_** by customizing the game experience
 
-## 🎮 Playing the Game
+## 🕹️ Playing the Game
+
+<ADD VIDEO HERE>
+
+1. **Main Game Window**
+   * **Grid Area**: Displays your guesses attempt by attempt, coloring each letter to show your progress.
+   * **Input Field & Submit Button**: Type your 5-letter guess in the text box and click the submit button _(or press Enter)_ to play your turn.
+
+2. **Control Buttons**
+   * **"Nuova" (New Game) Button**: Click this button at any time to start a brand new game with a fresh target word.
+   * **"Abbandona" (Give Up) Button**: Click this if you want to surrender the current match and reveal the hidden word.
+   * **"Esci" (Exit) Button**: Closes and exits the application.
+
+3. **Customization & Themes**
+   * **"Aggiungi parola" (Add Word)**: Click this button to open a dedicated input prompt where you can type and add a new custom word directly to your game dictionary saved locally (`parole_extra.txt`).
+   * **"Notte/Giorno" (Dark/Light Mode)**: Click this toggle button to switch between the dark theme and the light theme of the user interface for a comfortable playing experience.
+
+## 🎮 Starting the Game
 The game is distributed as an executable `.jar` file. To launch Wordle, make sure you have **Java (JRE/JDK 11 or higher)** installed.
 
 ### 💻 Windows, Linux and Mac
