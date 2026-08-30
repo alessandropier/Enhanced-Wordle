@@ -24,7 +24,10 @@ public final class App {
      * @param args command line arguments
      */
     public static void main(final String[] args) {
-                // ABILITA I COLORI ANSI SU WINDOWS (Windows 10/11)
+        // Forza Java a ignorare lo zoom di Windows e mantenere la scala al 100%
+        System.setProperty("sun.java2d.uiScale", "1.0");
+
+        // ABILITA I COLORI ANSI SU WINDOWS (Windows 10/11)
         if (System.getProperty("os.name").toLowerCase().contains("win")) {
             try {
                 // Questa chiamata abilità il processore ANSI integrato in Windows

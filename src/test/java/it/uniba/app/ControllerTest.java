@@ -864,4 +864,42 @@ public class ControllerTest {
         assertEquals(expectedOutput,
             outContent.toString("UTF-8").replaceAll("\r", ""));
     }
+
+    /**
+     * Test per verificare il comportamento di un tentativo con caratteri speciali o spazi.
+     */
+    @Test
+    public void tentativoTestCaratteriSpeciali() {
+        Paroliere p = new Paroliere();
+        Matrice m = new Matrice(Controller.getMaxTentativi(), Controller.getNumCaratteri());
+        Giocatore g = new Giocatore();
+        Controller.nuova("palla", p);
+        Controller.gioca(g, p, m);
+
+        Controller.tentativo(g, "pal!a", p, m);
+        
+        assertTrue(outContent.toString().contains("non valida") || outContent.toString().contains("caratteri alfabetici"));
+    }
+
+    /**
+     * Test per verificare la risposta affermativa ("SI") al comando /abbandona.
+     * @throws UnsupportedEncodingException
+     */
+    @Test
+    public void abbandonaTestConfermaSiMaiuscolo() throws UnsupportedEncodingException {
+        Paroliere p = new Paroliere();
+        Matrice m = new Matrice(Controller.getMaxTentativi(), Controller.getNumCaratteri());
+        Giocatore g = new Giocatore();
+        Controller.nuova("palla", p);
+        Controller.gioca(g, p, m);
+        
+        InputStream sysInBackup = System.in;
+        ByteArrayInputStream in = new ByteArrayInputStream("SI\n".getBytes("UTF-8"));
+        System.setIn(in);
+
+        Controller.abbandona(p, g, m);
+        
+        assertTrue(outContent.toString("UTF-8").contains("Partita abbandonata con successo"));
+        System.setIn(sysInBackup);
+    }
 }
