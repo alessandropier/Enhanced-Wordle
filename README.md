@@ -4,10 +4,10 @@
 Initially, this started as a repository for the implementation of the _Wordle_ game _(in Italian)_ via Command Line Interface _(CLI)_ created during the _Software Engineering_ course using the _Agile SCRUM_ framework and using _GitHub Actions_ for _CI/CD_.
 
 Subsequently, I continued the project to integrate additional features such as:
-- **Automatic** and **_random generation_** of the _word to guess_.
+- **Automatic** and **_random generation_** of the _word to guess_ using a _built in dictionary_.
 - **Complete _User Interface_** built with _Java Swing_ and _FlatLaf_.
 - A **persistent UI theme preference** system that allows users to toggle between _day and night modes_, automatically saving their selection across sessions.
-- A **custom dictionary** feature that enables users to add new words and expand the game's vocabulary.
+- A **custom dictionary** feature that enables users to add new words and expand the game's vocabulary. _(note that if invalid words are manually added to the extra words file, they will be skipped by the system, as well as duplicates.)_
 
 ## 🕹️ Playing the Game
 
@@ -47,7 +47,7 @@ If the window appears scaled incorrectly on your operating system, you can force
   ./avvia_wordle.sh
   ```
 
-## Future Developments
+## Future Developments Ideas
 1. Deleting accented letters 
 2. Check if the guess is an Italian word by using a dictionary of all 5-letter Italian words.
 3. Add a light bulb button that provides a hint to the user (only once per game).
