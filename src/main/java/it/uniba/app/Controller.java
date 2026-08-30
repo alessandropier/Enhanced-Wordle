@@ -384,7 +384,7 @@ public final class Controller {
                         String linea_letta;
                         while ((linea_letta = reader.readLine()) != null) {
                             linea_letta = linea_letta.trim().toUpperCase();
-                            if (linea_letta.length() == NUMCARATTERI) {
+                            if (linea_letta.length() == NUMCARATTERI && linea_letta.matches("[A-Z]+")) {
                                 // Evita duplicati se la parola è già presente
                                 if (!words.contains(linea_letta)) {
                                     words.add(linea_letta);

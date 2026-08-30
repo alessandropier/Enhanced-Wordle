@@ -481,7 +481,13 @@ public class WordleFrame extends JFrame {
         } else if (keyCode == KeyEvent.VK_BACK_SPACE) {
             cancellaLettera();
         } else if (Character.isLetter(keyChar) && colonnaCorrente < COLONNE) {
-            aggiungiLettera(Character.toUpperCase(keyChar));
+            char upperChar = Character.toUpperCase(keyChar);
+        
+            // Controlliamo che il char rientri strettamente tra 'A' e 'Z'
+            // evitiamo le lettere accentate ò, à, è, ù
+            if (upperChar >= 'A' && upperChar <= 'Z') {
+                aggiungiLettera(upperChar);
+            }
         }
     }
 
