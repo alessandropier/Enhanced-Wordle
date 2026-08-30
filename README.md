@@ -48,9 +48,8 @@ If the window appears scaled incorrectly on your operating system, you can force
   ```
 
 ## Future Developments Ideas
-1. Deleting accented letters 
-2. Check if the guess is an Italian word by using a dictionary of all 5-letter Italian words.
-3. Add a light bulb button that provides a hint to the user (only once per game).
+1. Check if the guess is an Italian word by using a dictionary of all 5-letter Italian words.
+2. Add a light bulb button that provides a hint to the user (only once per game).
 
 ## Repository Structure
 
