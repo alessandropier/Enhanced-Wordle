@@ -14,7 +14,6 @@ Subsequently, I continued the project to integrate additional features such as:
 <div align="center">
   <figure>
     <img src="resources/video.gif" width="500" alt="Demo Wordle">
-    <figcaption><i>Demo Wordle</i></figcaption>
   </figure>
 </div>
 
