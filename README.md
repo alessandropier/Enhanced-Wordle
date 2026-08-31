@@ -26,9 +26,10 @@ Subsequently, I continued the project to integrate additional features such as:
    * **"Abbandona" (Give Up) Button**: Click this if you want to surrender the current match and reveal the hidden word.
    * **"Esci" (Exit) Button**: Closes and exits the application.
 
-3. **Customization & Themes**
-   * **"Aggiungi parola" (Add Word)**: Click this button to open a dedicated input prompt where you can type and add a new custom word directly to your game dictionary saved locally (`parole_extra.txt`).
+3. **Customization, Themes & System**
    * **"Notte/Giorno" (Dark/Light Mode)**: Click this toggle button to switch between the dark theme and the light theme of the user interface for a comfortable playing experience.
+   * **"Aggiungi parola" (Add Word)**: Click this button to open a dedicated input prompt where you can type and add a new custom word directly to your game dictionary saved locally (`parole_extra.txt`).
+   * **Aiut (Help)**: Click this button to open a help pop-up to explain the UI and how to play Wordle.
 
 ## 🎮 Starting the Game
 The game is distributed as an executable `.jar` file. To launch Wordle, make sure you have **Java (JRE/JDK 11 or higher)** installed.
@@ -65,7 +66,7 @@ The repository structure is as follows:
 |    |      |-- tests/test
 |–– config
 |    |–– checkstyle
-|–– docs _(documentation related to version v1.0 for the Soft. Eng. exam)_
+|–– docs
 |    |–– Assegnazione progetto.md
 |    |–– Guida per lo studente.md
 |    |–– img
@@ -86,7 +87,7 @@ The roles of the various components are detailed below:
 
 - `.github/workflows/ingsw2122.yml`: details the directives to ensure *continuous integration* through the use of GitHub Actions;
 - `config/`: hosts configuration files. The only basic configuration required is the one for the checkstyle tool;
-- `docs/`: hosts the project documentation, including figures (in the `img/` subfolder).
+- `docs/`: hosts the project documentation, including figures (in the `img/` subfolder). This documentation is only related to the version v1.0 for the Software Engineering exam.
 <br>The `Report.md` file will be used to draft the final project report.
 <br>The folder also collects:
     - `Assegnazione progetto.md`: containing the detailed description of the assigned project;
