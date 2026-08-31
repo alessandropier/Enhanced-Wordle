@@ -377,8 +377,8 @@ public final class Controller {
                         System.err.println("🔴 Errore nella lettura del file parole.txt: " + e.getMessage());
                     }
 
-                // 2. Carica il file esterno "parole_extra.txt" se esiste nella cartella locale
-                java.io.File extraFile = new java.io.File("parole_extra.txt");
+                // 2. Carica il file esterno "parole_extra.txt" se esiste
+                java.io.File extraFile = getFileParoleExtra();
                 if (extraFile.exists()) {
                     try (BufferedReader reader = new BufferedReader(new InputStreamReader(new java.io.FileInputStream(extraFile), StandardCharsets.UTF_8))) {
                         String linea_letta;
@@ -472,7 +472,7 @@ public final class Controller {
         }
 
         // 2. Controlla nel file esterno "parole_extra.txt" se esiste
-        java.io.File extraFile = new java.io.File("parole_extra.txt");
+        java.io.File extraFile = getFileParoleExtra();
         if (extraFile.exists()) {
             try (BufferedReader reader = new BufferedReader(new InputStreamReader(new java.io.FileInputStream(extraFile), StandardCharsets.UTF_8))) {
                 String linea;
@@ -515,13 +515,13 @@ public final class Controller {
         return false;
     }
 
-    java.io.File file = new java.io.File("parole_extra.txt");
+    java.io.File extraFile = getFileParoleExtra();
     boolean needsNewline = false;
 
     // 1. Controlliamo se l'ultimo carattere del file non è un invio
-    if (file.exists() && file.length() > 0) {
-        try (java.io.RandomAccessFile raf = new java.io.RandomAccessFile(file, "r")) {
-            raf.seek(file.length() - 1);
+    if (extraFile.exists() && extraFile.length() > 0) {
+        try (java.io.RandomAccessFile raf = new java.io.RandomAccessFile(extraFile, "r")) {
+            raf.seek(extraFile.length() - 1);
             int lastByte = raf.read();
             if (lastByte != '\n' && lastByte != '\r') {
                 needsNewline = true; // Manca l'invio alla fine
@@ -533,7 +533,7 @@ public final class Controller {
 
     // 2. Scrittura in append su "parole_extra.txt" in codifica UTF-8
     try (java.io.OutputStreamWriter writer = new java.io.OutputStreamWriter(
-            new java.io.FileOutputStream(file, true), StandardCharsets.UTF_8);
+            new java.io.FileOutputStream(extraFile, true), StandardCharsets.UTF_8);
          java.io.PrintWriter pw = new java.io.PrintWriter(writer)) {
         
         // Se l'utente è entrato nel file per cambiare qualcosa e si è dimenticato
@@ -549,4 +549,19 @@ public final class Controller {
         return false;
     }
 }
+
+/**
+     * Restituisce il file "parole_extra.txt" posizionato nella cartella 
+     * dei dati utente del sistema operativo (es. AppData/Roaming/.wordle_data).
+     * @return File di parole extra
+     */
+    private static java.io.File getFileParoleExtra() {
+        String userHome = System.getProperty("user.home");
+        // Creiamo una cartella nascosta (o dedicata) nella home dell'utente
+        java.io.File dir = new java.io.File(userHome, ".wordle_data");
+        if (!dir.exists()) {
+            dir.mkdirs(); // Crea la cartella automaticamente se non esiste
+        }
+        return new java.io.File(dir, "parole_extra.txt");
+    }
 }
