@@ -367,7 +367,7 @@ public final class Controller {
 
                     String linea_letta;
                     while ((linea_letta = reader.readLine()) != null) {
-                        if (linea_letta.length() == 5) {
+                        if (linea_letta.length() == NUMCARATTERI) {
                             words.add(linea_letta);
                         }
                     }
