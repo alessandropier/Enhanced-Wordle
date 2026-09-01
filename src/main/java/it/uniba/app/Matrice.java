@@ -1,6 +1,7 @@
 package it.uniba.app;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 /** <<Boundary>> La classe Matrice stampa a video la matrice dei tentativi. */
 public class Matrice {
@@ -30,8 +31,12 @@ public class Matrice {
      */
     public Matrice(final int maxT, final int maxC) {
         tentativi = new ArrayList<>();
+        char[] spaziInizialiArr = new char[maxC];
+        Arrays.fill(spaziInizialiArr, ' ');
+        String spaziIniziali = new String(spaziInizialiArr);
+
         for (int i = 0; i < maxT; i++) {
-            tentativi.add("     ");
+            tentativi.add(spaziIniziali);
         }
         colori = new ArrayList<>(maxT);
         for (int i = 0; i < maxT; i++) {
@@ -94,18 +99,30 @@ public class Matrice {
     }
 
     /**
-     * Permette di azzerare i tentativi nella matrice.
+     * Permette di azzerare e ridimensionare i tentativi e i colori nella matrice.
      * @param maxC Numero massimo di caratteri per parola.
      */
     public void azzera(final int maxC) {
+        int maxT = tentativi.size(); // Mantiene il numero di tentativi attuale
+        
+        char[] spaziVuotiArr = new char[maxC];
+        Arrays.fill(spaziVuotiArr, ' ');
+        String spaziVuoti = new String(spaziVuotiArr);
 
-        for (int i = 0; i < tentativi.size(); i++) {
-            tentativi.set(i, "     ");
+        // Ricrea completamente la lista dei tentativi con la nuova lunghezza maxC
+        tentativi.clear();
+        for (int i = 0; i < maxT; i++) {
+            tentativi.add(spaziVuoti);
         }
-        for (int i = 0; i < colori.size(); i++) {
+        
+        // Ricrea completamente la matrice dei colori con le nuove dimensioni (maxT x maxC)
+        colori.clear();
+        for (int i = 0; i < maxT; i++) {
+            ArrayList<String> rigaColori = new ArrayList<>();
             for (int j = 0; j < maxC; j++) {
-                colori.get(i).set(j, "");
+                rigaColori.add("");
             }
+            colori.add(rigaColori);
         }
     }
 
