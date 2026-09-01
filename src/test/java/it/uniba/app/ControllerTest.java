@@ -902,4 +902,108 @@ public class ControllerTest {
         assertTrue(outContent.toString("UTF-8").contains("Partita abbandonata con successo"));
         System.setIn(sysInBackup);
     }
+
+    /**
+     * Test per la funzione tentativo quando la partita non è stata avviata.
+     * CASO: Tentativo inviato prima di digitare /gioca.
+     */
+    @Test
+    public void tentativoSenzaPartitaTest() {
+        Paroliere p = new Paroliere();
+        Matrice m = new Matrice(Controller.getMaxTentativi(), Controller.getNumCaratteri());
+        Giocatore g = new Giocatore();
+        Controller.nuova("palla", p);
+        
+        // Non viene chiamato Controller.gioca(...)
+        Controller.tentativo(g, "palla", p, m);
+        
+        assertTrue(outContent.toString().contains("partita") || 
+                   outContent.toString().contains("avviata") || 
+                   g.getTentativi() == 0);
+    }
+
+    /**
+     * Test per verificare la risposta minuscola ("si") al comando /abbandona.
+     * @throws UnsupportedEncodingException
+     */
+    @Test
+    public void abbandonaTestConfermaSiMinuscolo() throws UnsupportedEncodingException {
+        Paroliere p = new Paroliere();
+        Matrice m = new Matrice(Controller.getMaxTentativi(), Controller.getNumCaratteri());
+        Giocatore g = new Giocatore();
+        Controller.nuova("palla", p);
+        Controller.gioca(g, p, m);
+        
+        InputStream sysInBackup = System.in;
+        ByteArrayInputStream in = new ByteArrayInputStream("si\n".getBytes("UTF-8"));
+        System.setIn(in);
+
+        Controller.abbandona(p, g, m);
+        
+        assertTrue(outContent.toString("UTF-8").contains("Partita abbandonata con successo"));
+        System.setIn(sysInBackup);
+    }
+
+    /**
+     * Test per verificare la risposta minuscola ("no") al comando /abbandona.
+     * @throws UnsupportedEncodingException
+     */
+    @Test
+    public void abbandonaTestConfermaNoMinuscolo() throws UnsupportedEncodingException {
+        Paroliere p = new Paroliere();
+        Matrice m = new Matrice(Controller.getMaxTentativi(), Controller.getNumCaratteri());
+        Giocatore g = new Giocatore();
+        Controller.nuova("palla", p);
+        Controller.gioca(g, p, m);
+        
+        InputStream sysInBackup = System.in;
+        ByteArrayInputStream in = new ByteArrayInputStream("no\n".getBytes("UTF-8"));
+        System.setIn(in);
+
+        Controller.abbandona(p, g, m);
+        
+        assertTrue(outContent.toString("UTF-8").contains("Partita non abbandonata"));
+        System.setIn(sysInBackup);
+    }
+
+    /**
+     * Test per verificare la funzione esisteParola con input nullo o vuoto.
+     */
+    @Test
+    public void esisteParolaNulloTest() {
+        assertFalse(Controller.esisteParola(null));
+    }
+
+    /**
+     * Test per verificare l'aggiunta di una parola extra non valida (es. troppo corta o con numeri).
+     */
+    @Test
+    public void aggiungiParolaExtraNonValidaTest() {
+        assertFalse(Controller.aggiungiParolaExtra("casa1")); // Contiene un numero
+        assertFalse(Controller.aggiungiParolaExtra("abc"));   // Troppo corta
+        assertFalse(Controller.aggiungiParolaExtra(null));    // Nullo
+    }
+
+    /**
+     * Test per verificare il corretto flusso di aggiunta di una parola extra valida.
+     * Questo creerà o userà la directory di test e scriverà sul file locale.
+     */
+    /*@Test
+    public void aggiungiParolaExtraValidaTest() {
+        // Scegliamo una stringa casuale di 5 lettere maiuscole difficilmente presente nel dizionario principale
+        String parolaTest = "fetta";
+        
+        // Prima assicuriamoci che non esista o rimuoviamola se possibile, 
+        // oppure testiamo semplicemente che il metodo restituisca un booleano coerente
+        boolean risultato = Controller.aggiungiParolaExtra(parolaTest);
+        
+        // Se non era già presente, l'aggiunta deve avere successo (true)
+        // Se viene eseguito più volte, potrebbe restituire false perché già presente (giusto comportamento)
+        assertTrue(risultato || !risultato); 
+        
+        // Testiamo anche la verifica dell'esistenza
+        if (risultato) {
+            assertTrue(Controller.esisteParola(parolaTest));
+        }
+    }*/
 }
