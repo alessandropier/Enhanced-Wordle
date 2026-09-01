@@ -891,8 +891,30 @@ public class WordleFrame extends JFrame {
             }
         }
 
-        // 2. Calcola le lettere conosciute per verificare se ci sono ancora lettere ignote per l'Hint 3
-        java.util.Set<Character> lettereConosciute = new java.util.HashSet<>(tastiHintSpeciali);
+        // 2. Calcola le lettere conosciute/escluse per verificare la disponibilità dell'HINT 1
+        java.util.Set<Character> lettereConosciuteHint1 = new java.util.HashSet<>(tastiHintSpeciali);
+        lettereConosciuteHint1.addAll(tastiOscuratiHint);
+        for (int i = 0; i < rigaCorrente; i++) {
+            if (i < matrice.getTentativiList().size() && i < matrice.getColoriList().size()) {
+                String tentativo = matrice.getTentativiList().get(i);
+                java.util.List<String> colori = matrice.getColoriList().get(i);
+                for (int j = 0; j < tentativo.length(); j++) {
+                    if (j < colori.size()) {
+                        lettereConosciuteHint1.add(tentativo.charAt(j));
+                    }
+                }
+            }
+        }
+
+        java.util.List<Character> lettereErrateIgnotite = new java.util.ArrayList<>();
+        for (char c = 'A'; c <= 'Z'; c++) {
+            if (parolaSegreta.indexOf(c) == -1 && !lettereConosciuteHint1.contains(c)) {
+                lettereErrateIgnotite.add(c);
+            }
+        }
+
+        // 3. Calcola le lettere conosciute (verdi/gialle) per verificare la disponibilità dell'HINT 3
+        java.util.Set<Character> lettereConosciuteHint3 = new java.util.HashSet<>(tastiHintSpeciali);
         for (int i = 0; i < rigaCorrente; i++) {
             if (i < matrice.getTentativiList().size() && i < matrice.getColoriList().size()) {
                 String tentativo = matrice.getTentativiList().get(i);
@@ -901,7 +923,7 @@ public class WordleFrame extends JFrame {
                     if (j < colori.size()) {
                         String col = colori.get(j);
                         if (col.equals("\u001B[42m") || col.equals("\u001B[103m")) {
-                            lettereConosciute.add(tentativo.charAt(j));
+                            lettereConosciuteHint3.add(tentativo.charAt(j));
                         }
                     }
                 }
@@ -911,26 +933,46 @@ public class WordleFrame extends JFrame {
         java.util.List<Character> letterePresentiIgnotite = new java.util.ArrayList<>();
         for (int i = 0; i < parolaSegreta.length(); i++) {
             char c = parolaSegreta.charAt(i);
-            if (!letterePresentiIgnotite.contains(c) && !lettereConosciute.contains(c)) {
+            if (!letterePresentiIgnotite.contains(c) && !lettereConosciuteHint3.contains(c)) {
                 letterePresentiIgnotite.add(c);
             }
         }
 
-        // 3. Costruiamo dinamicamente la lista degli hint validi in base a ciò che l'utente sa già
+        // 4. Costruiamo dinamicamente la lista degli hint validi PRIMA di estrarre
         java.util.List<Integer> hintDisponibili = new java.util.ArrayList<>();
-        hintDisponibili.add(1); // L'hint 1 (esclusione) è sempre valido
+        
+        if (!lettereErrateIgnotite.isEmpty()) {
+            hintDisponibili.add(1); // Valido se ci sono ancora lettere errate ignote da poter escludere
+        }
         
         if (!primaLetteraGiaTrovata) {
-            hintDisponibili.add(2); // L'hint 2 è valido solo se la prima lettera non è stata trovata
+            hintDisponibili.add(2); // Valido solo se la prima lettera non è stata trovata
         }
         
         if (!letterePresentiIgnotite.isEmpty()) {
-            hintDisponibili.add(3); // L'hint 3 è valido solo se ci sono ancora lettere ignote da mostrare
+            hintDisponibili.add(3); // Valido solo se ci sono ancora lettere presenti ignote da mostrare
         }
 
-        System.out.println("HINTS: " + hintDisponibili);
+        // for debugging
+        // System.out.println("HINTS DISPONIBILI: " + hintDisponibili);
 
-        // 4. Estraiamo casualmente l'hint scegliendo SOLO tra quelli realmente disponibili
+        if (hintDisponibili.isEmpty()) {
+            boolean isNotte = tglModalita.isSelected();
+            String messaggioNessunHint = "<b>Nessun Indizio Disponibile!</b><br><br>"
+                    + "Hai già scoperto o escluso tutte le informazioni possibili.<br>"
+                    + "Non ci sono hint applicabili in questo momento!";
+            
+            mostraGraficaHintDialog(messaggioNessunHint, isNotte);
+            
+            // Manteniamo comunque bloccato il bottone dell'hint se non ci sono più opzioni
+            hintUtilizzato = true;
+            btnHint.setEnabled(false);
+            btnHint.repaint();
+            requestFocusInWindow();
+            return;
+        }
+
+        // 5. Estraiamo casualmente l'hint scegliendo SOLO tra quelli realmente disponibili
         int tipoHint = hintDisponibili.get(rand.nextInt(hintDisponibili.size()));
 
         String messaggioDialogo = "";
@@ -938,17 +980,11 @@ public class WordleFrame extends JFrame {
 
         switch (tipoHint) {
             case 1:
-                // --- HINT 1: Esclusione di 3 lettere errate ---
-                java.util.List<Character> alfabetoList = new java.util.ArrayList<>();
-                for (char c = 'A'; c <= 'Z'; c++) {
-                    if (parolaSegreta.indexOf(c) == -1) {
-                        alfabetoList.add(c);
-                    }
-                }
-                java.util.Collections.shuffle(alfabetoList, rand);
+                // --- HINT 1: Esclusione di lettere errate ignote ---
+                java.util.Collections.shuffle(lettereErrateIgnotite, rand);
 
                 int conteggioScartate = 0;
-                for (char c : alfabetoList) {
+                for (char c : lettereErrateIgnotite) {
                     JButton tasto = tastiVirtuali.get(c);
                     if (tasto != null) {
                         tastiOscuratiHint.add(c);
@@ -963,8 +999,32 @@ public class WordleFrame extends JFrame {
                         if (conteggioScartate == 3) break;
                     }
                 }
+                
+                // Fallback se le lettere ignote rimaste sono meno di 3
+                if (conteggioScartate < 3) {
+                    java.util.List<Character> alfabetoList = new java.util.ArrayList<>();
+                    for (char c = 'A'; c <= 'Z'; c++) {
+                        if (parolaSegreta.indexOf(c) == -1 && !tastiOscuratiHint.contains(c)) {
+                            alfabetoList.add(c);
+                        }
+                    }
+                    java.util.Collections.shuffle(alfabetoList, rand);
+                    for (char c : alfabetoList) {
+                        JButton tasto = tastiVirtuali.get(c);
+                        if (tasto != null) {
+                            tastiOscuratiHint.add(c);
+                            Color colBgHint = isNotte ? new Color(28, 30, 33) : new Color(215, 218, 222);
+                            Color colFgHint = isNotte ? new Color(110, 115, 120) : new Color(130, 135, 140);
+                            tasto.setBackground(colBgHint);
+                            tasto.setForeground(colFgHint);
+                            conteggioScartate++;
+                            if (conteggioScartate == 3) break;
+                        }
+                    }
+                }
+
                 messaggioDialogo = "<b>Potere della Lampadina: Esclusione!</b><br><br>"
-                        + "Il sistema ha analizzato la parola e ha oscurato <b>3 lettere</b> casuali "
+                        + "Il sistema ha analizzato la parola e ha oscurato <b>nuove lettere</b> "
                         + "che non fanno parte della parola segreta.";
                 break;
 
