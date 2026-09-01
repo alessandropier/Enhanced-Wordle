@@ -877,7 +877,61 @@ public class WordleFrame extends JFrame {
         }
 
         java.util.Random rand = new java.util.Random();
-        int tipoHint = rand.nextInt(3) + 1; 
+        
+        // 1. Verifica se la prima lettera è stata già trovata (verde nella prima colonna)
+        char primaLettera = parolaSegreta.charAt(0);
+        boolean primaLetteraGiaTrovata = false;
+        for (int i = 0; i < rigaCorrente; i++) {
+            if (i < matrice.getColoriList().size() && !matrice.getColoriList().get(i).isEmpty()) {
+                String coloreANSI = matrice.getColoriList().get(i).get(0);
+                if (coloreANSI.equals("\u001B[42m") && celleGrid[i][0].getText().equalsIgnoreCase(String.valueOf(primaLettera))) {
+                    primaLetteraGiaTrovata = true;
+                    break;
+                }
+            }
+        }
+
+        // 2. Calcola le lettere conosciute per verificare se ci sono ancora lettere ignote per l'Hint 3
+        java.util.Set<Character> lettereConosciute = new java.util.HashSet<>(tastiHintSpeciali);
+        for (int i = 0; i < rigaCorrente; i++) {
+            if (i < matrice.getTentativiList().size() && i < matrice.getColoriList().size()) {
+                String tentativo = matrice.getTentativiList().get(i);
+                java.util.List<String> colori = matrice.getColoriList().get(i);
+                for (int j = 0; j < tentativo.length(); j++) {
+                    if (j < colori.size()) {
+                        String col = colori.get(j);
+                        if (col.equals("\u001B[42m") || col.equals("\u001B[103m")) {
+                            lettereConosciute.add(tentativo.charAt(j));
+                        }
+                    }
+                }
+            }
+        }
+
+        java.util.List<Character> letterePresentiIgnotite = new java.util.ArrayList<>();
+        for (int i = 0; i < parolaSegreta.length(); i++) {
+            char c = parolaSegreta.charAt(i);
+            if (!letterePresentiIgnotite.contains(c) && !lettereConosciute.contains(c)) {
+                letterePresentiIgnotite.add(c);
+            }
+        }
+
+        // 3. Costruiamo dinamicamente la lista degli hint validi in base a ciò che l'utente sa già
+        java.util.List<Integer> hintDisponibili = new java.util.ArrayList<>();
+        hintDisponibili.add(1); // L'hint 1 (esclusione) è sempre valido
+        
+        if (!primaLetteraGiaTrovata) {
+            hintDisponibili.add(2); // L'hint 2 è valido solo se la prima lettera non è stata trovata
+        }
+        
+        if (!letterePresentiIgnotite.isEmpty()) {
+            hintDisponibili.add(3); // L'hint 3 è valido solo se ci sono ancora lettere ignote da mostrare
+        }
+
+        System.out.println("HINTS: " + hintDisponibili);
+
+        // 4. Estraiamo casualmente l'hint scegliendo SOLO tra quelli realmente disponibili
+        int tipoHint = hintDisponibili.get(rand.nextInt(hintDisponibili.size()));
 
         String messaggioDialogo = "";
         boolean isNotte = tglModalita.isSelected();
@@ -899,7 +953,6 @@ public class WordleFrame extends JFrame {
                     if (tasto != null) {
                         tastiOscuratiHint.add(c);
                         
-                        // Imposta i colori appropriati per il tema corrente (Giorno o Notte)
                         Color colBgHint = isNotte ? new Color(28, 30, 33) : new Color(215, 218, 222);
                         Color colFgHint = isNotte ? new Color(110, 115, 120) : new Color(130, 135, 140);
                         
@@ -917,12 +970,10 @@ public class WordleFrame extends JFrame {
 
             case 2:
                 // --- HINT 2: Svelare la lettera iniziale ---
-                char primaLettera = parolaSegreta.charAt(0);
                 tastiHintSpeciali.add(primaLettera);
                 
                 JButton tastoIniziale = tastiVirtuali.get(primaLettera);
                 if (tastoIniziale != null) {
-                    // Colore blu/azzurro speciale per l'indizio lettera iniziale
                     tastoIniziale.setBackground(new Color(41, 128, 185));
                     tastoIniziale.setForeground(Color.WHITE);
                 }
@@ -933,21 +984,13 @@ public class WordleFrame extends JFrame {
                 break;
 
             case 3:
-                // --- HINT 3: Mostrare una lettera presente ma in posizione casuale ---
-                java.util.List<Character> letterePresenti = new java.util.ArrayList<>();
-                for (int i = 0; i < parolaSegreta.length(); i++) {
-                    char c = parolaSegreta.charAt(i);
-                    if (!letterePresenti.contains(c)) {
-                        letterePresenti.add(c);
-                    }
-                }
-                java.util.Collections.shuffle(letterePresenti, rand);
-                char letteraCasuale = letterePresenti.get(0);
+                // --- HINT 3: Mostrare una lettera presente ma NON ANCORA CONOSCIUTA ---
+                java.util.Collections.shuffle(letterePresentiIgnotite, rand);
+                char letteraCasuale = letterePresentiIgnotite.get(0);
                 
                 tastiHintSpeciali.add(letteraCasuale);
                 JButton tastoPresente = tastiVirtuali.get(letteraCasuale);
                 if (tastoPresente != null) {
-                    // Colore oro/giallo scuro speciale per la lettera presente
                     tastoPresente.setBackground(new Color(212, 172, 13));
                     tastoPresente.setForeground(Color.WHITE);
                 }
