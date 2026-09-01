@@ -325,7 +325,7 @@ public class WordleFrame extends JFrame {
             + "<tr><td style='font-weight: bold; vertical-align: top;'>Notte / Giorno:</td><td>Alterna il tema grafico e salva automaticamente la preferenza.</td></tr>"
             + "<tr><td style='font-weight: bold; vertical-align: top;'>AGGIUNGI PAROLA:</td><td>Permette l'inserimento di una nuova parola nel dizionario.</td></tr>"
             + "<tr><td style='font-weight: bold; vertical-align: top;'>AIUTO (icona i):</td><td>Apre questa schermata con le regole e la guida.</td></tr>"
-            + "<tr><td style='font-weight: bold; vertical-align: top;'>HINT (icona 💡):</td><td>Se possibile, fornisce un aiuto all'utente.</td></tr>"
+            + "<tr><td style='font-weight: bold; vertical-align: top;'>HINT (icona 💡):</td><td>Se possibile, fornisce un aiuto all'utente (utilizzabile solo una volta a partita).</td></tr>"
             + "<tr><td style='font-weight: bold; vertical-align: top;'>Tastiera:</td><td>Digita le lettere, premi <b>INVIO</b> per confermare o <b>⌫</b> per cancellare.</td></tr>"
             + "</table>"
             + "</body></html>";
@@ -711,7 +711,7 @@ public class WordleFrame extends JFrame {
             JButton tastoBtn = tastiVirtuali.get(lettera);
             if (tastiOscuratiHint.contains(lettera))
             {
-
+                // non fare niente perché significa che quelle lettere sono già state oscurate da un hint
             } else if (tastoBtn != null) {
                     Color coloreAttuale = tastoBtn.getBackground();
                     boolean aggiorna = true;
@@ -867,6 +867,12 @@ public class WordleFrame extends JFrame {
         Controller.setMaxTentativi(RIGHE);
     }
 
+    /*
+        Should be easily moved to the Controller.java class but at the moment it's good here.
+        This method heavily interacts with the GUI; therefore, considering the project,
+        it's reasonable to leave it here for the moment. Anyway, the 'heavy' logic could be 
+        easily moved to the Controller class using appropriate 'getter' and 'setter' methods.
+     */
     private void gestisciHint() {
         if (hintUtilizzato || tastieraBloccata) {
             return;

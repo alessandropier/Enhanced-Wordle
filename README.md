@@ -53,13 +53,12 @@ If the window appears scaled incorrectly on your operating system, you can force
   ./avvia_wordle.sh
   ```
 
-## 💡 Future Developments Ideas
-1. Check if the guess is an Italian word by using a dictionary of all 5-letter Italian words.
-2. Add a light bulb button that provides a hint to the user (only once per game).
+## 💡 Future Development Ideas
+- Check if the guess is an _Italian word_ by using a _dictionary_ of all _N-letter_ Italian words.
 
 ## 📄 Where is the Custom Dictionary saved?
 
-The custom dictionary is both _read_ and _written_; therefore, a text file called _"parole_extra.txt" (extra words)_ is created. It is saved in the hidden _user.home_ directory depending on your operating system. 
+The custom dictionary is both read from and written to; therefore, a text file named 'parole_extra_N.txt' (extra words) is created, where N represents the number of characters. It is saved in the hidden _user.home_ directory depending on your operating system. 
 - **Windows**: \Users\YourUserName\\.wordle_data\parole_extra.txt
 - **macOS**: /Users/YourUserName/.wordle_data/parole_extra.txt
 - **Linux**: /home/YourUserName/.wordle_data/parole_extra.txt
