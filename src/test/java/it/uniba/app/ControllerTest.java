@@ -22,10 +22,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.PrintWriter;
 /**
  * Classe di test per la classe Controller.
  */
