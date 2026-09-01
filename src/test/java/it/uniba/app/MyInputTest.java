@@ -5,14 +5,18 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
+import java.lang.reflect.Constructor;
 import java.nio.charset.StandardCharsets;
 
 import java.io.InputStream;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+
+import java.lang.reflect.Modifier;
 
 /**
  * Classe di test per la classe MyInput.
@@ -83,5 +87,46 @@ public class MyInputTest {
 
         // Verifica che sia entrato nel catch stampando l'errore
         assertTrue(outContent.toString().contains("Errore dell'input dei dati"));
+    }
+
+    /**
+     * Test per verificare la corretta lettura di una stringa tramite MyInput.leggiStringa.
+     */
+    @Test
+    public void testLeggiStringa() {
+        // Salviamo il System.in originale
+        InputStream sysInBackup = System.in;
+        
+        // Simuliamo l'inserimento della stringa "test" seguita da un invio (\n)
+        String inputSimulato = "test\n";
+        ByteArrayInputStream in = new ByteArrayInputStream(inputSimulato.getBytes());
+        System.setIn(in);
+
+        // Chiamiamo il metodo
+        String risultato = MyInput.leggiStringa("Inserisci qualcosa");
+
+        // Verifichiamo che la stringa letta sia corretta
+        assertEquals("test", risultato);
+
+        // Ripristiniamo il System.in originale
+        System.setIn(sysInBackup);
+    }
+
+    /**
+     * Test per coprire il costruttore privato di MyInput (pattern utility class).
+     * Questo serve a raggiungere il 100% di coverage sulla classe.
+     */
+    @Test
+    public void testPrivateConstructor() throws Exception {
+        Constructor<MyInput> constructor = MyInput.class.getDeclaredConstructor();
+        // Rendiamo accessibile il costruttore privato
+        constructor.setAccessible(true);
+        
+        // Verifichiamo che sia privato
+        assert(Modifier.isPrivate(constructor.getModifiers()));
+        
+        // Istanziamo la classe via reflection per coprire la riga del costruttore privato
+        MyInput instance = constructor.newInstance();
+        assertNotNull(instance);
     }
 }
