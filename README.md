@@ -9,6 +9,7 @@ Subsequently, I continued the project to integrate additional features such as:
 - A **persistent UI theme preference** system that allows users to toggle between _day and night modes_, automatically saving their selection across sessions.
 - A **custom dictionary** feature that enables users to add new words and expand the game's vocabulary.
 - **Dynamic difficulty selection** featuring variable _word lengths_ and _number of attempts_.
+- **Hints** to the user, randomly selected from _3 categories_ based on their current context.
 
 ## 🕹️ Playing the Game
 
@@ -30,6 +31,9 @@ Subsequently, I continued the project to integrate additional features such as:
 3. **Customization, Themes & System**
    * **"Notte/Giorno" (Dark/Light Mode)**: Click this toggle button to switch between the dark theme and the light theme of the user interface for a comfortable playing experience.
    * **"Aggiungi parola" (Add Word)**: Click this button to open a dedicated input prompt where you can type and add a new custom word directly to your game dictionary saved locally (`parole_extra.txt`).
+
+4. **Hint & Info**
+   * **Hint** button bottom left: if available, provides a hint to the user.
    * **i (info)** button bottom right: Click this button to open an info pop-up to explain the UI and how to play Wordle.
 
 ## 🎮 Starting the Game

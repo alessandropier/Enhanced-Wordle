@@ -325,6 +325,7 @@ public class WordleFrame extends JFrame {
             + "<tr><td style='font-weight: bold; vertical-align: top;'>Notte / Giorno:</td><td>Alterna il tema grafico e salva automaticamente la preferenza.</td></tr>"
             + "<tr><td style='font-weight: bold; vertical-align: top;'>AGGIUNGI PAROLA:</td><td>Permette l'inserimento di una nuova parola nel dizionario.</td></tr>"
             + "<tr><td style='font-weight: bold; vertical-align: top;'>AIUTO (icona i):</td><td>Apre questa schermata con le regole e la guida.</td></tr>"
+            + "<tr><td style='font-weight: bold; vertical-align: top;'>HINT (icona 💡):</td><td>Se possibile, fornisce un aiuto all'utente.</td></tr>"
             + "<tr><td style='font-weight: bold; vertical-align: top;'>Tastiera:</td><td>Digita le lettere, premi <b>INVIO</b> per confermare o <b>⌫</b> per cancellare.</td></tr>"
             + "</table>"
             + "</body></html>";
