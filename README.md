@@ -1,4 +1,4 @@
-# Personalized Wordle Offline
+# Enhanced Wordle Offline
 [![Build and Publish Release](https://github.com/alessandropier/Wordle/actions/workflows/ingsw2122.yml/badge.svg)](https://github.com/alessandropier/Wordle/actions/workflows/ingsw2122.yml) [![Coverage Status](https://coveralls.io/repos/github/alessandropier/Wordle/badge.svg?branch=v1.0)](https://coveralls.io/github/alessandropier/Wordle?branch=v1.0)
 
 Initially, this started as a repository for the implementation of the _Wordle_ game _(in Italian)_ via Command Line Interface _(CLI)_ created during the _Software Engineering_ course using the _Agile SCRUM_ framework and using _GitHub Actions_ for _CI/CD_.
@@ -8,6 +8,7 @@ Subsequently, I continued the project to integrate additional features such as:
 - **Complete _User Interface_** built with _Java Swing_ and _FlatLaf_.
 - A **persistent UI theme preference** system that allows users to toggle between _day and night modes_, automatically saving their selection across sessions.
 - A **custom dictionary** feature that enables users to add new words and expand the game's vocabulary.
+- **Dynamic difficulty selection** featuring variable _word lengths_ and _attempt rules_.
 
 ## 🕹️ Playing the Game
 
@@ -29,7 +30,7 @@ Subsequently, I continued the project to integrate additional features such as:
 3. **Customization, Themes & System**
    * **"Notte/Giorno" (Dark/Light Mode)**: Click this toggle button to switch between the dark theme and the light theme of the user interface for a comfortable playing experience.
    * **"Aggiungi parola" (Add Word)**: Click this button to open a dedicated input prompt where you can type and add a new custom word directly to your game dictionary saved locally (`parole_extra.txt`).
-   * **Aiuto (Help)**: Click this button to open a help pop-up to explain the UI and how to play Wordle.
+   * **i (info)** button bottom right: Click this button to open an info pop-up to explain the UI and how to play Wordle.
 
 ## 🎮 Starting the Game
 The game is distributed as an executable `.jar` file. To launch Wordle, make sure you have **Java (JRE/JDK 11 or higher)** installed.
@@ -51,7 +52,6 @@ If the window appears scaled incorrectly on your operating system, you can force
 ## 💡 Future Developments Ideas
 1. Check if the guess is an Italian word by using a dictionary of all 5-letter Italian words.
 2. Add a light bulb button that provides a hint to the user (only once per game).
-3. Let the player choose the length of words by using the already general implemented methods.
 
 ## 📄 Where is the Custom Dictionary saved?
 
