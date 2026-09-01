@@ -1,7 +1,6 @@
 package it.uniba.app;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 import java.io.BufferedReader;
@@ -15,9 +14,9 @@ import java.io.InputStreamReader;
  * */
 public final class Controller {
     /**Numero massimo di tentativi.*/
-    private static final int MAXTENTATIVI = 6;
+    private static int MAXTENTATIVI = 6;
     /**Numero massimo di caratteri.*/
-    private static final int NUMCARATTERI = 5;
+    private static int NUMCARATTERI = 5;
     /**Indica se è in corso una partita. */
     private static boolean flagGioca = false;
     /**Variabile per la generazione del numero
@@ -26,6 +25,26 @@ public final class Controller {
 
     /**Costruttore. */
     private Controller() {
+    }
+
+    /**
+     * Imposta la lunghezza dei caratteri desiderata per la partita.
+     * @param num numero di caratteri (es. da 5 a 9)
+     */
+    public static void setNumCaratteri(final int num) {
+        if (num >= 5 && num <= 9) {
+            NUMCARATTERI = num;
+        }
+    }
+
+    /**
+     * Imposta il numero massimo di tentativi desiderato per la partita.
+     * @param num numero di tentativi (es. da 6 a 10)
+     */
+    public static void setMaxTentativi(final int num) {
+        if (num >= 6 && num <= 10) {
+            MAXTENTATIVI = num;
+        }
     }
 
     /**
@@ -118,7 +137,7 @@ public final class Controller {
             + " Impossibile giocare.");
         } else if (g.getTentativi() == 0) {
             // Reset della matrice
-            m.azzera(NUMCARATTERI);
+            m.azzera(MAXTENTATIVI, NUMCARATTERI);
             //Stampa della matrice dei tentativi
             m.stampaMatrice(MAXTENTATIVI, NUMCARATTERI);
 
@@ -170,8 +189,11 @@ public final class Controller {
                 System.out.println("Parola segreta indovinata in: "
                  + (g.getTentativi() + 1) + " tentativi");
                 m.setTentativi(g.getTentativi(), s);
-                m.impostaColore(new ArrayList<Integer>(
-                    Arrays.asList(1, 1, 1, 1, 1)), g.getTentativi());
+                ArrayList<Integer> esitoVittoria = new ArrayList<>(NUMCARATTERI);
+                for (int i = 0; i < NUMCARATTERI; i++) {
+                    esitoVittoria.add(1);
+                }
+                m.impostaColore(esitoVittoria, g.getTentativi());
 
                 m.stampaMatrice(MAXTENTATIVI, NUMCARATTERI);
                 //p.setParolaSegreta(null);
@@ -182,8 +204,10 @@ public final class Controller {
                 System.out.println("\u001B[32m" + "Complimenti! Hai indovinato la parola!" + "\u001B[0m");
             } else if (!flagCorrect && !flagLength && flagGioca) {
                 String parolaGiusta = p.getParolaSegreta();
-                ArrayList<Integer> esito = new ArrayList<>(
-                    Arrays.asList(2, 2, 2, 2, 2));
+                ArrayList<Integer> esito = new ArrayList<>(NUMCARATTERI);
+                for (int i = 0; i < NUMCARATTERI; i++) {
+                    esito.add(2);
+                }
                 contaVerdi(parolaGiusta, s, esito);
                 for (int i = 0; i < NUMCARATTERI; i++) {
                     if (esito.get(i) != 1) {
@@ -297,7 +321,7 @@ public final class Controller {
                     System.out.println("La parola segreta era: " + "\u001B[1m" + "\u001B[31m" + p.getParolaSegreta() + "\n" + "\u001B[0m" + "\u001B[0m");
                     p.setParolaSegreta(null);
                     g.setTentativi(0);
-                    m.azzera(NUMCARATTERI);
+                    m.azzera(MAXTENTATIVI, NUMCARATTERI);
                     flagGioca = false;
                     System.out.println("Partita abbandonata con successo.");
                 } else if (risposta.equals("NO")) {
@@ -356,28 +380,30 @@ public final class Controller {
             case "/nuova":
                 List<String> words = new ArrayList<>();
                 
-                // 1. Carica il file tramite il ClassLoader per supportare l'esecuzione da file .jar
-                InputStream inputStream = App.class.getClassLoader().getResourceAsStream("parole.txt");
-                try (BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream, StandardCharsets.UTF_8))) {
-                    
-                    if (inputStream == null) {
-                        System.out.println("Errore: file delle parole non trovato nel JAR!");
-                        return;
-                    }
+                // 1. Carica il file dinamico in base alla lunghezza (es. parole_5.txt, parole_6.txt)
+                String nomeFileInterno = "parole_" + NUMCARATTERI + ".txt";
+                InputStream inputStream = App.class.getClassLoader().getResourceAsStream(nomeFileInterno);
+                
+                if (inputStream == null) {
+                    System.out.println("Errore: file " + nomeFileInterno + " non trovato nel JAR!");
+                    return;
+                }
 
+                try (BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream, StandardCharsets.UTF_8))) {
                     String linea_letta;
                     while ((linea_letta = reader.readLine()) != null) {
+                        linea_letta = linea_letta.trim().toUpperCase();
                         if (linea_letta.length() == NUMCARATTERI) {
                             words.add(linea_letta);
                         }
                     }
                     // (to delete)
                     // System.out.println("🟢 SUCCESSO: Lette " + words.size() + " parole valide!");
-                    } catch (Exception e) {
-                        System.err.println("🔴 Errore nella lettura del file parole.txt: " + e.getMessage());
-                    }
+                } catch (Exception e) {
+                    System.err.println("Errore nella lettura del file " + nomeFileInterno + ": " + e.getMessage());
+                }
 
-                // 2. Carica il file esterno "parole_extra.txt" se esiste
+                // 2. Carica il file esterno specifico per la lunghezza (es. parole_extra_5.txt)
                 java.io.File extraFile = getFileParoleExtra();
                 if (extraFile.exists()) {
                     try (BufferedReader reader = new BufferedReader(new InputStreamReader(new java.io.FileInputStream(extraFile), StandardCharsets.UTF_8))) {
@@ -385,14 +411,13 @@ public final class Controller {
                         while ((linea_letta = reader.readLine()) != null) {
                             linea_letta = linea_letta.trim().toUpperCase();
                             if (linea_letta.length() == NUMCARATTERI && linea_letta.matches("[A-Z]+")) {
-                                // Evita duplicati se la parola è già presente
                                 if (!words.contains(linea_letta)) {
                                     words.add(linea_letta);
                                 }
                             }
                         }
                     } catch (Exception e) {
-                        System.err.println("Errore nella lettura del file parole_extra.txt: " + e.getMessage());
+                        System.err.println("Errore nella lettura del file extra: " + e.getMessage());
                     }
                 }
 
@@ -409,13 +434,8 @@ public final class Controller {
                 // (to delete) Stampa delle Parole
                 //System.out.println(words);
 
-                // Generazione numero casuale
                 int randomIndex = RANDOM.nextInt(words.size());
-
-                // Prende la parola corrispondente all'indice generato
                 String nuova_parola = words.get(randomIndex);
-
-                // Parola assegnata al paroliere
                 p.setParolaSegreta(nuova_parola);
 
                 // (to delete) for quick development
@@ -457,8 +477,9 @@ public final class Controller {
         parola = parola.trim().toUpperCase();
         List<String> tutteLeParole = new ArrayList<>();
 
-        // 1. Controlla nel file interno al JAR
-        InputStream inputStream = App.class.getClassLoader().getResourceAsStream("parole.txt");
+        // 1. Controlla nel file interno dinamico (es. parole_5.txt)
+        String nomeFileInterno = "parole_" + NUMCARATTERI + ".txt";
+        InputStream inputStream = App.class.getClassLoader().getResourceAsStream(nomeFileInterno);
         if (inputStream != null) {
             try (BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream, StandardCharsets.UTF_8))) {
                 String linea;
@@ -471,7 +492,7 @@ public final class Controller {
             } catch (Exception ignored) {}
         }
 
-        // 2. Controlla nel file esterno "parole_extra.txt" se esiste
+        // 2. Controlla nel file esterno specifico (es. parole_extra_5.txt)
         java.io.File extraFile = getFileParoleExtra();
         if (extraFile.exists()) {
             try (BufferedReader reader = new BufferedReader(new InputStreamReader(new java.io.FileInputStream(extraFile), StandardCharsets.UTF_8))) {
@@ -557,11 +578,11 @@ public final class Controller {
      */
     private static java.io.File getFileParoleExtra() {
         String userHome = System.getProperty("user.home");
-        // Creiamo una cartella nascosta (o dedicata) nella home dell'utente
         java.io.File dir = new java.io.File(userHome, ".wordle_data");
         if (!dir.exists()) {
-            dir.mkdirs(); // Crea la cartella automaticamente se non esiste
+            dir.mkdirs();
         }
-        return new java.io.File(dir, "parole_extra.txt");
+        // Nome del file extra dipendente dalla lunghezza corrente
+        return new java.io.File(dir, "parole_extra_" + NUMCARATTERI + ".txt");
     }
 }

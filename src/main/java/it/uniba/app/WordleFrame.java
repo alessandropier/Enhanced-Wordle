@@ -14,7 +14,11 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
+import java.awt.FontMetrics;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.GridLayout;
+import java.awt.RenderingHints;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.util.HashMap;
@@ -41,6 +45,8 @@ public class WordleFrame extends JFrame {
     private JButton btnAggiungi;
     private JButton btnAiuto;
     private JPanel separatore;
+
+    private JButton btnCambiaLunghezza;
 
     private int rigaCorrente = 0;
     private int colonnaCorrente = 0;
@@ -71,11 +77,11 @@ public class WordleFrame extends JFrame {
         this.paroliere = p;
         this.matrice = m;
 
-        RIGHE = Controller.getMaxTentativi();
         COLONNE = Controller.getNumCaratteri();
+        calcolaRigheInBaseAllaLunghezza();
 
         setTitle("Wordle Java");
-        setSize(620, 900);
+        setSize(Math.max(620, 400 + (COLONNE * 55)), 950);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
         setLayout(new BorderLayout(0, 0));
@@ -87,18 +93,21 @@ public class WordleFrame extends JFrame {
         btnMostra = new JButton("ARRENDITI");
         btnEsci = new JButton("ESCI");
         btnAggiungi = new JButton("AGGIUNGI PAROLA");
-        btnAiuto = new JButton("AIUTO");
         tglModalita = new JToggleButton("Notte");
+
+        btnCambiaLunghezza = new JButton("Lunghezza: " + COLONNE);
+        styleButton(btnCambiaLunghezza);
+        btnCambiaLunghezza.setPreferredSize(new Dimension(130, 32));
+        btnCambiaLunghezza.addActionListener(e -> mostraDialogSelezioneLunghezza());
+        panelBottoni.add(btnCambiaLunghezza);
 
         styleButton(btnNuovaPartita);
         styleButton(btnMostra);
         styleButton(btnEsci);
         styleButton(btnAggiungi);
-        styleButton(btnAiuto);
         styleButton(tglModalita);
 
         btnAggiungi.setPreferredSize(new Dimension(120, 32));
-        btnAiuto.setPreferredSize(new Dimension(80, 32));
         tglModalita.setPreferredSize(new Dimension(55, 32));
 
         panelBottoni.add(btnNuovaPartita);
@@ -111,7 +120,6 @@ public class WordleFrame extends JFrame {
 
         panelBottoni.add(tglModalita);
         panelBottoni.add(btnAggiungi);
-        panelBottoni.add(btnAiuto);
         add(panelBottoni, BorderLayout.NORTH);
 
         // --- 2. GRIGLIA DI TENTATIVI ---
@@ -143,9 +151,44 @@ public class WordleFrame extends JFrame {
 
         panelTastiera = creaPannelloTastiera();
 
+        btnAiuto = new JButton("i") {
+            @Override
+            protected void paintComponent(Graphics g) {
+                Graphics2D g2 = (Graphics2D) g.create();
+                g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+                
+                g2.setColor(getModel().isRollover() ? new Color(41, 128, 185) : new Color(52, 152, 219));
+                g2.fillOval(0, 0, getWidth() - 1, getHeight() - 1);
+                
+                g2.setColor(Color.WHITE);
+                g2.setFont(new Font("SansSerif", Font.BOLD, 15));
+                FontMetrics fm = g2.getFontMetrics();
+                int x = (getWidth() - fm.stringWidth("i")) / 2;
+                int y = (getHeight() - fm.getHeight()) / 2 + fm.getAscent();
+                g2.drawString("i", x, y);
+                g2.dispose();
+            }
+
+            @Override
+            protected void paintBorder(Graphics g) {
+            }
+        };
+        btnAiuto.setPreferredSize(new Dimension(32, 32));
+        btnAiuto.setFocusPainted(false);
+        btnAiuto.setBorderPainted(false);
+        btnAiuto.setContentAreaFilled(false);
+        btnAiuto.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnAiuto.setToolTipText("Aiuto & Regole");
+        btnAiuto.addActionListener(e -> mostraAiuto(false));
+
+        JPanel panelAiutoContainer = new JPanel(new FlowLayout(FlowLayout.RIGHT, 15, 2));
+        panelAiutoContainer.setOpaque(false);
+        panelAiutoContainer.add(btnAiuto);
+
         panelSud = new JPanel(new BorderLayout());
         panelSud.add(lblParolaSegreta, BorderLayout.NORTH);
         panelSud.add(panelTastiera, BorderLayout.CENTER);
+        panelSud.add(panelAiutoContainer, BorderLayout.SOUTH);
         add(panelSud, BorderLayout.SOUTH);
 
         // --- 4. GESTIONE EVENTI DEI BOTTONI ---
@@ -153,7 +196,6 @@ public class WordleFrame extends JFrame {
         btnMostra.addActionListener(e -> gestisciMostraParola());
         btnEsci.addActionListener(e -> gestisciEsci());
         btnAggiungi.addActionListener(e -> gestisciAggiungiParola());
-        btnAiuto.addActionListener(e -> mostraAiuto(false));
 
         tglModalita.addActionListener(e -> {
             boolean isNotte = tglModalita.isSelected();
@@ -222,12 +264,13 @@ public class WordleFrame extends JFrame {
             + "</table>"
             + "<h3 style='color: " + h3ColorHex + "; font-size: 17pt; margin-top: 12px; margin-bottom: 6px;'>2. Guida all'Interfaccia e Bottoni</h3>"
             + "<table style='width: 100%; font-family: SansSerif; font-size: 14pt; color: " + textColorHex + ";'>"
+            + "<tr><td style='width: 160px; font-weight: bold; vertical-align: top;'>Lunghezza:</td><td>Scegli la lunghezza della parola da indovinare.</td></tr>"
             + "<tr><td style='width: 160px; font-weight: bold; vertical-align: top;'>NUOVA:</td><td>Avvia una nuova partita.</td></tr>"
             + "<tr><td style='font-weight: bold; vertical-align: top;'>ARRENDITI:</td><td>Rivela la parola segreta.</td></tr>"
             + "<tr><td style='font-weight: bold; vertical-align: top;'>ESCI:</td><td>Chiude l'applicazione.</td></tr>"
             + "<tr><td style='font-weight: bold; vertical-align: top;'>Notte / Giorno:</td><td>Alterna il tema grafico e salva automaticamente la preferenza.</td></tr>"
             + "<tr><td style='font-weight: bold; vertical-align: top;'>AGGIUNGI PAROLA:</td><td>Permette l'inserimento di una nuova parola nel dizionario.</td></tr>"
-            + "<tr><td style='font-weight: bold; vertical-align: top;'>AIUTO:</td><td>Apre questa schermata con le regole e la guida.</td></tr>"
+            + "<tr><td style='font-weight: bold; vertical-align: top;'>AIUTO (icona i):</td><td>Apre questa schermata con le regole e la guida.</td></tr>"
             + "<tr><td style='font-weight: bold; vertical-align: top;'>Tastiera:</td><td>Digita le lettere, premi <b>INVIO</b> per confermare o <b>⌫</b> per cancellare.</td></tr>"
             + "</table>"
             + "</body></html>";
@@ -283,7 +326,7 @@ public class WordleFrame extends JFrame {
     private JPanel creaPannelloTastiera() {
         JPanel panel = new JPanel();
         panel.setLayout(new GridLayout(3, 1, 0, 5));
-        panel.setBorder(BorderFactory.createEmptyBorder(5, 10, 15, 10));
+        panel.setBorder(BorderFactory.createEmptyBorder(5, 10, 5, 10));
 
         String[] riga1 = {"Q", "W", "E", "R", "T", "Y", "U", "I", "O", "P"};
         String[] riga2 = {"A", "S", "D", "F", "G", "H", "J", "K", "L"};
@@ -376,7 +419,7 @@ public class WordleFrame extends JFrame {
             }
         }
 
-        AbstractButton[] bottoniSuperiori = {btnNuovaPartita, btnMostra, btnEsci, btnAggiungi, btnAiuto};
+        AbstractButton[] bottoniSuperiori = {btnNuovaPartita, btnMostra, btnEsci, btnAggiungi, btnCambiaLunghezza};
         for (AbstractButton b : bottoniSuperiori) {
             b.setBackground(coloreBottoniBg);
             b.setForeground(coloreBottoniFg);
@@ -394,7 +437,7 @@ public class WordleFrame extends JFrame {
     }
 
     private void gestisciNuovaPartita() {
-        matrice.azzera(COLONNE);
+        matrice.azzera(RIGHE, COLONNE);
         giocatore.setTentativi(0);
         paroliere.setParolaSegreta(null);
         hasWon = false;
@@ -483,8 +526,6 @@ public class WordleFrame extends JFrame {
         } else if (Character.isLetter(keyChar) && colonnaCorrente < COLONNE) {
             char upperChar = Character.toUpperCase(keyChar);
         
-            // Controlliamo che il char rientri strettamente tra 'A' e 'Z'
-            // evitiamo le lettere accentate ò, à, è, ù
             if (upperChar >= 'A' && upperChar <= 'Z') {
                 aggiungiLettera(upperChar);
             }
@@ -622,5 +663,93 @@ public class WordleFrame extends JFrame {
             }
         }
         requestFocusInWindow();
+    }
+
+    private void mostraDialogSelezioneLunghezza() {
+        String[] opzioni = {"5", "6", "7", "8", "9"};
+        String sceltaCorrente = String.valueOf(COLONNE);
+        
+        String scelta = (String) JOptionPane.showInputDialog(
+            this,
+            "Seleziona la lunghezza della parola:",
+            "Cambia Dimensione",
+            JOptionPane.QUESTION_MESSAGE,
+            null,
+            opzioni,
+            sceltaCorrente
+        );
+
+        if (scelta != null) {
+            int nuovaLunghezza = Integer.parseInt(scelta);
+            if (nuovaLunghezza != COLONNE) {
+                Controller.setNumCaratteri(nuovaLunghezza);
+                COLONNE = Controller.getNumCaratteri();
+                btnCambiaLunghezza.setText("Lunghezza: " + COLONNE);
+                ricostruisciGriglia();
+                gestisciNuovaPartita();
+            }
+        }
+        requestFocusInWindow();
+    }
+
+    private void ricostruisciGriglia() {
+        remove(panelGriglia);
+
+        // Aggiorna COLONNE prendendole dal back-end
+        // e le RIGHE di conseguenza
+        COLONNE = Controller.getNumCaratteri();
+        calcolaRigheInBaseAllaLunghezza();
+
+        panelGriglia = new JPanel(new GridLayout(RIGHE, COLONNE, 6, 6));
+        panelGriglia.setBorder(BorderFactory.createEmptyBorder(5, 40, 5, 40));
+
+        celleGrid = new JLabel[RIGHE][COLONNE];
+        boolean isNotte = tglModalita.isSelected();
+        Color coloreBordoCella = isNotte ? BORDO_CELLA_NOTTE : BORDO_CELLA_GIORNO;
+        Color coloreSfondo = isNotte ? SFONDO_NOTTE : SFONDO_GIORNO;
+
+        panelGriglia.setBackground(coloreSfondo);
+
+        for (int i = 0; i < RIGHE; i++) {
+            for (int j = 0; j < COLONNE; j++) {
+                JLabel cella = new JLabel("", JLabel.CENTER);
+                cella.setFont(new Font("SansSerif", Font.BOLD, 26));
+                cella.setOpaque(true);
+                cella.setBackground(Color.WHITE);
+                cella.setForeground(new Color(30, 30, 30));
+                cella.setBorder(BorderFactory.createLineBorder(coloreBordoCella, 2));
+
+                celleGrid[i][j] = cella;
+                panelGriglia.add(cella);
+            }
+        }
+
+        add(panelGriglia, BorderLayout.CENTER);
+
+        int nuovaLarghezza = Math.max(620, 400 + (COLONNE * 55));
+        setSize(nuovaLarghezza, RIGHE > 6 ? 980 : 950); 
+        setLocationRelativeTo(null);
+
+        revalidate();
+        repaint();
+    }
+
+    /**
+     * Imposta automaticamente i tentativi standard in base alla lunghezza della parola.
+     * Regola tipica: 
+     * - 5 lettere = 6 tentativi
+     * - 6-7 lettere = 7 tentativi
+     * - 8-9 lettere = 9 tentativi (o a scelta)
+     */
+    private void calcolaRigheInBaseAllaLunghezza() {
+        if (COLONNE == 5) {
+            RIGHE = 6;
+        } else if (COLONNE == 6 || COLONNE == 7) {
+            RIGHE = 7;
+        } else if (COLONNE >= 8) {
+            RIGHE = 9;
+        }
+
+        Controller.setMaxTentativi(RIGHE);
     }
 }

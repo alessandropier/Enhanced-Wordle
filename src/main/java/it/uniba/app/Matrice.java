@@ -1,6 +1,7 @@
 package it.uniba.app;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 /** <<Boundary>> La classe Matrice stampa a video la matrice dei tentativi. */
 public class Matrice {
@@ -30,8 +31,12 @@ public class Matrice {
      */
     public Matrice(final int maxT, final int maxC) {
         tentativi = new ArrayList<>();
+        char[] spaziInizialiArr = new char[maxC];
+        Arrays.fill(spaziInizialiArr, ' ');
+        String spaziIniziali = new String(spaziInizialiArr);
+
         for (int i = 0; i < maxT; i++) {
-            tentativi.add("     ");
+            tentativi.add(spaziIniziali);
         }
         colori = new ArrayList<>(maxT);
         for (int i = 0; i < maxT; i++) {
@@ -48,20 +53,29 @@ public class Matrice {
      * @param maxC Numero massimo di caratteri per parola.
      */
     public void stampaMatrice(final int maxT, final int maxC) {
-        int size = 0;
+        // Usa il minimo tra maxT e la dimensione reale delle liste per evitare IndexOutOfBoundsException
+        int righeDaStampare = Math.min(maxT, Math.min(tentativi.size(), colori.size()));
 
-        for (int i = 0; i < maxT; i++) {
+        for (int i = 0; i < righeDaStampare; i++) {
             System.out.print("[");
             for (int j = 0; j < maxC; j++) {
-                System.out.print(colori.get(i).get(j));
-                System.out.print(ANSI_BLACK
-                 + this.tentativi.get(size).charAt(j));
+                // Controllo di sicurezza sui colori
+                if (i < colori.size() && j < colori.get(i).size()) {
+                    System.out.print(colori.get(i).get(j));
+                }
+                
+                // Stampa del carattere del tentativo in sicurezza
+                if (i < tentativi.size() && j < tentativi.get(i).length()) {
+                    System.out.print(ANSI_BLACK + this.tentativi.get(i).charAt(j));
+                } else {
+                    System.out.print(ANSI_BLACK + ' ');
+                }
+                
                 System.out.print(ANSI_BLACK_BACKGROUND + ANSI_RESET);
                 if (j != maxC - 1) {
                     System.out.print("|");
                 }
             }
-            size++;
             System.out.println("]");
         }
     }
@@ -74,12 +88,14 @@ public class Matrice {
     public void impostaColore(final ArrayList<Integer> esito,
      final int tentativo) {
         for (int i = 0; i < esito.size(); i++) {
-            if (esito.get(i) == 1) {
-                colori.get(tentativo).set(i, ANSI_GREEN_BACKGROUND);
-            } else if (esito.get(i) == 0) {
-                colori.get(tentativo).set(i, ANSI_YELLOW_BACKGROUND);
-            } else {
-                colori.get(tentativo).set(i, ANSI_GRAY_BACKGROUND);
+            if (tentativo < colori.size() && i < colori.get(tentativo).size()) {
+                if (esito.get(i) == 1) {
+                    colori.get(tentativo).set(i, ANSI_GREEN_BACKGROUND);
+                } else if (esito.get(i) == 0) {
+                    colori.get(tentativo).set(i, ANSI_YELLOW_BACKGROUND);
+                } else {
+                    colori.get(tentativo).set(i, ANSI_GRAY_BACKGROUND);
+                }
             }
         }
     }
@@ -90,22 +106,35 @@ public class Matrice {
      * @param parola Parola inserita come tentativo.
      */
     public void setTentativi(final int tentativo, final String parola) {
-        tentativi.set(tentativo, parola);
+        if (tentativo >= 0 && tentativo < tentativi.size()) {
+            tentativi.set(tentativo, parola);
+        }
     }
 
     /**
-     * Permette di azzerare i tentativi nella matrice.
-     * @param maxC Numero massimo di caratteri per parola.
+     * Permette di azzerare e ridimensionare i tentativi e i colori nella matrice.
+     * @param maxT Numero massimo di tentativi (righe).
+     * @param maxC Numero massimo di caratteri per parola (colonne).
      */
-    public void azzera(final int maxC) {
+    public void azzera(final int maxT, final int maxC) {
+        char[] spaziVuotiArr = new char[maxC];
+        Arrays.fill(spaziVuotiArr, ' ');
+        String spaziVuoti = new String(spaziVuotiArr);
 
-        for (int i = 0; i < tentativi.size(); i++) {
-            tentativi.set(i, "     ");
+        // Ricrea completamente la lista dei tentativi con le nuove righe e colonne
+        tentativi.clear();
+        for (int i = 0; i < maxT; i++) {
+            tentativi.add(spaziVuoti);
         }
-        for (int i = 0; i < colori.size(); i++) {
+        
+        // Ricrea completamente la matrice dei colori con le nuove dimensioni (maxT x maxC)
+        colori.clear();
+        for (int i = 0; i < maxT; i++) {
+            ArrayList<String> rigaColori = new ArrayList<>();
             for (int j = 0; j < maxC; j++) {
-                colori.get(i).set(j, "");
+                rigaColori.add("");
             }
+            colori.add(rigaColori);
         }
     }
 
