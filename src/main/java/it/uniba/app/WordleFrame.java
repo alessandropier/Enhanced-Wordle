@@ -77,11 +77,11 @@ public class WordleFrame extends JFrame {
         this.paroliere = p;
         this.matrice = m;
 
-        RIGHE = Controller.getMaxTentativi();
         COLONNE = Controller.getNumCaratteri();
+        calcolaRigheInBaseAllaLunghezza();
 
         setTitle("Wordle Java");
-        setSize(Math.max(620, 400 + (COLONNE * 55)), 950); // Altezza portata a 950 per renderla più alta e consistente
+        setSize(Math.max(620, 400 + (COLONNE * 55)), 950);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
         setLayout(new BorderLayout(0, 0));
@@ -99,7 +99,6 @@ public class WordleFrame extends JFrame {
         styleButton(btnCambiaLunghezza);
         btnCambiaLunghezza.setPreferredSize(new Dimension(130, 32));
         btnCambiaLunghezza.addActionListener(e -> mostraDialogSelezioneLunghezza());
-        // Aggiungilo al panelBottoni (es. prima o dopo il toggle Notte/Giorno)
         panelBottoni.add(btnCambiaLunghezza);
 
         styleButton(btnNuovaPartita);
@@ -152,18 +151,15 @@ public class WordleFrame extends JFrame {
 
         panelTastiera = creaPannelloTastiera();
 
-        // Creazione del bottone circolare "AIUTO" con la 'i' blu (reso leggermente più piccolo: 32x32)
         btnAiuto = new JButton("i") {
             @Override
             protected void paintComponent(Graphics g) {
                 Graphics2D g2 = (Graphics2D) g.create();
                 g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
                 
-                // Sfondo del cerchio (azzurro/blu)
                 g2.setColor(getModel().isRollover() ? new Color(41, 128, 185) : new Color(52, 152, 219));
                 g2.fillOval(0, 0, getWidth() - 1, getHeight() - 1);
                 
-                // Testo 'i' bianco al centro
                 g2.setColor(Color.WHITE);
                 g2.setFont(new Font("SansSerif", Font.BOLD, 15));
                 FontMetrics fm = g2.getFontMetrics();
@@ -175,7 +171,6 @@ public class WordleFrame extends JFrame {
 
             @Override
             protected void paintBorder(Graphics g) {
-                // Nessun bordo standard rettangolare
             }
         };
         btnAiuto.setPreferredSize(new Dimension(32, 32));
@@ -269,6 +264,7 @@ public class WordleFrame extends JFrame {
             + "</table>"
             + "<h3 style='color: " + h3ColorHex + "; font-size: 17pt; margin-top: 12px; margin-bottom: 6px;'>2. Guida all'Interfaccia e Bottoni</h3>"
             + "<table style='width: 100%; font-family: SansSerif; font-size: 14pt; color: " + textColorHex + ";'>"
+            + "<tr><td style='width: 160px; font-weight: bold; vertical-align: top;'>Lunghezza:</td><td>Scegli la lunghezza della parola da indovinare.</td></tr>"
             + "<tr><td style='width: 160px; font-weight: bold; vertical-align: top;'>NUOVA:</td><td>Avvia una nuova partita.</td></tr>"
             + "<tr><td style='font-weight: bold; vertical-align: top;'>ARRENDITI:</td><td>Rivela la parola segreta.</td></tr>"
             + "<tr><td style='font-weight: bold; vertical-align: top;'>ESCI:</td><td>Chiude l'applicazione.</td></tr>"
@@ -441,7 +437,7 @@ public class WordleFrame extends JFrame {
     }
 
     private void gestisciNuovaPartita() {
-        matrice.azzera(COLONNE);
+        matrice.azzera(RIGHE, COLONNE);
         giocatore.setTentativi(0);
         paroliere.setParolaSegreta(null);
         hasWon = false;
@@ -670,7 +666,7 @@ public class WordleFrame extends JFrame {
     }
 
     private void mostraDialogSelezioneLunghezza() {
-        String[] opzioni = {"5", "6", "7", "8"};
+        String[] opzioni = {"5", "6", "7", "8", "9"};
         String sceltaCorrente = String.valueOf(COLONNE);
         
         String scelta = (String) JOptionPane.showInputDialog(
@@ -699,6 +695,11 @@ public class WordleFrame extends JFrame {
     private void ricostruisciGriglia() {
         remove(panelGriglia);
 
+        // Aggiorna COLONNE prendendole dal back-end
+        // e le RIGHE di conseguenza
+        COLONNE = Controller.getNumCaratteri();
+        calcolaRigheInBaseAllaLunghezza();
+
         panelGriglia = new JPanel(new GridLayout(RIGHE, COLONNE, 6, 6));
         panelGriglia.setBorder(BorderFactory.createEmptyBorder(5, 40, 5, 40));
 
@@ -726,10 +727,29 @@ public class WordleFrame extends JFrame {
         add(panelGriglia, BorderLayout.CENTER);
 
         int nuovaLarghezza = Math.max(620, 400 + (COLONNE * 55));
-        setSize(nuovaLarghezza, 950); // Mantiene l'altezza consistente a 950
+        setSize(nuovaLarghezza, RIGHE > 6 ? 980 : 950); 
         setLocationRelativeTo(null);
 
         revalidate();
         repaint();
+    }
+
+    /**
+     * Imposta automaticamente i tentativi standard in base alla lunghezza della parola.
+     * Regola tipica: 
+     * - 5 lettere = 6 tentativi
+     * - 6-7 lettere = 7 tentativi
+     * - 8-9 lettere = 9 tentativi (o a scelta)
+     */
+    private void calcolaRigheInBaseAllaLunghezza() {
+        if (COLONNE == 5) {
+            RIGHE = 6;
+        } else if (COLONNE == 6 || COLONNE == 7) {
+            RIGHE = 7;
+        } else if (COLONNE >= 8) {
+            RIGHE = 9;
+        }
+
+        Controller.setMaxTentativi(RIGHE);
     }
 }

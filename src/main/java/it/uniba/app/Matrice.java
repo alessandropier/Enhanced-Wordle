@@ -53,20 +53,29 @@ public class Matrice {
      * @param maxC Numero massimo di caratteri per parola.
      */
     public void stampaMatrice(final int maxT, final int maxC) {
-        int size = 0;
+        // Usa il minimo tra maxT e la dimensione reale delle liste per evitare IndexOutOfBoundsException
+        int righeDaStampare = Math.min(maxT, Math.min(tentativi.size(), colori.size()));
 
-        for (int i = 0; i < maxT; i++) {
+        for (int i = 0; i < righeDaStampare; i++) {
             System.out.print("[");
             for (int j = 0; j < maxC; j++) {
-                System.out.print(colori.get(i).get(j));
-                System.out.print(ANSI_BLACK
-                 + this.tentativi.get(size).charAt(j));
+                // Controllo di sicurezza sui colori
+                if (i < colori.size() && j < colori.get(i).size()) {
+                    System.out.print(colori.get(i).get(j));
+                }
+                
+                // Stampa del carattere del tentativo in sicurezza
+                if (i < tentativi.size() && j < tentativi.get(i).length()) {
+                    System.out.print(ANSI_BLACK + this.tentativi.get(i).charAt(j));
+                } else {
+                    System.out.print(ANSI_BLACK + ' ');
+                }
+                
                 System.out.print(ANSI_BLACK_BACKGROUND + ANSI_RESET);
                 if (j != maxC - 1) {
                     System.out.print("|");
                 }
             }
-            size++;
             System.out.println("]");
         }
     }
@@ -79,12 +88,14 @@ public class Matrice {
     public void impostaColore(final ArrayList<Integer> esito,
      final int tentativo) {
         for (int i = 0; i < esito.size(); i++) {
-            if (esito.get(i) == 1) {
-                colori.get(tentativo).set(i, ANSI_GREEN_BACKGROUND);
-            } else if (esito.get(i) == 0) {
-                colori.get(tentativo).set(i, ANSI_YELLOW_BACKGROUND);
-            } else {
-                colori.get(tentativo).set(i, ANSI_GRAY_BACKGROUND);
+            if (tentativo < colori.size() && i < colori.get(tentativo).size()) {
+                if (esito.get(i) == 1) {
+                    colori.get(tentativo).set(i, ANSI_GREEN_BACKGROUND);
+                } else if (esito.get(i) == 0) {
+                    colori.get(tentativo).set(i, ANSI_YELLOW_BACKGROUND);
+                } else {
+                    colori.get(tentativo).set(i, ANSI_GRAY_BACKGROUND);
+                }
             }
         }
     }
@@ -95,21 +106,22 @@ public class Matrice {
      * @param parola Parola inserita come tentativo.
      */
     public void setTentativi(final int tentativo, final String parola) {
-        tentativi.set(tentativo, parola);
+        if (tentativo >= 0 && tentativo < tentativi.size()) {
+            tentativi.set(tentativo, parola);
+        }
     }
 
     /**
      * Permette di azzerare e ridimensionare i tentativi e i colori nella matrice.
-     * @param maxC Numero massimo di caratteri per parola.
+     * @param maxT Numero massimo di tentativi (righe).
+     * @param maxC Numero massimo di caratteri per parola (colonne).
      */
-    public void azzera(final int maxC) {
-        int maxT = tentativi.size(); // Mantiene il numero di tentativi attuale
-        
+    public void azzera(final int maxT, final int maxC) {
         char[] spaziVuotiArr = new char[maxC];
         Arrays.fill(spaziVuotiArr, ' ');
         String spaziVuoti = new String(spaziVuotiArr);
 
-        // Ricrea completamente la lista dei tentativi con la nuova lunghezza maxC
+        // Ricrea completamente la lista dei tentativi con le nuove righe e colonne
         tentativi.clear();
         for (int i = 0; i < maxT; i++) {
             tentativi.add(spaziVuoti);

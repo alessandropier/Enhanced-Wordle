@@ -1,7 +1,6 @@
 package it.uniba.app;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 import java.io.BufferedReader;
@@ -15,7 +14,7 @@ import java.io.InputStreamReader;
  * */
 public final class Controller {
     /**Numero massimo di tentativi.*/
-    private static final int MAXTENTATIVI = 6;
+    private static int MAXTENTATIVI = 6;
     /**Numero massimo di caratteri.*/
     private static int NUMCARATTERI = 5;
     /**Indica se è in corso una partita. */
@@ -30,11 +29,21 @@ public final class Controller {
 
     /**
      * Imposta la lunghezza dei caratteri desiderata per la partita.
-     * @param num numero di caratteri (es. da 5 a 8)
+     * @param num numero di caratteri (es. da 5 a 9)
      */
     public static void setNumCaratteri(final int num) {
-        if (num >= 5 && num <= 8) {
+        if (num >= 5 && num <= 9) {
             NUMCARATTERI = num;
+        }
+    }
+
+    /**
+     * Imposta il numero massimo di tentativi desiderato per la partita.
+     * @param num numero di tentativi (es. da 6 a 10)
+     */
+    public static void setMaxTentativi(final int num) {
+        if (num >= 6 && num <= 10) {
+            MAXTENTATIVI = num;
         }
     }
 
@@ -128,7 +137,7 @@ public final class Controller {
             + " Impossibile giocare.");
         } else if (g.getTentativi() == 0) {
             // Reset della matrice
-            m.azzera(NUMCARATTERI);
+            m.azzera(MAXTENTATIVI, NUMCARATTERI);
             //Stampa della matrice dei tentativi
             m.stampaMatrice(MAXTENTATIVI, NUMCARATTERI);
 
@@ -312,7 +321,7 @@ public final class Controller {
                     System.out.println("La parola segreta era: " + "\u001B[1m" + "\u001B[31m" + p.getParolaSegreta() + "\n" + "\u001B[0m" + "\u001B[0m");
                     p.setParolaSegreta(null);
                     g.setTentativi(0);
-                    m.azzera(NUMCARATTERI);
+                    m.azzera(MAXTENTATIVI, NUMCARATTERI);
                     flagGioca = false;
                     System.out.println("Partita abbandonata con successo.");
                 } else if (risposta.equals("NO")) {
