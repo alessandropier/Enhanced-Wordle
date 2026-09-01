@@ -8,7 +8,7 @@ Subsequently, I continued the project to integrate additional features such as:
 - **Complete _User Interface_** built with _Java Swing_ and _FlatLaf_.
 - A **persistent UI theme preference** system that allows users to toggle between _day and night modes_, automatically saving their selection across sessions.
 - A **custom dictionary** feature that enables users to add new words and expand the game's vocabulary.
-- **Dynamic difficulty selection** featuring variable _word lengths_ and _attempt rules_.
+- **Dynamic difficulty selection** featuring variable _word lengths_ and _number of attempts_.
 
 ## 🕹️ Playing the Game
 
