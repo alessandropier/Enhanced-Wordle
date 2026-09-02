@@ -28,8 +28,23 @@ public final class Controller {
      *  La chiave è la lunghezza della parola (es. 5, 6...), il valore è il set delle parole. */
     private static final java.util.Map<Integer, java.util.Set<String>> CACHE_CONSENTITE = new java.util.HashMap<>();
 
+    private static String linguaCorrente = "ITA";
+
     /**Costruttore. */
     private Controller() {
+    }
+
+    public static void setLingua(final String lingua) {
+    if (lingua != null && !lingua.trim().isEmpty()) {
+            linguaCorrente = lingua.trim().toUpperCase();
+            // Eventuale pulizia delle cache se cambi lingua a runtime, 
+            // così ricarica i file dalla nuova cartella!
+            CACHE_CONSENTITE.clear();
+        }
+    }
+
+    public static String getLingua() {
+        return linguaCorrente;
     }
 
     /**
@@ -391,7 +406,7 @@ public final class Controller {
                 List<String> words = new ArrayList<>();
                 
                 // 1. Carica il file dinamico in base alla lunghezza (es. parole_5.txt, parole_6.txt)
-                String nomeFileInterno = "parole_" + NUMCARATTERI + ".txt";
+                String nomeFileInterno = linguaCorrente + "/parole_" + NUMCARATTERI + ".txt";
                 InputStream inputStream = App.class.getClassLoader().getResourceAsStream(nomeFileInterno);
                 
                 if (inputStream == null) {
@@ -588,7 +603,7 @@ public final class Controller {
      */
     private static java.io.File getFileParoleExtra() {
         String userHome = System.getProperty("user.home");
-        java.io.File dir = new java.io.File(userHome, ".wordle_data");
+        java.io.File dir = new java.io.File(userHome, ".wordle_data" + java.io.File.separator + linguaCorrente);
         if (!dir.exists()) {
             dir.mkdirs();
         }
@@ -630,7 +645,7 @@ public final class Controller {
         }
 
         java.util.Set<String> setParole = new java.util.HashSet<>();
-        String nomeFile = "parole_consentite_" + lunghezza + ".txt";
+        String nomeFile = linguaCorrente + "/parole_consentite_" + lunghezza + ".txt";
         
         InputStream inputStream = App.class.getClassLoader().getResourceAsStream(nomeFile);
         if (inputStream != null) {
