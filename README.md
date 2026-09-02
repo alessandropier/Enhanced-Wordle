@@ -1,7 +1,7 @@
 # Enhanced Wordle Offline IT 
 [![Build and Publish Release](https://github.com/alessandropier/Wordle/actions/workflows/ingsw2122.yml/badge.svg)](https://github.com/alessandropier/Wordle/actions/workflows/ingsw2122.yml) [![Coverage Status](https://coveralls.io/repos/github/alessandropier/Wordle/badge.svg?branch=v1.0)](https://coveralls.io/github/alessandropier/Wordle?branch=v1.0)
 
-#### A fully featured, offline desktop implementation of the Wordle game in Italian. Built from scratch with Java Swing, it showcases dynamic difficulty with variable word lengths and number of attempts, custom vocabularies management, custom UI rendering and various hints.
+#### A fully featured, offline desktop implementation of the Wordle game in Italian built with Java Swing, featuring dynamic difficulty with variable word lengths and attempts, custom vocabulary management, custom UI rendering and an advanced hint system.
 
 ---
 
