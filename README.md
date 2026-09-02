@@ -1,15 +1,19 @@
-# Enhanced Wordle Offline
+# Enhanced Wordle Offline IT 
 [![Build and Publish Release](https://github.com/alessandropier/Wordle/actions/workflows/ingsw2122.yml/badge.svg)](https://github.com/alessandropier/Wordle/actions/workflows/ingsw2122.yml) [![Coverage Status](https://coveralls.io/repos/github/alessandropier/Wordle/badge.svg?branch=v1.0)](https://coveralls.io/github/alessandropier/Wordle?branch=v1.0)
 
-Initially, this started as a repository for the implementation of the _Wordle_ game _(in Italian)_ via Command Line Interface _(CLI)_ created during the _Software Engineering_ course using the _Agile SCRUM_ framework and using _GitHub Actions_ for _CI/CD_.
+#### A fully featured, offline desktop implementation of the Wordle game in Italian. Built from scratch with Java Swing, it showcases dynamic difficulty with variable word lengths and number of attempts, custom vocabularies management, custom UI rendering and various hints.
+
+---
+
+Initially, this started as a repository for the implementation of the _Wordle_ game _(in Italian)_ via Command Line Interface _(CLI)_ for my _Software Engineering_ university course using the _Agile SCRUM_ framework and _GitHub Actions_ for _CI/CD_.
 
 Subsequently, I continued the project to integrate additional features such as:
-- **Automatic** and **_random generation_** of the _word to guess_ using a _built in dictionary_.
 - **Complete _User Interface_** built with _Java Swing_ and _FlatLaf_.
 - A **persistent UI theme preference** system that allows users to toggle between _day and night modes_, automatically saving their selection across sessions.
-- A **custom dictionary** feature that enables users to add new words and expand the game's vocabulary.
+- **Automatic** and **_random generation_** of the _word to guess_ using _built in dictionaries_.
+- **Custom dictionaries** feature that enables users to add new words and expand the game's vocabularies.
 - **Dynamic difficulty selection** featuring variable _word lengths_ and _number of attempts_.
-- **Hints** to the user, randomly selected from _3 categories_ based on their current context.
+- **Hints** given to the user, randomly selected from _3 categories_ based on their current context.
 
 ## 🕹️ Playing the Game
 
