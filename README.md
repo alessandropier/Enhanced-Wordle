@@ -36,7 +36,7 @@ Subsequently, I continued the project to integrate additional features such as:
    * **Hint** button bottom left: if available, provides a hint to the user.
    * **i (info)** button bottom right: Click this button to open an info pop-up to explain the UI and how to play Wordle.
 
-## 🎮 Starting the Game
+## 🎮 Downloading and Starting the Game
 The game is distributed as an executable `.jar` file. To launch Wordle, make sure you have **Java (JRE/JDK 11 or higher)** installed.
 
 ### 💻 Windows, Linux and Mac
