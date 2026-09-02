@@ -9,6 +9,7 @@ Subsequently, I continued the project to integrate additional features such as:
 - A **persistent UI theme preference** system that allows users to toggle between _day and night modes_, automatically saving their selection across sessions.
 - A **custom dictionary** feature that enables users to add new words and expand the game's vocabulary.
 - **Dynamic difficulty selection** featuring variable _word lengths_ and _number of attempts_.
+- **Hints** to the user, randomly selected from _3 categories_ based on their current context.
 
 ## 🕹️ Playing the Game
 
@@ -30,9 +31,12 @@ Subsequently, I continued the project to integrate additional features such as:
 3. **Customization, Themes & System**
    * **"Notte/Giorno" (Dark/Light Mode)**: Click this toggle button to switch between the dark theme and the light theme of the user interface for a comfortable playing experience.
    * **"Aggiungi parola" (Add Word)**: Click this button to open a dedicated input prompt where you can type and add a new custom word directly to your game dictionary saved locally (`parole_extra.txt`).
+
+4. **Hint & Info**
+   * **Hint** button bottom left: if available, provides a hint to the user.
    * **i (info)** button bottom right: Click this button to open an info pop-up to explain the UI and how to play Wordle.
 
-## 🎮 Starting the Game
+## 🎮 Downloading and Starting the Game
 The game is distributed as an executable `.jar` file. To launch Wordle, make sure you have **Java (JRE/JDK 11 or higher)** installed.
 
 ### 💻 Windows, Linux and Mac
@@ -49,13 +53,12 @@ If the window appears scaled incorrectly on your operating system, you can force
   ./avvia_wordle.sh
   ```
 
-## 💡 Future Developments Ideas
-1. Check if the guess is an Italian word by using a dictionary of all 5-letter Italian words.
-2. Add a light bulb button that provides a hint to the user (only once per game).
+## 💡 Future Development Ideas
+- Check if the guess is an _Italian word_ by using a _dictionary_ of all _N-letter_ Italian words.
 
 ## 📄 Where is the Custom Dictionary saved?
 
-The custom dictionary is both _read_ and _written_; therefore, a text file called _"parole_extra.txt" (extra words)_ is created. It is saved in the hidden _user.home_ directory depending on your operating system. 
+The custom dictionary is both read from and written to; therefore, a text file named 'parole_extra_N.txt' (extra words) is created, where N represents the number of characters. It is saved in the hidden _user.home_ directory depending on your operating system. 
 - **Windows**: \Users\YourUserName\\.wordle_data\parole_extra.txt
 - **macOS**: /Users/YourUserName/.wordle_data/parole_extra.txt
 - **Linux**: /home/YourUserName/.wordle_data/parole_extra.txt

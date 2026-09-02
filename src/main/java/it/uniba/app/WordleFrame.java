@@ -48,6 +48,9 @@ public class WordleFrame extends JFrame {
 
     private JButton btnCambiaLunghezza;
 
+    private JButton btnHint;
+    private boolean hintUtilizzato = false;
+
     private int rigaCorrente = 0;
     private int colonnaCorrente = 0;
 
@@ -71,6 +74,10 @@ public class WordleFrame extends JFrame {
     private final Color TESTO_BOTTONE_GIORNO = new Color(30, 30, 30);
     private final Color BORDO_BOTTONE_GIORNO = new Color(180, 180, 180);
     private final Color BORDO_CELLA_GIORNO = new Color(200, 204, 208);
+
+    // Tasti bloccati dall'hint
+    private final java.util.Set<Character> tastiOscuratiHint = new java.util.HashSet<>();
+    private final java.util.Set<Character> tastiHintSpeciali = new java.util.HashSet<>();
 
     public WordleFrame(final Giocatore g, final Paroliere p, final Matrice m) {
         this.giocatore = g;
@@ -151,6 +158,7 @@ public class WordleFrame extends JFrame {
 
         panelTastiera = creaPannelloTastiera();
 
+        // Configurazione Bottone Aiuto (icona 'i')
         btnAiuto = new JButton("i") {
             @Override
             protected void paintComponent(Graphics g) {
@@ -170,8 +178,7 @@ public class WordleFrame extends JFrame {
             }
 
             @Override
-            protected void paintBorder(Graphics g) {
-            }
+            protected void paintBorder(Graphics g) {}
         };
         btnAiuto.setPreferredSize(new Dimension(32, 32));
         btnAiuto.setFocusPainted(false);
@@ -181,14 +188,61 @@ public class WordleFrame extends JFrame {
         btnAiuto.setToolTipText("Aiuto & Regole");
         btnAiuto.addActionListener(e -> mostraAiuto(false));
 
-        JPanel panelAiutoContainer = new JPanel(new FlowLayout(FlowLayout.RIGHT, 15, 2));
+        // Configurazione Bottone Hint (Lampadina 💡)
+        btnHint = new JButton() {
+            @Override
+            protected void paintComponent(Graphics g) {
+                Graphics2D g2 = (Graphics2D) g.create();
+                g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+                
+                if (!isEnabled()) {
+                    g2.setColor(new Color(150, 150, 150)); // Grigio se disabilitato
+                } else {
+                    g2.setColor(getModel().isRollover() ? new Color(241, 196, 15) : new Color(243, 156, 18)); // Toni oro/giallo
+                }
+                g2.fillOval(0, 0, getWidth() - 1, getHeight() - 1);
+                
+                g2.setColor(Color.WHITE);
+                g2.setFont(new Font("SansSerif", Font.BOLD, 15));
+                FontMetrics fm = g2.getFontMetrics();
+                String simbolo = "💡";
+                int x = (getWidth() - fm.stringWidth(simbolo)) / 2;
+                int y = (getHeight() - fm.getHeight()) / 2 + fm.getAscent();
+                g2.drawString(simbolo, x, y);
+                g2.dispose();
+            }
+
+            @Override
+            protected void paintBorder(Graphics g) {}
+        };
+        btnHint.setPreferredSize(new Dimension(32, 32));
+        btnHint.setFocusPainted(false);
+        btnHint.setBorderPainted(false);
+        btnHint.setContentAreaFilled(false);
+        btnHint.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnHint.setToolTipText("Richiedi Indizio (Utilizzabile una sola volta)");
+        btnHint.addActionListener(e -> gestisciHint());
+
+        // --- CONTAINER IN BASSO CON HINT A SINISTRA E AIUTO A DESTRA ---
+        JPanel panelInferioreExtra = new JPanel(new BorderLayout());
+        panelInferioreExtra.setOpaque(false);
+        panelInferioreExtra.setBorder(BorderFactory.createEmptyBorder(0, 15, 5, 15));
+
+        JPanel panelHintContainer = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 0));
+        panelHintContainer.setOpaque(false);
+        panelHintContainer.add(btnHint);
+
+        JPanel panelAiutoContainer = new JPanel(new FlowLayout(FlowLayout.RIGHT, 0, 0));
         panelAiutoContainer.setOpaque(false);
         panelAiutoContainer.add(btnAiuto);
+
+        panelInferioreExtra.add(panelHintContainer, BorderLayout.WEST);
+        panelInferioreExtra.add(panelAiutoContainer, BorderLayout.EAST);
 
         panelSud = new JPanel(new BorderLayout());
         panelSud.add(lblParolaSegreta, BorderLayout.NORTH);
         panelSud.add(panelTastiera, BorderLayout.CENTER);
-        panelSud.add(panelAiutoContainer, BorderLayout.SOUTH);
+        panelSud.add(panelInferioreExtra, BorderLayout.SOUTH);
         add(panelSud, BorderLayout.SOUTH);
 
         // --- 4. GESTIONE EVENTI DEI BOTTONI ---
@@ -271,6 +325,7 @@ public class WordleFrame extends JFrame {
             + "<tr><td style='font-weight: bold; vertical-align: top;'>Notte / Giorno:</td><td>Alterna il tema grafico e salva automaticamente la preferenza.</td></tr>"
             + "<tr><td style='font-weight: bold; vertical-align: top;'>AGGIUNGI PAROLA:</td><td>Permette l'inserimento di una nuova parola nel dizionario.</td></tr>"
             + "<tr><td style='font-weight: bold; vertical-align: top;'>AIUTO (icona i):</td><td>Apre questa schermata con le regole e la guida.</td></tr>"
+            + "<tr><td style='font-weight: bold; vertical-align: top;'>HINT (icona 💡):</td><td>Se possibile, fornisce un aiuto all'utente (utilizzabile solo una volta a partita).</td></tr>"
             + "<tr><td style='font-weight: bold; vertical-align: top;'>Tastiera:</td><td>Digita le lettere, premi <b>INVIO</b> per confermare o <b>⌫</b> per cancellare.</td></tr>"
             + "</table>"
             + "</body></html>";
@@ -400,19 +455,65 @@ public class WordleFrame extends JFrame {
             }
         }
 
+        // --- GESTIONE SICURA DELLA TASTIERA ---
         for (java.awt.Component comp : panelTastiera.getComponents()) {
             if (comp instanceof JPanel) {
                 comp.setBackground(coloreSfondo);
                 for (java.awt.Component subComp : ((JPanel) comp).getComponents()) {
                     if (subComp instanceof JButton) {
                         JButton btn = (JButton) subComp;
+                        String testoBtn = btn.getText();
                         Color bgAttuale = btn.getBackground();
-                        if (!bgAttuale.equals(new Color(106, 170, 100)) &&
-                            !bgAttuale.equals(new Color(201, 180, 88)) &&
-                            !bgAttuale.equals(new Color(120, 124, 126))) {
+
+                        // Verifichiamo se il bottone corrisponde a una lettera dell'alfabeto gestita nei nostri dizionari
+                        Character letteraCorrispondente = null;
+                        if (testoBtn != null && testoBtn.length() == 1) {
+                            char c = testoBtn.charAt(0);
+                            if (tastiVirtuali.containsKey(c)) {
+                                letteraCorrispondente = c;
+                            }
+                        }
+
+                        // Se è un tasto funzione speciale (es. "INVIO", "CANC", o simboli)
+                        if (letteraCorrispondente == null) {
                             btn.setBackground(coloreBottoniBg);
                             btn.setForeground(coloreBottoniFg);
                             btn.setBorder(BorderFactory.createLineBorder(coloreBordo, 1));
+                        } 
+                        // Se è un tasto lettera dell'alfabeto
+                        else {
+                            // 1. Se il tasto ha un colore di tentativo standard (verde, giallo, grigio tentativo), lo manteniamo
+                            if (bgAttuale.equals(new Color(106, 170, 100)) ||
+                                bgAttuale.equals(new Color(201, 180, 88)) ||
+                                bgAttuale.equals(new Color(120, 124, 126))) {
+                                // Lascia inalterato
+                            } 
+                            // 2. Se il tasto è stato oscurato dall'Hint 1
+                            else if (tastiOscuratiHint.contains(letteraCorrispondente)) {
+                                // Notte: Grigio molto scuro (quasi nero) per staccare dai tasti normali
+                                // Giorno: Grigio tenue neutro
+                                Color colBgHint = isNotte ? new Color(28, 30, 33) : new Color(215, 218, 222);
+                                
+                                // Testo sbiadito (faded) per dare l'effetto "tasto disabilitato/cancellato"
+                                Color colFgHint = isNotte ? new Color(110, 115, 120) : new Color(130, 135, 140);
+                                Color colBordoHint = isNotte ? new Color(40, 43, 46) : new Color(190, 193, 196);
+
+                                btn.setBackground(colBgHint);
+                                btn.setForeground(colFgHint);
+                                btn.setBorder(BorderFactory.createLineBorder(colBordoHint, 1));
+                            }
+                            // 3. Se il tasto fa parte degli hint speciali (lettera iniziale o presente)
+                            else if (tastiHintSpeciali.contains(letteraCorrispondente)) {
+                                // Mantiene il colore speciale già assegnato senza perdersi
+                                btn.setForeground(Color.WHITE);
+                                btn.setBorder(BorderFactory.createLineBorder(coloreBordo, 1));
+                            } 
+                            // 4. Tasti normali neutri
+                            else {
+                                btn.setBackground(coloreBottoniBg);
+                                btn.setForeground(coloreBottoniFg);
+                                btn.setBorder(BorderFactory.createLineBorder(coloreBordo, 1));
+                            }
                         }
                     }
                 }
@@ -483,6 +584,16 @@ public class WordleFrame extends JFrame {
     }
 
     private void resettaInterfacciaGrafica() {
+        // reset 
+        hintUtilizzato = false;
+        btnHint.setEnabled(true);
+        btnHint.repaint();
+        
+        // --- PULIZIA DEGLI HINT PRECEDENTI ---
+        tastiOscuratiHint.clear();
+        tastiHintSpeciali.clear();
+        // ---
+
         rigaCorrente = 0;
         colonnaCorrente = 0;
         tastieraBloccata = false;
@@ -598,20 +709,23 @@ public class WordleFrame extends JFrame {
             celleGrid[tentativoFatto][j].setForeground(Color.WHITE);
 
             JButton tastoBtn = tastiVirtuali.get(lettera);
-            if (tastoBtn != null) {
-                Color coloreAttuale = tastoBtn.getBackground();
-                boolean aggiorna = true;
-                if (coloreAttuale.equals(new Color(106, 170, 100))) {
-                    aggiorna = false;
-                } else if (coloreAttuale.equals(new Color(201, 180, 88)) && prioritaColore < 3) {
-                    aggiorna = false;
-                }
+            if (tastiOscuratiHint.contains(lettera))
+            {
+                // non fare niente perché significa che quelle lettere sono già state oscurate da un hint
+            } else if (tastoBtn != null) {
+                    Color coloreAttuale = tastoBtn.getBackground();
+                    boolean aggiorna = true;
+                    if (coloreAttuale.equals(new Color(106, 170, 100))) {
+                        aggiorna = false;
+                    } else if (coloreAttuale.equals(new Color(201, 180, 88)) && prioritaColore < 3) {
+                        aggiorna = false;
+                    }
 
-                if (aggiorna) {
-                    tastoBtn.setBackground(coloreCella);
-                    tastoBtn.setForeground(Color.WHITE);
+                    if (aggiorna) {
+                        tastoBtn.setBackground(coloreCella);
+                        tastoBtn.setForeground(Color.WHITE);
+                    }
                 }
-            }
         }
 
         if (tutteVerdi) {
@@ -751,5 +865,253 @@ public class WordleFrame extends JFrame {
         }
 
         Controller.setMaxTentativi(RIGHE);
+    }
+
+    /*
+        Should be easily moved to the Controller.java class but at the moment it's good here.
+        This method heavily interacts with the GUI; therefore, considering the project,
+        it's reasonable to leave it here for the moment. Anyway, the 'heavy' logic could be 
+        easily moved to the Controller class using appropriate 'getter' and 'setter' methods.
+     */
+    private void gestisciHint() {
+        if (hintUtilizzato || tastieraBloccata) {
+            return;
+        }
+
+        String parolaSegreta = paroliere.getParolaSegreta();
+        if (parolaSegreta == null || parolaSegreta.isEmpty()) {
+            return;
+        }
+
+        java.util.Random rand = new java.util.Random();
+        
+        // 1. Verifica se la prima lettera è stata già trovata (verde nella prima colonna)
+        char primaLettera = parolaSegreta.charAt(0);
+        boolean primaLetteraGiaTrovata = false;
+        for (int i = 0; i < rigaCorrente; i++) {
+            if (i < matrice.getColoriList().size() && !matrice.getColoriList().get(i).isEmpty()) {
+                String coloreANSI = matrice.getColoriList().get(i).get(0);
+                if (coloreANSI.equals("\u001B[42m") && celleGrid[i][0].getText().equalsIgnoreCase(String.valueOf(primaLettera))) {
+                    primaLetteraGiaTrovata = true;
+                    break;
+                }
+            }
+        }
+
+        // 2. Calcola le lettere conosciute/escluse per verificare la disponibilità dell'HINT 1
+        java.util.Set<Character> lettereConosciuteHint1 = new java.util.HashSet<>(tastiHintSpeciali);
+        lettereConosciuteHint1.addAll(tastiOscuratiHint);
+        for (int i = 0; i < rigaCorrente; i++) {
+            if (i < matrice.getTentativiList().size() && i < matrice.getColoriList().size()) {
+                String tentativo = matrice.getTentativiList().get(i);
+                java.util.List<String> colori = matrice.getColoriList().get(i);
+                for (int j = 0; j < tentativo.length(); j++) {
+                    if (j < colori.size()) {
+                        lettereConosciuteHint1.add(tentativo.charAt(j));
+                    }
+                }
+            }
+        }
+
+        java.util.List<Character> lettereErrateIgnotite = new java.util.ArrayList<>();
+        for (char c = 'A'; c <= 'Z'; c++) {
+            if (parolaSegreta.indexOf(c) == -1 && !lettereConosciuteHint1.contains(c)) {
+                lettereErrateIgnotite.add(c);
+            }
+        }
+
+        // 3. Calcola le lettere conosciute (verdi/gialle) per verificare la disponibilità dell'HINT 3
+        java.util.Set<Character> lettereConosciuteHint3 = new java.util.HashSet<>(tastiHintSpeciali);
+        for (int i = 0; i < rigaCorrente; i++) {
+            if (i < matrice.getTentativiList().size() && i < matrice.getColoriList().size()) {
+                String tentativo = matrice.getTentativiList().get(i);
+                java.util.List<String> colori = matrice.getColoriList().get(i);
+                for (int j = 0; j < tentativo.length(); j++) {
+                    if (j < colori.size()) {
+                        String col = colori.get(j);
+                        if (col.equals("\u001B[42m") || col.equals("\u001B[103m")) {
+                            lettereConosciuteHint3.add(tentativo.charAt(j));
+                        }
+                    }
+                }
+            }
+        }
+
+        java.util.List<Character> letterePresentiIgnotite = new java.util.ArrayList<>();
+        for (int i = 0; i < parolaSegreta.length(); i++) {
+            char c = parolaSegreta.charAt(i);
+            if (!letterePresentiIgnotite.contains(c) && !lettereConosciuteHint3.contains(c)) {
+                letterePresentiIgnotite.add(c);
+            }
+        }
+
+        // 4. Costruiamo dinamicamente la lista degli hint validi PRIMA di estrarre
+        java.util.List<Integer> hintDisponibili = new java.util.ArrayList<>();
+        
+        if (!lettereErrateIgnotite.isEmpty()) {
+            hintDisponibili.add(1); // Valido se ci sono ancora lettere errate ignote da poter escludere
+        }
+        
+        if (!primaLetteraGiaTrovata) {
+            hintDisponibili.add(2); // Valido solo se la prima lettera non è stata trovata
+        }
+        
+        if (!letterePresentiIgnotite.isEmpty()) {
+            hintDisponibili.add(3); // Valido solo se ci sono ancora lettere presenti ignote da mostrare
+        }
+
+        // for debugging
+        // System.out.println("HINTS DISPONIBILI: " + hintDisponibili);
+
+        if (hintDisponibili.isEmpty()) {
+            boolean isNotte = tglModalita.isSelected();
+            String messaggioNessunHint = "<b>Nessun Indizio Disponibile!</b><br><br>"
+                    + "Hai già scoperto o escluso tutte le informazioni possibili.<br>"
+                    + "Non ci sono hint applicabili in questo momento!";
+            
+            mostraGraficaHintDialog(messaggioNessunHint, isNotte);
+            
+            // Manteniamo comunque bloccato il bottone dell'hint se non ci sono più opzioni
+            hintUtilizzato = true;
+            btnHint.setEnabled(false);
+            btnHint.repaint();
+            requestFocusInWindow();
+            return;
+        }
+
+        // 5. Estraiamo casualmente l'hint scegliendo SOLO tra quelli realmente disponibili
+        int tipoHint = hintDisponibili.get(rand.nextInt(hintDisponibili.size()));
+
+        String messaggioDialogo = "";
+        boolean isNotte = tglModalita.isSelected();
+
+        switch (tipoHint) {
+            case 1:
+                // --- HINT 1: Esclusione di lettere errate ignote ---
+                java.util.Collections.shuffle(lettereErrateIgnotite, rand);
+
+                int conteggioScartate = 0;
+                for (char c : lettereErrateIgnotite) {
+                    JButton tasto = tastiVirtuali.get(c);
+                    if (tasto != null) {
+                        tastiOscuratiHint.add(c);
+                        
+                        Color colBgHint = isNotte ? new Color(28, 30, 33) : new Color(215, 218, 222);
+                        Color colFgHint = isNotte ? new Color(110, 115, 120) : new Color(130, 135, 140);
+                        
+                        tasto.setBackground(colBgHint);
+                        tasto.setForeground(colFgHint);
+                        
+                        conteggioScartate++;
+                        if (conteggioScartate == 3) break;
+                    }
+                }
+                
+                // Fallback se le lettere ignote rimaste sono meno di 3
+                if (conteggioScartate < 3) {
+                    java.util.List<Character> alfabetoList = new java.util.ArrayList<>();
+                    for (char c = 'A'; c <= 'Z'; c++) {
+                        if (parolaSegreta.indexOf(c) == -1 && !tastiOscuratiHint.contains(c)) {
+                            alfabetoList.add(c);
+                        }
+                    }
+                    java.util.Collections.shuffle(alfabetoList, rand);
+                    for (char c : alfabetoList) {
+                        JButton tasto = tastiVirtuali.get(c);
+                        if (tasto != null) {
+                            tastiOscuratiHint.add(c);
+                            Color colBgHint = isNotte ? new Color(28, 30, 33) : new Color(215, 218, 222);
+                            Color colFgHint = isNotte ? new Color(110, 115, 120) : new Color(130, 135, 140);
+                            tasto.setBackground(colBgHint);
+                            tasto.setForeground(colFgHint);
+                            conteggioScartate++;
+                            if (conteggioScartate == 3) break;
+                        }
+                    }
+                }
+
+                messaggioDialogo = "<b>Potere della Lampadina: Esclusione!</b><br><br>"
+                        + "Il sistema ha analizzato la parola e ha oscurato <b>nuove lettere</b> "
+                        + "che non fanno parte della parola segreta.";
+                break;
+
+            case 2:
+                // --- HINT 2: Svelare la lettera iniziale ---
+                tastiHintSpeciali.add(primaLettera);
+                
+                JButton tastoIniziale = tastiVirtuali.get(primaLettera);
+                if (tastoIniziale != null) {
+                    tastoIniziale.setBackground(new Color(41, 128, 185));
+                    tastoIniziale.setForeground(Color.WHITE);
+                }
+
+                messaggioDialogo = "<b>Potere della Lampadina: Lettera Iniziale!</b><br><br>"
+                        + "La parola segreta inizia con la lettera: <span style='font-size: 16pt; color: #3498DB;'><b>" + primaLettera + "</b></span><br>"
+                        + "<i>È stata evidenziata in blu sulla tastiera!</i>";
+                break;
+
+            case 3:
+                // --- HINT 3: Mostrare una lettera presente ma NON ANCORA CONOSCIUTA ---
+                java.util.Collections.shuffle(letterePresentiIgnotite, rand);
+                char letteraCasuale = letterePresentiIgnotite.get(0);
+                
+                tastiHintSpeciali.add(letteraCasuale);
+                JButton tastoPresente = tastiVirtuali.get(letteraCasuale);
+                if (tastoPresente != null) {
+                    tastoPresente.setBackground(new Color(212, 172, 13));
+                    tastoPresente.setForeground(Color.WHITE);
+                }
+
+                messaggioDialogo = "<b>Potere della Lampadina: Indizio di Presenza!</b><br><br>"
+                        + "Fai attenzione: la parola segreta contiene sicuramente la lettera: "
+                        + "<span style='font-size: 16pt; color: #D4AC0D;'><b>" + letteraCasuale + "</b></span><br>"
+                        + "<i>È stata evidenziata in giallo speciale sulla tastiera!</i>";
+                break;
+        }
+
+        mostraGraficaHintDialog(messaggioDialogo, isNotte);
+
+        hintUtilizzato = true;
+        btnHint.setEnabled(false);
+        btnHint.repaint();
+        requestFocusInWindow();
+    }
+
+    private void mostraGraficaHintDialog(String htmlTesto, boolean isNotte) {
+        Color bgColore = isNotte ? SFONDO_NOTTE : Color.WHITE;
+        
+        javax.swing.JDialog hintDialog = new javax.swing.JDialog(this, "💡 Indizio Strategico Casuale", true);
+        hintDialog.setLayout(new BorderLayout());
+
+        JPanel panelContenuto = new JPanel(new BorderLayout(15, 15));
+        panelContenuto.setBackground(bgColore);
+        panelContenuto.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
+
+        JLabel lblIcona = new JLabel("💡", JLabel.CENTER);
+        lblIcona.setFont(new Font("SansSerif", Font.PLAIN, 40));
+        
+        String contenutoHtml = "<html><div style='text-align: center; font-family: SansSerif; font-size: 13pt; color: " + (isNotte ? "#DCDCDC" : "#222222") + ";'>"
+                + htmlTesto
+                + "</div></html>";
+
+        JLabel lblTesto = new JLabel(contenutoHtml);
+
+        panelContenuto.add(lblIcona, BorderLayout.NORTH);
+        panelContenuto.add(lblTesto, BorderLayout.CENTER);
+
+        JButton btnOk = new JButton("Ho capito, grazie!");
+        styleButton(btnOk);
+        btnOk.setPreferredSize(new Dimension(160, 35));
+        btnOk.addActionListener(e -> hintDialog.dispose());
+
+        JPanel panelPulsante = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        panelPulsante.setBackground(bgColore);
+        panelPulsante.add(btnOk);
+
+        hintDialog.add(panelContenuto, BorderLayout.CENTER);
+        hintDialog.add(panelPulsante, BorderLayout.SOUTH);
+        hintDialog.pack();
+        hintDialog.setLocationRelativeTo(this);
+        hintDialog.setVisible(true);
     }
 }
