@@ -11,6 +11,7 @@ Subsequently, I continued the project to integrate additional features such as:
 - **Complete _User Interface_** built with _Java Swing_ and _FlatLaf_.
 - A **persistent UI theme preference** system that allows users to toggle between _day and night modes_, automatically saving their selection across sessions.
 - **Automatic** and **_random generation_** of the _word to guess_ using _built in dictionaries_.
+- **Dictionary validation** system that verifies input length, allowed characters, and checks against the _Italian dictionary_ to ensure only _valid words_ are submitted.
 - **Custom dictionaries** feature that enables users to add new words and expand the game's vocabularies.
 - **Dynamic difficulty selection** featuring variable _word lengths_ and _number of attempts_.
 - **Hints** given to the user, randomly selected from _3 categories_ based on their current context.
@@ -58,7 +59,6 @@ If the window appears scaled incorrectly on your operating system, you can force
   ```
 
 ## 💡 Future Development Ideas
-- Check if the guess is an _Italian word_ by using a _dictionary_ of all _N-letter_ Italian words.
 - Implement the English languages as well.
 
 ## 📄 Where is the Custom Dictionary saved?

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
@@ -23,8 +24,27 @@ public final class Controller {
      *  ranom per la parola del Paroliere.*/
     private static final Random RANDOM = new Random();
 
+    /** Cache in memoria per evitare di rileggere i file delle parole consentite ad ogni tentativo. 
+     *  La chiave è la lunghezza della parola (es. 5, 6...), il valore è il set delle parole. */
+    private static final java.util.Map<Integer, java.util.Set<String>> CACHE_CONSENTITE = new java.util.HashMap<>();
+
+    private static String linguaCorrente = "ITA";
+
     /**Costruttore. */
     private Controller() {
+    }
+
+    public static void setLingua(final String lingua) {
+    if (lingua != null && !lingua.trim().isEmpty()) {
+            linguaCorrente = lingua.trim().toUpperCase();
+            // Eventuale pulizia delle cache se cambi lingua a runtime, 
+            // così ricarica i file dalla nuova cartella!
+            CACHE_CONSENTITE.clear();
+        }
+    }
+
+    public static String getLingua() {
+        return linguaCorrente;
     }
 
     /**
@@ -34,6 +54,11 @@ public final class Controller {
     public static void setNumCaratteri(final int num) {
         if (num >= 5 && num <= 9) {
             NUMCARATTERI = num;
+
+            // PRE-CARICAMENTO: Popola la cache in anticipo in background
+            // così quando l'utente farà il primo tentativo sarà già tutto in memoria e evitiamo
+            // qualsiasi rischio di micro-lag (già improbabili).
+            caricaCacheConsentite(NUMCARATTERI);
         }
     }
 
@@ -381,7 +406,7 @@ public final class Controller {
                 List<String> words = new ArrayList<>();
                 
                 // 1. Carica il file dinamico in base alla lunghezza (es. parole_5.txt, parole_6.txt)
-                String nomeFileInterno = "parole_" + NUMCARATTERI + ".txt";
+                String nomeFileInterno = linguaCorrente + "/parole_" + NUMCARATTERI + ".txt";
                 InputStream inputStream = App.class.getClassLoader().getResourceAsStream(nomeFileInterno);
                 
                 if (inputStream == null) {
@@ -578,11 +603,68 @@ public final class Controller {
      */
     private static java.io.File getFileParoleExtra() {
         String userHome = System.getProperty("user.home");
-        java.io.File dir = new java.io.File(userHome, ".wordle_data");
+        java.io.File dir = new java.io.File(userHome, ".wordle_data" + java.io.File.separator + linguaCorrente);
         if (!dir.exists()) {
             dir.mkdirs();
         }
         // Nome del file extra dipendente dalla lunghezza corrente
         return new java.io.File(dir, "parole_extra_" + NUMCARATTERI + ".txt");
+    }
+
+    /**
+     * Verifica se una parola è presente nel dizionario delle parole consentite,
+     * sfruttando una cache in memoria per le performance.
+     * @param parola parola da verificare
+     * @return true se consentita, false altrimenti
+     */
+    public static boolean isConsentita(String parola) {
+        if (parola == null) {
+            return false;
+        }
+        parola = parola.trim().toUpperCase();
+        int lunghezza = parola.length();
+        
+        // Assicuriamoci che la cache per questa lunghezza esista (fallback di sicurezza)
+        // altrimenti la carichiamo
+        if (!CACHE_CONSENTITE.containsKey(lunghezza)) {
+            caricaCacheConsentite(lunghezza);
+        }
+        
+        // Controllo istantaneo in O(1)
+        return CACHE_CONSENTITE.get(lunghezza).contains(parola);
+    }
+
+    /**
+     * Carica in anticipo il file delle parole consentite nella cache per una data lunghezza.
+     * @param lunghezza lunghezza della parola
+     */
+    private static void caricaCacheConsentite(int lunghezza) {
+        // Se è già presente in cache, evitiamo di ricaricarlo inutilmente
+        if (CACHE_CONSENTITE.containsKey(lunghezza)) {
+            return;
+        }
+
+        java.util.Set<String> setParole = new java.util.HashSet<>();
+        String nomeFile = linguaCorrente + "/parole_consentite_" + lunghezza + ".txt";
+        
+        InputStream inputStream = App.class.getClassLoader().getResourceAsStream(nomeFile);
+        if (inputStream != null) {
+            try (BufferedReader br = new BufferedReader(new InputStreamReader(inputStream, StandardCharsets.UTF_8))) {
+                String linea;
+                while ((linea = br.readLine()) != null) {
+                    linea = linea.trim().toUpperCase();
+                    if (linea.length() == lunghezza) {
+                        setParole.add(linea);
+                    }
+                }
+            } catch (IOException e) {
+                System.err.println("Errore lettura file consentite " + nomeFile + ": " + e.getMessage());
+            }
+        } else {
+            System.err.println("File delle parole consentite non trovato nelle risorse: " + nomeFile);
+        }
+        
+        // Salviamo il set nella cache statica
+        CACHE_CONSENTITE.put(lunghezza, setParole);
     }
 }
