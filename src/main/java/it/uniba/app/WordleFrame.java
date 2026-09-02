@@ -678,6 +678,22 @@ public class WordleFrame extends JFrame {
         }
         String parolaInserita = sb.toString();
 
+        // CONTROLLO: Verifica se la parola fa parte delle parole consentite (Unione dei 3 dizionari)
+        // dizionario 1: parole_N.txt (soluzioni)
+        // dizionario 2: parole_extra_N.txt (soluzioni aggiunte dall'utente)
+        // dizionario 3: parole_consentite_N.txt (altre parole NON soluzioni ammesse dal sistema)
+
+        // Mostriamo il pop-up di errore solo se la parola NON è soluzione e NON è consentita
+        if (!Controller.esisteParola(parolaInserita) && !Controller.isConsentita(parolaInserita)) {
+            JOptionPane.showMessageDialog(
+                this, 
+                "La parola inserita non è presente nell'elenco delle parole consentite!", 
+                "Parola non valida", 
+                JOptionPane.ERROR_MESSAGE
+            );
+            return; // viene mostrato il pop-up e l'utente può correggere il tentativo
+        }
+
         int tentativoFatto = giocatore.getTentativi();
         Controller.tentativo(giocatore, parolaInserita, paroliere, matrice);
 
@@ -768,6 +784,23 @@ public class WordleFrame extends JFrame {
                 requestFocusInWindow();
                 return;
             }
+
+            // inizio: Verifica se la parola è composta tutta dalla stessa lettera
+            boolean tutteUguali = true;
+            char primaLettera = parola.charAt(0);
+            for (int i = 1; i < parola.length(); i++) {
+                if (parola.charAt(i) != primaLettera) {
+                    tutteUguali = false;
+                    break;
+                }
+            }
+
+            if (tutteUguali) {
+                JOptionPane.showMessageDialog(this, "Davvero!? La stessa lettera? Mi dispiace ciccio, non è possibile!", "Parola non valida", JOptionPane.WARNING_MESSAGE);
+                requestFocusInWindow();
+                return;
+            }
+            // fine
 
             boolean salvata = Controller.aggiungiParolaExtra(parola);
             if (salvata) {
