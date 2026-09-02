@@ -59,6 +59,7 @@ If the window appears scaled incorrectly on your operating system, you can force
 
 ## 💡 Future Development Ideas
 - Check if the guess is an _Italian word_ by using a _dictionary_ of all _N-letter_ Italian words.
+- Implement the English languages as well.
 
 ## 📄 Where is the Custom Dictionary saved?
 
