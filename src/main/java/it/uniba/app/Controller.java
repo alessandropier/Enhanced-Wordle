@@ -28,7 +28,7 @@ public final class Controller {
      *  La chiave è la lunghezza della parola (es. 5, 6...), il valore è il set delle parole. */
     private static final java.util.Map<Integer, java.util.Set<String>> CACHE_CONSENTITE = new java.util.HashMap<>();
 
-    private static String linguaCorrente = "ITA";
+    private static String linguaCorrente = "ENG";
 
     /**Costruttore. */
     private Controller() {
@@ -408,7 +408,7 @@ public final class Controller {
                 // 1. Carica il file dinamico in base alla lunghezza (es. parole_5.txt, parole_6.txt)
                 String nomeFileInterno = linguaCorrente + "/parole_" + NUMCARATTERI + ".txt";
                 InputStream inputStream = App.class.getClassLoader().getResourceAsStream(nomeFileInterno);
-                
+                //System.out.println("FILE: " + nomeFileInterno);
                 if (inputStream == null) {
                     System.out.println("Errore: file " + nomeFileInterno + " non trovato nel JAR!");
                     return;
@@ -423,7 +423,7 @@ public final class Controller {
                         }
                     }
                     // (to delete)
-                    // System.out.println("🟢 SUCCESSO: Lette " + words.size() + " parole valide!");
+                     System.out.println("🟢 SUCCESSO: Lette " + words.size() + " parole valide!");
                 } catch (Exception e) {
                     System.err.println("Errore nella lettura del file " + nomeFileInterno + ": " + e.getMessage());
                 }
@@ -503,7 +503,7 @@ public final class Controller {
         List<String> tutteLeParole = new ArrayList<>();
 
         // 1. Controlla nel file interno dinamico (es. parole_5.txt)
-        String nomeFileInterno = "parole_" + NUMCARATTERI + ".txt";
+        String nomeFileInterno = linguaCorrente + "/parole_" + NUMCARATTERI + ".txt";
         InputStream inputStream = App.class.getClassLoader().getResourceAsStream(nomeFileInterno);
         if (inputStream != null) {
             try (BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream, StandardCharsets.UTF_8))) {

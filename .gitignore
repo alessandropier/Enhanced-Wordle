@@ -10,6 +10,9 @@ drawings/
 # Cartella bat n sh files
 bat n sh files/
 
+# Cartella contenente gli script utilizzati per generare i file .txt
+scripts/
+
 ### Eclipse ###
 .metadata
 bin/
