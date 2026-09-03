@@ -87,6 +87,22 @@ public class WordleFrame extends JFrame {
         this.paroliere = p;
         this.matrice = m;
 
+        // CONTROLLO LINGUA AL PRIMO AVVIO
+        if (Controller.getLingua() == null) {
+            String[] lingueDisponibili = Controller.getLingueDisponibili();
+            String linguaScelta = (String) JOptionPane.showInputDialog(
+                this, // usa 'this' come riferimento della finestra principale
+                "Seleziona la lingua iniziale / Select initial language:",
+                "Primo Avvio - Selezione Lingua",
+                JOptionPane.QUESTION_MESSAGE,
+                null,
+                lingueDisponibili,
+                "ITA"
+            );
+
+        Controller.setLingua((linguaScelta != null && !linguaScelta.trim().isEmpty()) ? linguaScelta : "ITA");
+    }
+
         COLONNE = Controller.getNumCaratteri();
         calcolaRigheInBaseAllaLunghezza();
 
@@ -1163,10 +1179,11 @@ public class WordleFrame extends JFrame {
         hintDialog.setVisible(true);
     }
 
-    private void mostraDialogCambioLingua() {
-    String[] lingueDisponibili = {"ITA", "ENG"};
+    private String mostraDialogCambioLingua() {
+    String[] lingueDisponibili = Controller.getLingueDisponibili();
     String linguaCorrente = Controller.getLingua();
     
+    // Pannello
     String nuovaLingua = (String) JOptionPane.showInputDialog(
         this,
         "Seleziona la nuova lingua:",
@@ -1177,12 +1194,13 @@ public class WordleFrame extends JFrame {
         linguaCorrente
     );
 
+    // Controllo sulla lingua
     if (nuovaLingua != null && !nuovaLingua.equals(linguaCorrente)) {
-        // 1. Imposta la nuova lingua nel controller (questo pulisce automaticamente anche le cache delle parole consentite)
+        // Aggiorna la lingua in "Controller" e salva nelle Preferences
         Controller.setLingua(nuovaLingua);
         btnCambiaLingua.setText("Lingua: " + nuovaLingua);
 
-        // 2. Ricarica il sistema avviando una nuova partita con i dizionari della nuova lingua
+        // Ricarica la partita con i dizionari della nuova lingua
         gestisciNuovaPartita();
 
         JOptionPane.showMessageDialog(
@@ -1193,5 +1211,6 @@ public class WordleFrame extends JFrame {
         );
     }
     requestFocusInWindow();
+    return nuovaLingua;
 }
 }

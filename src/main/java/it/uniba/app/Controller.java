@@ -8,6 +8,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
+import java.util.prefs.Preferences;
+
 /**
  * <<Controller>>
  * La classe Controller gestisce
@@ -28,15 +30,20 @@ public final class Controller {
      *  La chiave è la lunghezza della parola (es. 5, 6...), il valore è il set delle parole. */
     private static final java.util.Map<Integer, java.util.Set<String>> CACHE_CONSENTITE = new java.util.HashMap<>();
 
-    private static String linguaCorrente = "ITA";
+    // Legge direttamente dalle Preferences all'avvio; se non trova nulla, usa "ITA" di default
+    private static String linguaCorrente = Preferences.userNodeForPackage(Controller.class).get("lingua_corrente", null);
 
     /**Costruttore. */
     private Controller() {
     }
 
     public static void setLingua(final String lingua) {
-    if (lingua != null && !lingua.trim().isEmpty()) {
+        if (lingua != null && !lingua.trim().isEmpty()) {
             linguaCorrente = lingua.trim().toUpperCase();
+            
+            // Salva la preferenza al volo ogni volta che viene modificata (esattamente come il tema)
+            Preferences.userNodeForPackage(Controller.class).put("lingua_corrente", linguaCorrente);
+
             // Eventuale pulizia delle cache se cambi lingua a runtime, 
             // così ricarica i file dalla nuova cartella!
             CACHE_CONSENTITE.clear();
@@ -45,6 +52,10 @@ public final class Controller {
 
     public static String getLingua() {
         return linguaCorrente;
+    }
+
+    public static String[] getLingueDisponibili() {
+        return new String[]{"ITA", "ENG"};
     }
 
     /**

@@ -1,7 +1,6 @@
 package it.uniba.app;
 
 import com.formdev.flatlaf.FlatDarkLaf;
-import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 
 /**
@@ -32,24 +31,6 @@ public final class App {
 
         // 2. Avvio della GUI e della logica tramite SwingUtilities
         SwingUtilities.invokeLater(() -> {
-            // --- FINESTRA DI PRIMO AVVIO: SCELTA LINGUA ---
-            String[] lingueDisponibili = {"ITA", "ENG"}; // Aggiungi altre lingue se hai i file corrispondenti
-            String linguaScelta = (String) JOptionPane.showInputDialog(
-                null,
-                "Seleziona la lingua iniziale / Select initial language:",
-                "Primo Avvio - Selezione Lingua",
-                JOptionPane.QUESTION_MESSAGE,
-                null,
-                lingueDisponibili,
-                "ITA"
-            );
-
-            // Se l'utente chiude la finestra, impostiamo di default "ITA"
-            if (linguaScelta == null) {
-                linguaScelta = "ITA";
-            }
-            Controller.setLingua(linguaScelta);
-
             // AVVIO GIOCO
             Giocatore g = new Giocatore();
             Paroliere p = new Paroliere();
