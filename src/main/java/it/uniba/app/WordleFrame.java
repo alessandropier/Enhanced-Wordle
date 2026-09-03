@@ -294,6 +294,8 @@ public class WordleFrame extends JFrame {
                 tglModalita.setText("Giorno");
                 applicaTema(false);
             }
+
+            aggiornaTestiInterfaccia(); // <-- Aggiorna tutti i testi inclusi nella lingua corretta
             requestFocusInWindow();
         });
 
@@ -315,6 +317,10 @@ public class WordleFrame extends JFrame {
         });
 
         setFocusable(true);
+
+        // AGGIORNA I TESTI ALL'AVVIO IN BASE ALLA LINGUA SCELTA
+        aggiornaTestiInterfaccia();
+
         controllaMostraAiutoAllAvvio();
     }
 
@@ -338,30 +344,85 @@ public class WordleFrame extends JFrame {
         String textColorHex = isNotte ? "#DCDCDC" : "#222222";
         String h3ColorHex = isNotte ? "#5DADE2" : "#1b4f72";
 
-        String messaggioHtml = "<html><body style='width: 580px; font-family: SansSerif; font-size: 14pt; color: " + textColorHex + "; padding: 0px;'>"
-            + "<h3 style='color: " + h3ColorHex + "; font-size: 17pt; margin-top: 0px; margin-bottom: 6px;'>1. Regole di Wordle</h3>"
-            + "<p style='margin-top: 0px; margin-bottom: 8px;'>L'obiettivo è indovinare la parola segreta nel minor numero di tentativi possibili. "
-            + "Dopo ogni tentativo, ciascuna casella verrà colorata per darti un indizio sulla parola segreta.</p>"
-            + "<table style='width: 100%; font-family: SansSerif; font-size: 14pt; color: " + textColorHex + "; margin-bottom: 10px;'>"
-            + "<tr><td style='width: 30px; color: #6AAA64; font-size: 20pt; vertical-align: top;'>&#9632;</td><td><b>Verde</b>: La lettera è corretta e si trova nella posizione giusta.</td></tr>"
-            + "<tr><td style='color: #C9B458; font-size: 20pt; vertical-align: top;'>&#9632;</td><td><b>Giallo</b>: La lettera è presente nella parola ma in una posizione errata.</td></tr>"
-            + "<tr><td style='color: #787C7E; font-size: 20pt; vertical-align: top;'>&#9632;</td><td><b>Grigio</b>: La lettera non è presente nella parola segreta.</td></tr>"
-            + "</table>"
-            + "<h3 style='color: " + h3ColorHex + "; font-size: 17pt; margin-top: 12px; margin-bottom: 6px;'>2. Guida all'Interfaccia e Bottoni</h3>"
-            + "<table style='width: 100%; font-family: SansSerif; font-size: 14pt; color: " + textColorHex + ";'>"
-            + "<tr><td style='width: 160px; font-weight: bold; vertical-align: top;'>Lunghezza:</td><td>Scegli la lunghezza della parola da indovinare.</td></tr>"
-            + "<tr><td style='width: 160px; font-weight: bold; vertical-align: top;'>NUOVA:</td><td>Avvia una nuova partita.</td></tr>"
-            + "<tr><td style='font-weight: bold; vertical-align: top;'>ARRENDITI:</td><td>Rivela la parola segreta.</td></tr>"
-            + "<tr><td style='font-weight: bold; vertical-align: top;'>ESCI:</td><td>Chiude l'applicazione.</td></tr>"
-            + "<tr><td style='font-weight: bold; vertical-align: top;'>Notte / Giorno:</td><td>Alterna il tema grafico e salva automaticamente la preferenza.</td></tr>"
-            + "<tr><td style='font-weight: bold; vertical-align: top;'>AGGIUNGI PAROLA:</td><td>Permette l'inserimento di una nuova parola nel dizionario.</td></tr>"
-            + "<tr><td style='font-weight: bold; vertical-align: top;'>AIUTO (icona i):</td><td>Apre questa schermata con le regole e la guida.</td></tr>"
-            + "<tr><td style='font-weight: bold; vertical-align: top;'>HINT (icona 💡):</td><td>Se possibile, fornisce un aiuto all'utente (utilizzabile solo una volta a partita).</td></tr>"
-            + "<tr><td style='font-weight: bold; vertical-align: top;'>Tastiera:</td><td>Digita le lettere, premi <b>INVIO</b> per confermare o <b>⌫</b> per cancellare.</td></tr>"
-            + "</table>"
-            + "</body></html>";
+        // Gestione della lingua
+        String lingua = Controller.getLingua();
+        if (lingua == null) {
+            lingua = "ITA";
+            Controller.setLingua("ITA");
+        }
 
-        javax.swing.JDialog dialog = new javax.swing.JDialog(this, "Regole del Gioco & Guida UI", true);
+        String titoloDialogo;
+        String testoCheckbox;
+        String h1Titolo, h1Testo;
+        String verdeTesto, gialloTesto, grigioTesto;
+        String h2Titolo;
+        String uiLunghezza, uiNuova, uiArrenditi, uiEsci, uiNotteGiorno, uiAggiungi, uiAiuto, uiHint, uiTastiera;
+
+        switch (lingua.toUpperCase()) {
+            case "ENG":
+                titoloDialogo = "Game Rules & UI Guide";
+                testoCheckbox = "Don't show this message again at startup";
+                h1Titolo = "1. Wordle Rules";
+                h1Testo = "The goal is to guess the secret word in the fewest possible attempts. After each guess, each tile will change color to give you a clue about the secret word.";
+                verdeTesto = "<b>Green</b>: The letter is correct and in the right position.";
+                gialloTesto = "<b>Yellow</b>: The letter is in the word but in the wrong position.";
+                grigioTesto = "<b>Gray</b>: The letter is not in the secret word.";
+                h2Titolo = "2. Interface & Buttons Guide";
+                uiLunghezza = "Choose the length of the word to guess.";
+                uiNuova = "Starts a new game.";
+                uiArrenditi = "Reveals the secret word.";
+                uiEsci = "Closes the application.";
+                uiNotteGiorno = "Toggles the graphic theme and automatically saves the preference.";
+                uiAggiungi = "Allows adding a new word to the dictionary.";
+                uiAiuto = "Opens this screen with rules and guide.";
+                uiHint = "If possible, provides a hint to the user (can only be used once per game).";
+                uiTastiera = "Type letters, press <b>ENTER</b> to confirm or <b>⌫</b> to delete.";
+                break;
+            case "ITA":
+            default:
+                titoloDialogo = "Regole del Gioco & Guida UI";
+                testoCheckbox = "Non mostrare più questo messaggio all'avvio";
+                h1Titolo = "1. Regole di Wordle";
+                h1Testo = "L'obiettivo è indovinare la parola segreta nel minor numero di tentativi possibili. Dopo ogni tentativo, ciascuna casella verrà colorata per darti un indizio sulla parola segreta.";
+                verdeTesto = "<b>Verde</b>: La lettera è corretta e si trova nella posizione giusta.";
+                gialloTesto = "<b>Giallo</b>: La lettera è presente nella parola ma in una posizione errata.";
+                grigioTesto = "<b>Grigio</b>: La lettera non è presente nella parola segreta.";
+                h2Titolo = "2. Guida all'Interfaccia e Bottoni";
+                uiLunghezza = "Scegli la lunghezza della parola da indovinare.";
+                uiNuova = "Avvia una nuova partita.";
+                uiArrenditi = "Rivela la parola segreta.";
+                uiEsci = "Chiude l'applicazione.";
+                uiNotteGiorno = "Alterna il tema grafico e salva automaticamente la preferenza.";
+                uiAggiungi = "Permette l'inserimento di una nuova parola nel dizionario.";
+                uiAiuto = "Apre questa schermata con le regole e la guida.";
+                uiHint = "Se possibile, fornisce un aiuto all'utente (utilizzabile solo una volta a partita).";
+                uiTastiera = "Digita le lettere, premi <b>INVIO</b> per confermare o <b>⌫</b> per cancellare.";
+                break;
+        }
+
+        String messaggioHtml = "<html><body style='width: 580px; font-family: SansSerif; font-size: 14pt; color: " + textColorHex + "; padding: 0px;'>"
+                + "<h3 style='color: " + h3ColorHex + "; font-size: 17pt; margin-top: 0px; margin-bottom: 6px;'>" + h1Titolo + "</h3>"
+                + "<p style='margin-top: 0px; margin-bottom: 8px;'>" + h1Testo + "</p>"
+                + "<table style='width: 100%; font-family: SansSerif; font-size: 14pt; color: " + textColorHex + "; margin-bottom: 10px;'>"
+                + "<tr><td style='width: 30px; color: #6AAA64; font-size: 20pt; vertical-align: top;'>&#9632;</td><td>" + verdeTesto + "</td></tr>"
+                + "<tr><td style='color: #C9B458; font-size: 20pt; vertical-align: top;'>&#9632;</td><td>" + gialloTesto + "</td></tr>"
+                + "<tr><td style='color: #787C7E; font-size: 20pt; vertical-align: top;'>&#9632;</td><td>" + grigioTesto + "</td></tr>"
+                + "</table>"
+                + "<h3 style='color: " + h3ColorHex + "; font-size: 17pt; margin-top: 12px; margin-bottom: 6px;'>" + h2Titolo + "</h3>"
+                + "<table style='width: 100%; font-family: SansSerif; font-size: 14pt; color: " + textColorHex + ";'>"
+                + "<tr><td style='width: 160px; font-weight: bold; vertical-align: top;'>Lunghezza:</td><td>" + uiLunghezza + "</td></tr>"
+                + "<tr><td style='width: 160px; font-weight: bold; vertical-align: top;'>NUOVA:</td><td>" + uiNuova + "</td></tr>"
+                + "<tr><td style='font-weight: bold; vertical-align: top;'>ARRENDITI:</td><td>" + uiArrenditi + "</td></tr>"
+                + "<tr><td style='font-weight: bold; vertical-align: top;'>ESCI:</td><td>" + uiEsci + "</td></tr>"
+                + "<tr><td style='font-weight: bold; vertical-align: top;'>Notte / Giorno:</td><td>" + uiNotteGiorno + "</td></tr>"
+                + "<tr><td style='font-weight: bold; vertical-align: top;'>AGGIUNGI PAROLA:</td><td>" + uiAggiungi + "</td></tr>"
+                + "<tr><td style='font-weight: bold; vertical-align: top;'>AIUTO (icona i):</td><td>" + uiAiuto + "</td></tr>"
+                + "<tr><td style='font-weight: bold; vertical-align: top;'>HINT (icona 💡):</td><td>" + uiHint + "</td></tr>"
+                + "<tr><td style='font-weight: bold; vertical-align: top;'>Tastiera:</td><td>" + uiTastiera + "</td></tr>"
+                + "</table>"
+                + "</body></html>";
+
+        javax.swing.JDialog dialog = new javax.swing.JDialog(this, titoloDialogo, true);
         dialog.setLayout(new BorderLayout());
 
         JPanel panel = new JPanel(new BorderLayout(0, 10));
@@ -373,7 +434,7 @@ public class WordleFrame extends JFrame {
 
         JCheckBox checkBox = null;
         if (isAvvio) {
-            checkBox = new JCheckBox("Non mostrare più questo messaggio all'avvio");
+            checkBox = new JCheckBox(testoCheckbox);
             checkBox.setFont(new Font("SansSerif", Font.PLAIN, 14));
             checkBox.setForeground(fgColore);
             checkBox.setBackground(bgColore);
@@ -579,7 +640,30 @@ public class WordleFrame extends JFrame {
         Controller.wordle("/gioca", giocatore, paroliere, matrice);
 
         resettaInterfacciaGrafica();
-        JOptionPane.showMessageDialog(this, "Nuova partita avviata! Inizia a digitare.", "Nuova Partita", JOptionPane.INFORMATION_MESSAGE);
+
+        // Gestione della lingua con lo switch per il messaggio di nuova partita
+        String lingua = Controller.getLingua();
+        if (lingua == null) {
+            lingua = "ITA";
+            Controller.setLingua("ITA");
+        }
+
+        String msgNuovaPartita;
+        String titoloNuovaPartita;
+
+        switch (lingua.toUpperCase()) {
+            case "ENG":
+                msgNuovaPartita = "New game started! Start typing.";
+                titoloNuovaPartita = "New Game";
+                break;
+            case "ITA":
+            default:
+                msgNuovaPartita = "Nuova partita avviata! Inizia a digitare.";
+                titoloNuovaPartita = "Nuova Partita";
+                break;
+        }
+
+        JOptionPane.showMessageDialog(this, msgNuovaPartita, titoloNuovaPartita, JOptionPane.INFORMATION_MESSAGE);
     }
 
     private void gestisciMostraParola() {
@@ -596,17 +680,44 @@ public class WordleFrame extends JFrame {
     }
 
     private void gestisciEsci() {
+        String lingua = Controller.getLingua();
+        if (lingua == null) {
+            lingua = "ITA";
+            Controller.setLingua("ITA");
+        }
+
+        String msgUscita;
+        String titoloUscita;
+        String msgSegreta;
+        String titoloGame;
+
+        switch (lingua.toUpperCase()) {
+            case "ENG":
+                msgUscita = "Are you sure you want to exit the game?";
+                titoloUscita = "Confirm Exit";
+                msgSegreta = "The secret word was: ";
+                titoloGame = "Exit";
+                break;
+            case "ITA":
+            default:
+                msgUscita = "Sei sicuro di voler uscire dal gioco?";
+                titoloUscita = "Conferma uscita";
+                msgSegreta = "La parola segreta era: ";
+                titoloGame = "Uscita";
+                break;
+        }
+
         int scelta = JOptionPane.showConfirmDialog(
             this,
-            "Sei sicuro di voler uscire dal gioco?",
-            "Conferma uscita",
+            msgUscita,
+            titoloUscita,
             JOptionPane.YES_NO_OPTION,
             JOptionPane.QUESTION_MESSAGE
         );
 
         if (scelta == JOptionPane.YES_OPTION) {
             if (paroliere.getParolaSegreta() != null && !hasWon && !wasSecretWordShown) {
-                JOptionPane.showMessageDialog(this, "La parola segreta era: " + paroliere.getParolaSegreta(), "Uscita", JOptionPane.INFORMATION_MESSAGE);
+                JOptionPane.showMessageDialog(this, msgSegreta + paroliere.getParolaSegreta(), titoloGame, JOptionPane.INFORMATION_MESSAGE);
             }
             System.exit(0);
         }
@@ -846,11 +957,32 @@ public class WordleFrame extends JFrame {
     private void mostraDialogSelezioneLunghezza() {
         String[] opzioni = {"5", "6", "7", "8", "9"};
         String sceltaCorrente = String.valueOf(COLONNE);
+
+        String lingua = Controller.getLingua();
+        if (lingua == null) {
+            lingua = "ITA";
+            Controller.setLingua("ITA");
+        }
+
+        String titoloDialogo;
+        String messaggioDialogo;
+
+        switch (lingua.toUpperCase()) {
+            case "ENG":
+                titoloDialogo = "Change Size";
+                messaggioDialogo = "Select word length:";
+                break;
+            case "ITA":
+            default:
+                titoloDialogo = "Cambia Dimensione";
+                messaggioDialogo = "Seleziona la lunghezza della parola:";
+                break;
+        }
         
         String scelta = (String) JOptionPane.showInputDialog(
             this,
-            "Seleziona la lunghezza della parola:",
-            "Cambia Dimensione",
+            messaggioDialogo,
+            titoloDialogo,
             JOptionPane.QUESTION_MESSAGE,
             null,
             opzioni,
@@ -862,7 +994,18 @@ public class WordleFrame extends JFrame {
             if (nuovaLunghezza != COLONNE) {
                 Controller.setNumCaratteri(nuovaLunghezza);
                 COLONNE = Controller.getNumCaratteri();
-                btnCambiaLunghezza.setText("Lunghezza: " + COLONNE);
+                
+                // Aggiorna l'etichetta del bottone tramite lo switch/lingua
+                switch (lingua.toUpperCase()) {
+                    case "ENG":
+                        btnCambiaLunghezza.setText("Length: " + COLONNE);
+                        break;
+                    case "ITA":
+                    default:
+                        btnCambiaLunghezza.setText("Lunghezza: " + COLONNE);
+                        break;
+                }
+                
                 ricostruisciGriglia();
                 gestisciNuovaPartita();
             }
@@ -1181,18 +1324,38 @@ public class WordleFrame extends JFrame {
 
     private String mostraDialogCambioLingua() {
     String[] lingueDisponibili = Controller.getLingueDisponibili();
-    String linguaCorrente = Controller.getLingua();
+        String linguaCorrente = Controller.getLingua();
+        if (linguaCorrente == null) {
+            linguaCorrente = "ITA";
+            Controller.setLingua("ITA");
+        }
     
+    String titoloDialogo;
+    String messaggioDialogo;
+
+    // Switch per i testi del dialog di selezione
+    switch (linguaCorrente.toUpperCase()) {
+        case "ENG":
+            titoloDialogo = "Change Language";
+            messaggioDialogo = "Select new language:";
+            break;
+        case "ITA":
+        default:
+            titoloDialogo = "Cambia Lingua";
+            messaggioDialogo = "Seleziona la nuova lingua:";
+            break;
+    }
+
     // Pannello
     String nuovaLingua = (String) JOptionPane.showInputDialog(
-        this,
-        "Seleziona la nuova lingua:",
-        "Cambia Lingua",
-        JOptionPane.QUESTION_MESSAGE,
-        null,
-        lingueDisponibili,
-        linguaCorrente
-    );
+            this,
+            messaggioDialogo,
+            titoloDialogo,
+            JOptionPane.QUESTION_MESSAGE,
+            null,
+            lingueDisponibili,
+            linguaCorrente
+        );
 
     // Controllo sulla lingua
     if (nuovaLingua != null && !nuovaLingua.equals(linguaCorrente)) {
@@ -1200,17 +1363,79 @@ public class WordleFrame extends JFrame {
         Controller.setLingua(nuovaLingua);
         btnCambiaLingua.setText("Lingua: " + nuovaLingua);
 
+        // Aggiorna subito tutta la GUI con lo switch generale
+         aggiornaTestiInterfaccia();
+
         // Ricarica la partita con i dizionari della nuova lingua
         gestisciNuovaPartita();
 
-        JOptionPane.showMessageDialog(
-            this,
-            "Lingua cambiata con successo in " + nuovaLingua + "! Il sistema è stato ricaricato.",
-            "Ricaricamento completato",
-            JOptionPane.INFORMATION_MESSAGE
-        );
+        String msgSuccesso;
+        String titoloSuccesso;
+
+        // Switch per i messaggi di successo in base alla lingua appena scelta
+            switch (nuovaLingua.toUpperCase()) {
+                case "ENG":
+                    msgSuccesso = "Language successfully changed to " + nuovaLingua + "! System reloaded.";
+                    titoloSuccesso = "Reload Completed";
+                    break;
+                case "ITA":
+                default:
+                    msgSuccesso = "Lingua cambiata con successo in " + nuovaLingua + "! Il sistema è stato ricaricato.";
+                    titoloSuccesso = "Ricaricamento completato";
+                    break;
+            }
+
+            JOptionPane.showMessageDialog(
+                this,
+                msgSuccesso,
+                titoloSuccesso,
+                JOptionPane.INFORMATION_MESSAGE
+            );
     }
     requestFocusInWindow();
     return nuovaLingua;
 }
+
+private void aggiornaTestiInterfaccia() {
+        String lingua = Controller.getLingua();
+        if (lingua == null) {
+            lingua = "ITA";
+            Controller.setLingua("ITA");
+        }
+
+        boolean isNotte = tglModalita.isSelected();
+
+        switch (lingua.toUpperCase()) {
+            case "ENG":
+                setTitle("Wordle Java");
+                btnNuovaPartita.setText("NEW");
+                btnMostra.setText("GIVE UP");
+                btnEsci.setText("EXIT");
+                btnAggiungi.setText("ADD WORD");
+                btnCambiaLunghezza.setText("Length: " + COLONNE);
+                btnCambiaLingua.setText("Language: " + lingua);
+                tglModalita.setText(isNotte ? "Night" : "Day");
+                
+                // Tooltip
+                btnAiuto.setToolTipText("Help & Rules");
+                btnHint.setToolTipText("Request Hint (Usable once per game)");
+                break;
+
+            case "ITA":
+            default:
+                setTitle("Wordle Java");
+                btnNuovaPartita.setText("NUOVA");
+                btnMostra.setText("ARRENDITI");
+                btnEsci.setText("ESCI");
+                btnAggiungi.setText("AGGIUNGI PAROLA");
+                btnCambiaLunghezza.setText("Lunghezza: " + COLONNE);
+                btnCambiaLingua.setText("Lingua: " + lingua);
+                tglModalita.setText(isNotte ? "Notte" : "Giorno");
+                
+                // Tooltip
+                btnAiuto.setToolTipText("Aiuto & Regole");
+                btnHint.setToolTipText("Richiedi Indizio (Utilizzabile una sola volta)");
+                break;
+        }
+    }
 }
