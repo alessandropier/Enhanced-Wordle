@@ -1,7 +1,7 @@
 package it.uniba.app;
 
-// Librerie per GUI
 import com.formdev.flatlaf.FlatDarkLaf;
+import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 
 /**
@@ -9,60 +9,59 @@ import javax.swing.SwingUtilities;
  */
 public final class App {
 
-    /**
-     * Get a greeting sentence.
-     *
-     * @return the "Hello World!" string.
-     */
     public String getGreeting() {
         return "Benvenuti in Wordle!";
     }
 
-    /**
-     * Entrypoint of the application.
-     *
-     * @param args command line arguments
-     */
     public static void main(final String[] args) {
-        // Forza Java a ignorare lo zoom di Windows e mantenere la scala al 100%
         System.setProperty("sun.java2d.uiScale", "1.0");
 
-        // ABILITA I COLORI ANSI SU WINDOWS (Windows 10/11)
+        // Abilitazione colori ANSI (opzionale se usi solo GUI)
         if (System.getProperty("os.name").toLowerCase().contains("win")) {
             try {
-                // Questa chiamata abilità il processore ANSI integrato in Windows
-                new ProcessBuilder("cmd", "/c", "echo off"
-                ).inheritIO().start().waitFor();
-                // In alternativa, per forzare l'abilitazione:
-                Runtime.getRuntime().exec(
-                    "reg add HKCU\\Console /v VirtualTerminalLevel /t REG_DWORD /d 1 /f");
+                new ProcessBuilder("cmd", "/c", "echo off").inheritIO().start().waitFor();
             } catch (Exception e) {
-                // Se non va resterà in bianco e nero
                 e.printStackTrace();
             }
         }
 
         System.out.println(new App().getGreeting());
-        Help.stampaHelp();
-
-        Giocatore g = new Giocatore();
-        Paroliere p = new Paroliere();
-        Matrice m = new Matrice(Controller.getMaxTentativi(),
-                                Controller.getNumCaratteri());
 
         // 1. Inizializza FlatLaf prima di tutto
         FlatDarkLaf.setup();
 
-        // 2. Avvio della GUI in modo sicuro per i thread di Swing
+        // 2. Avvio della GUI e della logica tramite SwingUtilities
         SwingUtilities.invokeLater(() -> {
-            WordleFrame finestra = new WordleFrame(g, p, m);
-            finestra.setVisible(true);
-        });
+            // --- FINESTRA DI PRIMO AVVIO: SCELTA LINGUA ---
+            String[] lingueDisponibili = {"ITA", "ENG"}; // Aggiungi altre lingue se hai i file corrispondenti
+            String linguaScelta = (String) JOptionPane.showInputDialog(
+                null,
+                "Seleziona la lingua iniziale / Select initial language:",
+                "Primo Avvio - Selezione Lingua",
+                JOptionPane.QUESTION_MESSAGE,
+                null,
+                lingueDisponibili,
+                "ITA"
+            );
 
-        do {
-            Controller.wordle(
-                MyInput.leggiStringa("Inserisci un comando o un tentativo"),
-                 g, p, m);
-        } while (true);
+            // Se l'utente chiude la finestra, impostiamo di default "ITA"
+            if (linguaScelta == null) {
+                linguaScelta = "ITA";
+            }
+            Controller.setLingua(linguaScelta);
+
+            // AVVIO GIOCO
+            Giocatore g = new Giocatore();
+            Paroliere p = new Paroliere();
+            Matrice m = new Matrice(Controller.getMaxTentativi(), Controller.getNumCaratteri());
+
+            // Avvia la versione Grafica
+            apriInterfacciaGrafica(g, p, m);
+        });
+    }
+
+    private static void apriInterfacciaGrafica(Giocatore g, Paroliere p, Matrice m) {
+        WordleFrame finestra = new WordleFrame(g, p, m);
+        finestra.setVisible(true);
     }
 }

@@ -79,6 +79,9 @@ public class WordleFrame extends JFrame {
     private final java.util.Set<Character> tastiOscuratiHint = new java.util.HashSet<>();
     private final java.util.Set<Character> tastiHintSpeciali = new java.util.HashSet<>();
 
+    // Bottone cambia lingua
+    private JButton btnCambiaLingua;
+
     public WordleFrame(final Giocatore g, final Paroliere p, final Matrice m) {
         this.giocatore = g;
         this.paroliere = p;
@@ -223,7 +226,14 @@ public class WordleFrame extends JFrame {
         btnHint.setToolTipText("Richiedi Indizio (Utilizzabile una sola volta)");
         btnHint.addActionListener(e -> gestisciHint());
 
-        // --- CONTAINER IN BASSO CON HINT A SINISTRA E AIUTO A DESTRA ---
+        // Configurazione bottone cambio lingua
+        btnCambiaLingua = new JButton("Lingua: " + Controller.getLingua());
+        styleButton(btnCambiaLingua);
+        btnCambiaLingua.setPreferredSize(new Dimension(120, 32));
+        btnCambiaLingua.addActionListener(e -> mostraDialogCambioLingua());
+        panelBottoni.add(btnCambiaLingua);
+
+        // --- CONTAINER IN BASSO CON HINT A SINISTRA E AIUTO A DESTRA E CAMBIO LINGUA AL CENTRO ---
         JPanel panelInferioreExtra = new JPanel(new BorderLayout());
         panelInferioreExtra.setOpaque(false);
         panelInferioreExtra.setBorder(BorderFactory.createEmptyBorder(0, 15, 5, 15));
@@ -232,11 +242,16 @@ public class WordleFrame extends JFrame {
         panelHintContainer.setOpaque(false);
         panelHintContainer.add(btnHint);
 
+        JPanel panelLinguaContainer = new JPanel(new FlowLayout(FlowLayout.CENTER, 0, 0));
+        panelLinguaContainer.setOpaque(false);
+        panelLinguaContainer.add(btnCambiaLingua);
+
         JPanel panelAiutoContainer = new JPanel(new FlowLayout(FlowLayout.RIGHT, 0, 0));
         panelAiutoContainer.setOpaque(false);
         panelAiutoContainer.add(btnAiuto);
 
         panelInferioreExtra.add(panelHintContainer, BorderLayout.WEST);
+        panelInferioreExtra.add(panelLinguaContainer, BorderLayout.CENTER);
         panelInferioreExtra.add(panelAiutoContainer, BorderLayout.EAST);
 
         panelSud = new JPanel(new BorderLayout());
@@ -520,7 +535,7 @@ public class WordleFrame extends JFrame {
             }
         }
 
-        AbstractButton[] bottoniSuperiori = {btnNuovaPartita, btnMostra, btnEsci, btnAggiungi, btnCambiaLunghezza};
+        AbstractButton[] bottoniSuperiori = {btnNuovaPartita, btnMostra, btnEsci, btnAggiungi, btnCambiaLunghezza, btnCambiaLingua};
         for (AbstractButton b : bottoniSuperiori) {
             b.setBackground(coloreBottoniBg);
             b.setForeground(coloreBottoniFg);
@@ -1147,4 +1162,36 @@ public class WordleFrame extends JFrame {
         hintDialog.setLocationRelativeTo(this);
         hintDialog.setVisible(true);
     }
+
+    private void mostraDialogCambioLingua() {
+    String[] lingueDisponibili = {"ITA", "ENG"};
+    String linguaCorrente = Controller.getLingua();
+    
+    String nuovaLingua = (String) JOptionPane.showInputDialog(
+        this,
+        "Seleziona la nuova lingua:",
+        "Cambia Lingua",
+        JOptionPane.QUESTION_MESSAGE,
+        null,
+        lingueDisponibili,
+        linguaCorrente
+    );
+
+    if (nuovaLingua != null && !nuovaLingua.equals(linguaCorrente)) {
+        // 1. Imposta la nuova lingua nel controller (questo pulisce automaticamente anche le cache delle parole consentite)
+        Controller.setLingua(nuovaLingua);
+        btnCambiaLingua.setText("Lingua: " + nuovaLingua);
+
+        // 2. Ricarica il sistema avviando una nuova partita con i dizionari della nuova lingua
+        gestisciNuovaPartita();
+
+        JOptionPane.showMessageDialog(
+            this,
+            "Lingua cambiata con successo in " + nuovaLingua + "! Il sistema è stato ricaricato.",
+            "Ricaricamento completato",
+            JOptionPane.INFORMATION_MESSAGE
+        );
+    }
+    requestFocusInWindow();
+}
 }
