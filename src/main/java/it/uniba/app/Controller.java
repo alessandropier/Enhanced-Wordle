@@ -28,7 +28,7 @@ public final class Controller {
      *  La chiave è la lunghezza della parola (es. 5, 6...), il valore è il set delle parole. */
     private static final java.util.Map<Integer, java.util.Set<String>> CACHE_CONSENTITE = new java.util.HashMap<>();
 
-    private static String linguaCorrente = "ENG";
+    private static String linguaCorrente = "ITA";
 
     /**Costruttore. */
     private Controller() {
