@@ -820,6 +820,27 @@ public class WordleFrame extends JFrame {
         }
         String parolaInserita = sb.toString();
 
+        String lingua = Controller.getLingua();
+        if (lingua == null) {
+            lingua = "ITA";
+            Controller.setLingua("ITA");
+        }
+
+        String titoloDialogo;
+        String messaggioDialogo;
+
+        switch (lingua.toUpperCase()) {
+            case "ENG":
+                titoloDialogo = "Invalid Word";
+                messaggioDialogo = "This word is not in the allowed word list!";
+                break;
+            case "ITA":
+            default:
+                titoloDialogo = "Parola non valida";
+                messaggioDialogo = "La parola inserita non è presente nell'elenco delle parole consentite!";
+                break;
+        }
+
         // CONTROLLO: Verifica se la parola fa parte delle parole consentite (Unione dei 3 dizionari)
         // dizionario 1: parole_N.txt (soluzioni)
         // dizionario 2: parole_extra_N.txt (soluzioni aggiunte dall'utente)
@@ -829,8 +850,8 @@ public class WordleFrame extends JFrame {
         if (!Controller.esisteParola(parolaInserita) && !Controller.isConsentita(parolaInserita)) {
             JOptionPane.showMessageDialog(
                 this, 
-                "La parola inserita non è presente nell'elenco delle parole consentite!", 
-                "Parola non valida", 
+                messaggioDialogo, 
+                titoloDialogo, 
                 JOptionPane.ERROR_MESSAGE
             );
             return; // viene mostrato il pop-up e l'utente può correggere il tentativo
