@@ -1232,7 +1232,7 @@ public class WordleFrame extends JFrame {
                     tastoIniziale.setForeground(Color.WHITE);
                 }
 
-                messaggioDialogo = Messaggi.get("hint.due.msg", lingua);
+                messaggioDialogo = String.format(Messaggi.get("hint.due.msg", lingua), primaLettera);
                 break;
 
             case 3:
@@ -1247,7 +1247,7 @@ public class WordleFrame extends JFrame {
                     tastoPresente.setForeground(Color.WHITE);
                 }
 
-                messaggioDialogo = Messaggi.get("hint.tre.msg", lingua);
+                messaggioDialogo = String.format(Messaggi.get("hint.tre.msg", lingua), letteraCasuale);
                 break;
         }
 
