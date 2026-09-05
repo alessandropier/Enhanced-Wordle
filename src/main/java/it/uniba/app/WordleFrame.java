@@ -110,7 +110,7 @@ public class WordleFrame extends JFrame {
         COLONNE = Controller.getNumCaratteri();
         calcolaRigheInBaseAllaLunghezza();
 
-        setTitle("Wordle Java");
+        setTitle(Messaggi.get("titolo.app", lingua));
         setSize(Math.max(620, 400 + (COLONNE * 55)), 950);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
