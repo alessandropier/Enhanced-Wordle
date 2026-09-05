@@ -33,6 +33,9 @@ public final class Controller {
     // Legge direttamente dalle Preferences all'avvio; se non trova nulla, usa "ITA" di default
     private static String linguaCorrente = Preferences.userNodeForPackage(Controller.class).get("lingua_corrente", null);
 
+    // Lunghezze di parole con cui si può giocare
+    private static String[] opzioni = {"5", "6", "7", "8", "9"};
+
     /**Costruttore. */
     private Controller() {
     }
@@ -48,6 +51,11 @@ public final class Controller {
             // così ricarica i file dalla nuova cartella!
             CACHE_CONSENTITE.clear();
         }
+    }
+
+    public static String[] getOpzioni()
+    {
+        return opzioni;
     }
 
     public static String getLingua() {

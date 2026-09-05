@@ -77,7 +77,8 @@ jacocoTestReport {
         '**/App.class', // Esclude la classe App
         '**/App$*.class', // Esclude eventuali classi interne di App
         '**/WordleFrame.class', // Esclude la GUI del Wordle
-        '**/WordleFrame$*.class' // Esclude eventuali classi interne o listener di WordleFrame
+        '**/WordleFrame$*.class', // Esclude eventuali classi interne o listener di WordleFrame
+        '**/Messaggi$*.class' // Esclude eventuali classi interne o lambda di Messaggi
 
         // Escludo App perché il main è difficilmente testabile e 
         // andrebbe solo a ridurre la percentuale di coverage senza senso
