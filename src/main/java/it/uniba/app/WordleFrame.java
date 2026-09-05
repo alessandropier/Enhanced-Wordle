@@ -1219,9 +1219,7 @@ public class WordleFrame extends JFrame {
                     }
                 }
 
-                messaggioDialogo = "<b>Potere della Lampadina: Esclusione!</b><br><br>"
-                        + "Il sistema ha analizzato la parola e ha oscurato <b>nuove lettere</b> "
-                        + "che non fanno parte della parola segreta.";
+                messaggioDialogo = Messaggi.get("hint.uno.msg", lingua);
                 break;
 
             case 2:
@@ -1234,9 +1232,7 @@ public class WordleFrame extends JFrame {
                     tastoIniziale.setForeground(Color.WHITE);
                 }
 
-                messaggioDialogo = "<b>Potere della Lampadina: Lettera Iniziale!</b><br><br>"
-                        + "La parola segreta inizia con la lettera: <span style='font-size: 16pt; color: #3498DB;'><b>" + primaLettera + "</b></span><br>"
-                        + "<i>È stata evidenziata in blu sulla tastiera!</i>";
+                messaggioDialogo = Messaggi.get("hint.due.msg", lingua);
                 break;
 
             case 3:
@@ -1251,10 +1247,7 @@ public class WordleFrame extends JFrame {
                     tastoPresente.setForeground(Color.WHITE);
                 }
 
-                messaggioDialogo = "<b>Potere della Lampadina: Indizio di Presenza!</b><br><br>"
-                        + "Fai attenzione: la parola segreta contiene sicuramente la lettera: "
-                        + "<span style='font-size: 16pt; color: #D4AC0D;'><b>" + letteraCasuale + "</b></span><br>"
-                        + "<i>È stata evidenziata in giallo speciale sulla tastiera!</i>";
+                messaggioDialogo = Messaggi.get("hint.tre.msg", lingua);
                 break;
         }
 
@@ -1269,7 +1262,9 @@ public class WordleFrame extends JFrame {
     private void mostraGraficaHintDialog(String htmlTesto, boolean isNotte) {
         Color bgColore = isNotte ? SFONDO_NOTTE : Color.WHITE;
         
-        javax.swing.JDialog hintDialog = new javax.swing.JDialog(this, "💡 Indizio Strategico Casuale", true);
+        String titolo = Messaggi.get("hint.titolo", Controller.getLingua());
+
+        javax.swing.JDialog hintDialog = new javax.swing.JDialog(this, titolo, true);
         hintDialog.setLayout(new BorderLayout());
 
         JPanel panelContenuto = new JPanel(new BorderLayout(15, 15));
@@ -1328,7 +1323,9 @@ public class WordleFrame extends JFrame {
     if (nuovaLingua != null && !nuovaLingua.equals(linguaCorrente)) {
         // Aggiorna la lingua in "Controller" e salva nelle Preferences
         Controller.setLingua(nuovaLingua);
-        btnCambiaLingua.setText("Lingua: " + nuovaLingua);
+
+        String testo = String.format(Messaggi.get("btn.lingua", nuovaLingua), nuovaLingua);
+        btnCambiaLingua.setText(testo);
 
         // Aggiorna subito tutta la GUI
          aggiornaTestiInterfaccia();
