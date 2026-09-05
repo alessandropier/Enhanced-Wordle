@@ -1072,4 +1072,99 @@ public class ControllerTest {
             }
         } catch (Exception ignored) {}
     }
+
+    /**
+     * Test per verificare la gestione della lingua corrente e il recupero 
+     * delle opzioni e delle lingue disponibili.
+     */
+    @Test
+    public void testGestioneLinguaEOpzioni() {
+        Controller.setLingua("ENG");
+        assertEquals("ENG", Controller.getLingua());
+        
+        assertNotNull(Controller.getLingueDisponibili());
+        assertTrue(Controller.getLingueDisponibili().length > 0);
+        
+        assertNotNull(Controller.getOpzioni());
+        assertTrue(Controller.getOpzioni().length > 0);
+        
+        // Ripristiniamo ITA per non alterare gli altri test
+        Controller.setLingua("ITA");
+    }
+
+    /**
+     * Test per verificare i limiti e i vincoli sui setter del numero massimo 
+     * di tentativi e della lunghezza dei caratteri.
+     */
+    @Test
+    public void testSettersLimiti() {
+        // Tentativi validi (6-10) e non validi (<6 o >10)
+        Controller.setMaxTentativi(8);
+        assertEquals(8, Controller.getMaxTentativi());
+        Controller.setMaxTentativi(3); // Fuori range, non deve cambiare
+        assertEquals(8, Controller.getMaxTentativi());
+        Controller.setMaxTentativi(6); // Ripristino default
+
+        // Caratteri validi (5-9) e non validi (<5 o >9)
+        Controller.setNumCaratteri(6);
+        assertEquals(6, Controller.getNumCaratteri());
+        Controller.setNumCaratteri(4); // Fuori range, non deve cambiare
+        assertEquals(6, Controller.getNumCaratteri());
+        Controller.setNumCaratteri(5); // Ripristino default
+    }
+
+    /**
+     * Test per verificare che il controllo sull'esistenza della parola 
+     * gestisca correttamente stringhe nulle o vuote.
+     */
+    @Test
+    public void testEsisteParolaEdgeCases() {
+        assertFalse(Controller.esisteParola(null));
+        assertFalse(Controller.esisteParola("     "));
+    }
+
+    /**
+     * Test per verificare il comportamento della cache e del controllo 
+     * delle parole consentite con input nulli o spazi vuoti.
+     */
+    @Test
+    public void testIsConsentitaEdgeCases() {
+        assertFalse(Controller.isConsentita(null));
+        assertFalse(Controller.isConsentita("   "));
+        // Forza il controllo su una lunghezza personalizzata per coprire la cache
+        Controller.setNumCaratteri(5);
+        assertFalse(Controller.isConsentita("ZZZZZ")); // Parola inventata non consentita
+    }
+
+    /**
+     * Test per verificare la gestione di un comando non riconosciuto nel metodo wordle,
+     * che attiva il ramo di default (trattando l'input come un tentativo).
+     */
+    @Test
+    public void testWordleComandoSconosciuto() {
+        outContent.reset(); // Pulisce l'output
+        
+        Paroliere p = new Paroliere();
+        Matrice m = new Matrice(Controller.getMaxTentativi(), Controller.getNumCaratteri());
+        Giocatore g = new Giocatore();
+        Controller.nuova("palla", p);
+        Controller.gioca(g, p, m);
+        
+        // Passa una stringa casuale che attiva il ramo default (tentativo)
+        Controller.wordle("sconosciuto", g, p, m);
+        
+        // Verifichiamo che venga stampato un messaggio d'errore coerente con un tentativo non valido o lunghezza errata
+        String output = outContent.toString();
+        assertTrue(output.length() > 0, "Il metodo wordle dovrebbe stampare un messaggio a schermo per l'input inserito.");
+    }
+
+    /**
+     * Test per verificare che il metodo isConsentita gestisca correttamente 
+     * stringhe nulle o vuote senza generare eccezioni.
+     */
+    @Test
+    public void testIsConsentitaNullo() {
+        assertFalse(Controller.isConsentita(null));
+        assertFalse(Controller.isConsentita("   "));
+    }
 }

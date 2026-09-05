@@ -1,4 +1,4 @@
-# Enhanced Wordle Offline IT 
+# Enhanced Wordle Offline IT/ENG
 [![Build and Publish Release](https://github.com/alessandropier/Wordle/actions/workflows/ingsw2122.yml/badge.svg)](https://github.com/alessandropier/Wordle/actions/workflows/ingsw2122.yml) [![Coverage Status](https://coveralls.io/repos/github/alessandropier/Wordle/badge.svg?branch=v1.0)](https://coveralls.io/github/alessandropier/Wordle?branch=v1.0)
 
 #### A fully featured, offline desktop implementation of the Wordle game in Italian built with Java Swing, featuring dynamic difficulty with variable word lengths and attempts, custom vocabulary management, custom UI rendering and an advanced hint system.
@@ -8,21 +8,22 @@
 Initially, this started as a repository for the implementation of the _Wordle_ game _(in Italian)_ via Command Line Interface _(CLI)_ for my _Software Engineering_ university course using the _Agile SCRUM_ framework and _GitHub Actions_ for _CI/CD_.
 
 Subsequently, I continued the project to integrate additional features such as:
+- **2 Languages** _(ITA/ENG)_, allowing users to pick a language between **Italian** and **English**.
 - **Complete _User Interface_** built with _Java Swing_ and _FlatLaf_.
 - A **persistent UI theme preference** system that allows users to toggle between _day and night modes_, automatically saving their selection across sessions.
 - **Automatic** and **_random generation_** of the _word to guess_ using _built in dictionaries_.
-- **Dictionary validation** system that verifies input length, allowed characters, and checks against the _Italian dictionary_ to ensure only _valid words_ are submitted.
+- **Dictionary validation** _(ITA/ENG)_ system that verifies input length, allowed characters, and checks against the _Italian dictionary_ to ensure only _valid words_ are submitted.
 - **Custom dictionaries** feature that enables users to add new words and expand the game's vocabularies.
 - **Dynamic difficulty selection** featuring variable _word lengths_ and _number of attempts_.
 - **Hints** given to the user, randomly selected from _3 categories_ based on their current context.
 
 ## 🕹️ Playing the Game
-
+<!---
 <div align="center">
   <figure>
     <img src="resources/video.gif" width="500" alt="Demo Wordle">
   </figure>
-</div>
+</div>--->
 
 1. **Main Game Window**
    * **Grid Area**: Displays your guesses attempt by attempt, coloring each letter to show your progress.
@@ -36,10 +37,11 @@ Subsequently, I continued the project to integrate additional features such as:
 3. **Customization, Themes & System**
    * **"Notte/Giorno" (Dark/Light Mode)**: Click this toggle button to switch between the dark theme and the light theme of the user interface for a comfortable playing experience.
    * **"Aggiungi parola" (Add Word)**: Click this button to open a dedicated input prompt where you can type and add a new custom word directly to your game dictionary saved locally (`parole_extra.txt`).
+   * **Language**: Click this button to change the language of the game.
 
 4. **Hint & Info**
-   * **Hint** button bottom left: if available, provides a hint to the user.
-   * **i (info)** button bottom right: Click this button to open an info pop-up to explain the UI and how to play Wordle.
+   * **Hint (💡)** button bottom left: if available, provides a hint to the user.
+   * **info (i)** button bottom right: Click this button to open an info pop-up to explain the UI and how to play Wordle.
 
 ## 🎮 Downloading and Starting the Game
 The game is distributed as an executable `.jar` file. To launch Wordle, make sure you have **Java (JRE/JDK 11 or higher)** installed.

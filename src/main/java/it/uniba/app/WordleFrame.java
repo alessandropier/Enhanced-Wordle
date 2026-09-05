@@ -46,6 +46,8 @@ public class WordleFrame extends JFrame {
     private JButton btnAiuto;
     private JPanel separatore;
 
+    private JButton btnInvio;
+
     private JButton btnCambiaLunghezza;
 
     private JButton btnHint;
@@ -79,15 +81,36 @@ public class WordleFrame extends JFrame {
     private final java.util.Set<Character> tastiOscuratiHint = new java.util.HashSet<>();
     private final java.util.Set<Character> tastiHintSpeciali = new java.util.HashSet<>();
 
+    // Bottone cambia lingua
+    private JButton btnCambiaLingua;
+
     public WordleFrame(final Giocatore g, final Paroliere p, final Matrice m) {
         this.giocatore = g;
         this.paroliere = p;
         this.matrice = m;
 
+        // CONTROLLO LINGUA AL PRIMO AVVIO
+        if (Controller.getLingua() == null) {
+            String[] lingueDisponibili = Controller.getLingueDisponibili();
+            String linguaScelta = (String) JOptionPane.showInputDialog(
+                this, // usa 'this' come riferimento della finestra principale
+                Messaggi.get("primo.avvio.msg", Controller.getLingua()),
+                Messaggi.get("primo.avvio.titolo", Controller.getLingua()),
+                JOptionPane.QUESTION_MESSAGE,
+                null,
+                lingueDisponibili,
+                "ITA"
+            );
+
+        Controller.setLingua((linguaScelta != null && !linguaScelta.trim().isEmpty()) ? linguaScelta : "ITA");
+    }
+
+        String lingua = Controller.getLingua();
+
         COLONNE = Controller.getNumCaratteri();
         calcolaRigheInBaseAllaLunghezza();
 
-        setTitle("Wordle Java");
+        setTitle(Messaggi.get("titolo.app", lingua));
         setSize(Math.max(620, 400 + (COLONNE * 55)), 950);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
@@ -96,13 +119,13 @@ public class WordleFrame extends JFrame {
         // --- 1. PANNELLO SUPERIORE CON I BOTTONI E IL TOGGLE ---
         panelBottoni = new JPanel(new FlowLayout(FlowLayout.CENTER, 5, 10));
 
-        btnNuovaPartita = new JButton("NUOVA");
-        btnMostra = new JButton("ARRENDITI");
-        btnEsci = new JButton("ESCI");
-        btnAggiungi = new JButton("AGGIUNGI PAROLA");
-        tglModalita = new JToggleButton("Notte");
+        btnNuovaPartita = new JButton(Messaggi.get("btn.nuova", lingua));
+        btnMostra = new JButton(Messaggi.get("btn.arrenditi", lingua));
+        btnEsci = new JButton(Messaggi.get("btn.esci", lingua));
+        btnAggiungi = new JButton(Messaggi.get("btn.aggiungi", lingua));
+        tglModalita = new JToggleButton(Messaggi.get("btn.notte", lingua));
 
-        btnCambiaLunghezza = new JButton("Lunghezza: " + COLONNE);
+        btnCambiaLunghezza = new JButton(Messaggi.get("btn.lunghezza", lingua).concat(String.valueOf(COLONNE)));
         styleButton(btnCambiaLunghezza);
         btnCambiaLunghezza.setPreferredSize(new Dimension(130, 32));
         btnCambiaLunghezza.addActionListener(e -> mostraDialogSelezioneLunghezza());
@@ -185,7 +208,7 @@ public class WordleFrame extends JFrame {
         btnAiuto.setBorderPainted(false);
         btnAiuto.setContentAreaFilled(false);
         btnAiuto.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        btnAiuto.setToolTipText("Aiuto & Regole");
+        btnAiuto.setToolTipText(Messaggi.get("tooltip.aiuto", lingua));
         btnAiuto.addActionListener(e -> mostraAiuto(false));
 
         // Configurazione Bottone Hint (Lampadina 💡)
@@ -220,10 +243,17 @@ public class WordleFrame extends JFrame {
         btnHint.setBorderPainted(false);
         btnHint.setContentAreaFilled(false);
         btnHint.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        btnHint.setToolTipText("Richiedi Indizio (Utilizzabile una sola volta)");
+        btnHint.setToolTipText(Messaggi.get("tooltip.hint", lingua));
         btnHint.addActionListener(e -> gestisciHint());
 
-        // --- CONTAINER IN BASSO CON HINT A SINISTRA E AIUTO A DESTRA ---
+        // Configurazione bottone cambio lingua
+        btnCambiaLingua = new JButton(Messaggi.get("btn.lingua", lingua) + Controller.getLingua());
+        styleButton(btnCambiaLingua);
+        btnCambiaLingua.setPreferredSize(new Dimension(120, 32));
+        btnCambiaLingua.addActionListener(e -> mostraDialogCambioLingua());
+        panelBottoni.add(btnCambiaLingua);
+
+        // --- CONTAINER IN BASSO CON HINT A SINISTRA E AIUTO A DESTRA E CAMBIO LINGUA AL CENTRO ---
         JPanel panelInferioreExtra = new JPanel(new BorderLayout());
         panelInferioreExtra.setOpaque(false);
         panelInferioreExtra.setBorder(BorderFactory.createEmptyBorder(0, 15, 5, 15));
@@ -232,11 +262,16 @@ public class WordleFrame extends JFrame {
         panelHintContainer.setOpaque(false);
         panelHintContainer.add(btnHint);
 
+        JPanel panelLinguaContainer = new JPanel(new FlowLayout(FlowLayout.CENTER, 0, 0));
+        panelLinguaContainer.setOpaque(false);
+        panelLinguaContainer.add(btnCambiaLingua);
+
         JPanel panelAiutoContainer = new JPanel(new FlowLayout(FlowLayout.RIGHT, 0, 0));
         panelAiutoContainer.setOpaque(false);
         panelAiutoContainer.add(btnAiuto);
 
         panelInferioreExtra.add(panelHintContainer, BorderLayout.WEST);
+        panelInferioreExtra.add(panelLinguaContainer, BorderLayout.CENTER);
         panelInferioreExtra.add(panelAiutoContainer, BorderLayout.EAST);
 
         panelSud = new JPanel(new BorderLayout());
@@ -257,12 +292,14 @@ public class WordleFrame extends JFrame {
             prefs.putBoolean("dark_mode", isNotte);
 
             if (isNotte) {
-                tglModalita.setText("Notte");
+                tglModalita.setText(Messaggi.get("btn.notte", Controller.getLingua()));
                 applicaTema(true);
             } else {
-                tglModalita.setText("Giorno");
+                tglModalita.setText(Messaggi.get("btn.giorno", Controller.getLingua()));
                 applicaTema(false);
             }
+
+            aggiornaTestiInterfaccia(); // <-- Aggiorna tutti i testi inclusi nella lingua corretta
             requestFocusInWindow();
         });
 
@@ -270,7 +307,7 @@ public class WordleFrame extends JFrame {
         boolean savedDarkMode = prefs.getBoolean("dark_mode", true);
 
         tglModalita.setSelected(savedDarkMode);
-        tglModalita.setText(savedDarkMode ? "Notte" : "Giorno");
+        tglModalita.setText(savedDarkMode ? Messaggi.get("btn.notte", Controller.getLingua()) : Messaggi.get("btn.giorno", Controller.getLingua()));
         applicaTema(savedDarkMode);
 
         // --- 5. ASCOLTATORE DELLA TASTIERA ---
@@ -284,6 +321,10 @@ public class WordleFrame extends JFrame {
         });
 
         setFocusable(true);
+
+        // AGGIORNA I TESTI ALL'AVVIO IN BASE ALLA LINGUA SCELTA
+        aggiornaTestiInterfaccia();
+
         controllaMostraAiutoAllAvvio();
     }
 
@@ -307,30 +348,71 @@ public class WordleFrame extends JFrame {
         String textColorHex = isNotte ? "#DCDCDC" : "#222222";
         String h3ColorHex = isNotte ? "#5DADE2" : "#1b4f72";
 
-        String messaggioHtml = "<html><body style='width: 580px; font-family: SansSerif; font-size: 14pt; color: " + textColorHex + "; padding: 0px;'>"
-            + "<h3 style='color: " + h3ColorHex + "; font-size: 17pt; margin-top: 0px; margin-bottom: 6px;'>1. Regole di Wordle</h3>"
-            + "<p style='margin-top: 0px; margin-bottom: 8px;'>L'obiettivo è indovinare la parola segreta nel minor numero di tentativi possibili. "
-            + "Dopo ogni tentativo, ciascuna casella verrà colorata per darti un indizio sulla parola segreta.</p>"
-            + "<table style='width: 100%; font-family: SansSerif; font-size: 14pt; color: " + textColorHex + "; margin-bottom: 10px;'>"
-            + "<tr><td style='width: 30px; color: #6AAA64; font-size: 20pt; vertical-align: top;'>&#9632;</td><td><b>Verde</b>: La lettera è corretta e si trova nella posizione giusta.</td></tr>"
-            + "<tr><td style='color: #C9B458; font-size: 20pt; vertical-align: top;'>&#9632;</td><td><b>Giallo</b>: La lettera è presente nella parola ma in una posizione errata.</td></tr>"
-            + "<tr><td style='color: #787C7E; font-size: 20pt; vertical-align: top;'>&#9632;</td><td><b>Grigio</b>: La lettera non è presente nella parola segreta.</td></tr>"
-            + "</table>"
-            + "<h3 style='color: " + h3ColorHex + "; font-size: 17pt; margin-top: 12px; margin-bottom: 6px;'>2. Guida all'Interfaccia e Bottoni</h3>"
-            + "<table style='width: 100%; font-family: SansSerif; font-size: 14pt; color: " + textColorHex + ";'>"
-            + "<tr><td style='width: 160px; font-weight: bold; vertical-align: top;'>Lunghezza:</td><td>Scegli la lunghezza della parola da indovinare.</td></tr>"
-            + "<tr><td style='width: 160px; font-weight: bold; vertical-align: top;'>NUOVA:</td><td>Avvia una nuova partita.</td></tr>"
-            + "<tr><td style='font-weight: bold; vertical-align: top;'>ARRENDITI:</td><td>Rivela la parola segreta.</td></tr>"
-            + "<tr><td style='font-weight: bold; vertical-align: top;'>ESCI:</td><td>Chiude l'applicazione.</td></tr>"
-            + "<tr><td style='font-weight: bold; vertical-align: top;'>Notte / Giorno:</td><td>Alterna il tema grafico e salva automaticamente la preferenza.</td></tr>"
-            + "<tr><td style='font-weight: bold; vertical-align: top;'>AGGIUNGI PAROLA:</td><td>Permette l'inserimento di una nuova parola nel dizionario.</td></tr>"
-            + "<tr><td style='font-weight: bold; vertical-align: top;'>AIUTO (icona i):</td><td>Apre questa schermata con le regole e la guida.</td></tr>"
-            + "<tr><td style='font-weight: bold; vertical-align: top;'>HINT (icona 💡):</td><td>Se possibile, fornisce un aiuto all'utente (utilizzabile solo una volta a partita).</td></tr>"
-            + "<tr><td style='font-weight: bold; vertical-align: top;'>Tastiera:</td><td>Digita le lettere, premi <b>INVIO</b> per confermare o <b>⌫</b> per cancellare.</td></tr>"
-            + "</table>"
-            + "</body></html>";
+        // Gestione della lingua
+        String lingua = Controller.getLingua();
 
-        javax.swing.JDialog dialog = new javax.swing.JDialog(this, "Regole del Gioco & Guida UI", true);
+        // Dopo i :
+        String titoloDialogo;
+        String testoCheckbox;
+        String h1Titolo, h1Testo;
+        String verdeTesto, gialloTesto, grigioTesto;
+        String h2Titolo;
+        String uiLunghezza, uiNuova, uiArrenditi, uiEsci, uiNotteGiorno, uiAggiungi, uiAiuto, uiHint, uiTastiera;
+
+        titoloDialogo = Messaggi.get("aiuto.titolo", lingua);
+        testoCheckbox = Messaggi.get("aiuto.checkbox", lingua);
+        h1Titolo = Messaggi.get("aiuto.h1", lingua);
+        h1Testo = Messaggi.get("aiuto.h1.testo", lingua);
+        verdeTesto = Messaggi.get("aiuto.verde", lingua); 
+        gialloTesto = Messaggi.get("aiuto.giallo", lingua); 
+        grigioTesto = Messaggi.get("aiuto.grigio", lingua); 
+        h2Titolo = Messaggi.get("aiuto.h2", lingua); 
+        uiLunghezza = Messaggi.get("aiuto.ui.lunghezza", lingua);
+        uiNuova = Messaggi.get("aiuto.ui.nuova", lingua);
+        uiArrenditi = Messaggi.get("aiuto.ui.arrenditi", lingua);
+        uiEsci = Messaggi.get("aiuto.ui.esci", lingua); 
+        uiNotteGiorno = Messaggi.get("aiuto.ui.nottegiorno", lingua);
+        uiAggiungi = Messaggi.get("aiuto.ui.aggiungi", lingua);
+        uiAiuto = Messaggi.get("aiuto.ui.aiuto", lingua);
+        uiHint = Messaggi.get("aiuto.ui.hint", lingua);
+        uiTastiera = Messaggi.get("aiuto.ui.tastiera", lingua);
+
+        // Prima dei :
+        String lunghezza, nuova, arrenditi, esci, notte, giorno, aggiungi_p, aiuto, hint, tastiera;
+        lunghezza = Messaggi.get("btn.lunghezza", lingua);
+        nuova = Messaggi.get("btn.nuova", lingua);
+        arrenditi = Messaggi.get("btn.arrenditi", lingua);
+        esci = Messaggi.get("btn.esci", lingua);
+        notte = Messaggi.get("btn.notte", lingua);
+        giorno = Messaggi.get("btn.giorno", lingua);
+        aggiungi_p = Messaggi.get("btn.aggiungi", lingua);
+        aiuto = Messaggi.get("aiuto.popup.nome", lingua);
+        hint = Messaggi.get("aiuto.popup.hint.nome", lingua);
+        tastiera = Messaggi.get("tastiera.nome", lingua);
+
+        String messaggioHtml = "<html><body style='width: 580px; font-family: SansSerif; font-size: 14pt; color: " + textColorHex + "; padding: 0px;'>"
+                + "<h3 style='color: " + h3ColorHex + "; font-size: 17pt; margin-top: 0px; margin-bottom: 6px;'>" + h1Titolo + "</h3>"
+                + "<p style='margin-top: 0px; margin-bottom: 8px;'>" + h1Testo + "</p>"
+                + "<table style='width: 100%; font-family: SansSerif; font-size: 14pt; color: " + textColorHex + "; margin-bottom: 10px;'>"
+                + "<tr><td style='width: 30px; color: #6AAA64; font-size: 20pt; vertical-align: top;'>&#9632;</td><td>" + verdeTesto + "</td></tr>"
+                + "<tr><td style='color: #C9B458; font-size: 20pt; vertical-align: top;'>&#9632;</td><td>" + gialloTesto + "</td></tr>"
+                + "<tr><td style='color: #787C7E; font-size: 20pt; vertical-align: top;'>&#9632;</td><td>" + grigioTesto + "</td></tr>"
+                + "</table>"
+                + "<h3 style='color: " + h3ColorHex + "; font-size: 17pt; margin-top: 12px; margin-bottom: 6px;'>" + h2Titolo + "</h3>"
+                + "<table style='width: 100%; font-family: SansSerif; font-size: 14pt; color: " + textColorHex + ";'>"
+                + "<tr><td style='width: 160px; font-weight: bold; vertical-align: top;'>" + lunghezza + "</td><td>" + uiLunghezza + "</td></tr>"
+                + "<tr><td style='width: 160px; font-weight: bold; vertical-align: top;'>" + nuova + ":</td><td>" + uiNuova + "</td></tr>"
+                + "<tr><td style='font-weight: bold; vertical-align: top;'>" + arrenditi + ":</td><td>" + uiArrenditi + "</td></tr>"
+                + "<tr><td style='font-weight: bold; vertical-align: top;'>" + esci + ":</td><td>" + uiEsci + "</td></tr>"
+                + "<tr><td style='font-weight: bold; vertical-align: top;'>" + notte + "/" + giorno + ":</td><td>" + uiNotteGiorno + "</td></tr>"
+                + "<tr><td style='font-weight: bold; vertical-align: top;'>" + aggiungi_p + ":</td><td>" + uiAggiungi + "</td></tr>"
+                + "<tr><td style='font-weight: bold; vertical-align: top;'>" + aiuto + " (i):</td><td>" + uiAiuto + "</td></tr>"
+                + "<tr><td style='font-weight: bold; vertical-align: top;'>" + hint + " (💡):</td><td>" + uiHint + "</td></tr>"
+                + "<tr><td style='font-weight: bold; vertical-align: top;'>" + tastiera + ":</td><td>" + uiTastiera + "</td></tr>"
+                + "</table>"
+                + "</body></html>";
+
+        javax.swing.JDialog dialog = new javax.swing.JDialog(this, titoloDialogo, true);
         dialog.setLayout(new BorderLayout());
 
         JPanel panel = new JPanel(new BorderLayout(0, 10));
@@ -342,7 +424,7 @@ public class WordleFrame extends JFrame {
 
         JCheckBox checkBox = null;
         if (isAvvio) {
-            checkBox = new JCheckBox("Non mostrare più questo messaggio all'avvio");
+            checkBox = new JCheckBox(testoCheckbox);
             checkBox.setFont(new Font("SansSerif", Font.PLAIN, 14));
             checkBox.setForeground(fgColore);
             checkBox.setBackground(bgColore);
@@ -383,9 +465,11 @@ public class WordleFrame extends JFrame {
         panel.setLayout(new GridLayout(3, 1, 0, 5));
         panel.setBorder(BorderFactory.createEmptyBorder(5, 10, 5, 10));
 
+        String invio = Messaggi.get("tastiera.invio", Controller.getLingua());
+
         String[] riga1 = {"Q", "W", "E", "R", "T", "Y", "U", "I", "O", "P"};
         String[] riga2 = {"A", "S", "D", "F", "G", "H", "J", "K", "L"};
-        String[] riga3 = {"INVIO", "Z", "X", "C", "V", "B", "N", "M", "⌫"};
+        String[] riga3 = {invio, "Z", "X", "C", "V", "B", "N", "M", "⌫"};
 
         panel.add(creaRigaTasti(riga1));
         panel.add(creaRigaTasti(riga2));
@@ -402,7 +486,13 @@ public class WordleFrame extends JFrame {
             btn.setFont(new Font("SansSerif", Font.BOLD, 15));
             btn.setFocusPainted(false);
 
-            if (s.equals("INVIO") || s.equals("⌫")) {
+            String invio = Messaggi.get("tastiera.invio", Controller.getLingua());
+
+            if(s.equals(invio))
+            {
+                btn.setPreferredSize(new Dimension(75, 55));
+                btnInvio = btn; // salviamo il bottone così da poterlo modificare successivamente per un cambio lingua
+            } else if (s.equals("⌫")) {
                 btn.setPreferredSize(new Dimension(75, 55));
             } else {
                 btn.setPreferredSize(new Dimension(46, 55));
@@ -410,7 +500,7 @@ public class WordleFrame extends JFrame {
 
             btn.addActionListener(e -> {
                 if (!tastieraBloccata) {
-                    gestisciInputVirtuale(s);
+                    gestisciInputVirtuale(btn.getText());
                 }
             });
 
@@ -520,7 +610,7 @@ public class WordleFrame extends JFrame {
             }
         }
 
-        AbstractButton[] bottoniSuperiori = {btnNuovaPartita, btnMostra, btnEsci, btnAggiungi, btnCambiaLunghezza};
+        AbstractButton[] bottoniSuperiori = {btnNuovaPartita, btnMostra, btnEsci, btnAggiungi, btnCambiaLunghezza, btnCambiaLingua};
         for (AbstractButton b : bottoniSuperiori) {
             b.setBackground(coloreBottoniBg);
             b.setForeground(coloreBottoniFg);
@@ -548,7 +638,14 @@ public class WordleFrame extends JFrame {
         Controller.wordle("/gioca", giocatore, paroliere, matrice);
 
         resettaInterfacciaGrafica();
-        JOptionPane.showMessageDialog(this, "Nuova partita avviata! Inizia a digitare.", "Nuova Partita", JOptionPane.INFORMATION_MESSAGE);
+
+        // Gestione messaggio di nuova partita
+        String lingua = Controller.getLingua();
+
+        String msgNuovaPartita = Messaggi.get("nuova.msg", lingua);
+        String titoloNuovaPartita = Messaggi.get("nuova.titolo", lingua);;
+
+        JOptionPane.showMessageDialog(this, msgNuovaPartita, titoloNuovaPartita, JOptionPane.INFORMATION_MESSAGE);
     }
 
     private void gestisciMostraParola() {
@@ -565,17 +662,24 @@ public class WordleFrame extends JFrame {
     }
 
     private void gestisciEsci() {
+        String lingua = Controller.getLingua();
+
+        String msgUscita = Messaggi.get("uscita.msg", lingua);
+        String titoloUscita = Messaggi.get("uscita.titolo", lingua);
+        String msgSegreta = Messaggi.get("uscita.segreta", lingua);
+        String titoloGame = Messaggi.get("uscita.gioco", lingua);
+
         int scelta = JOptionPane.showConfirmDialog(
             this,
-            "Sei sicuro di voler uscire dal gioco?",
-            "Conferma uscita",
+            msgUscita,
+            titoloUscita,
             JOptionPane.YES_NO_OPTION,
             JOptionPane.QUESTION_MESSAGE
         );
 
         if (scelta == JOptionPane.YES_OPTION) {
             if (paroliere.getParolaSegreta() != null && !hasWon && !wasSecretWordShown) {
-                JOptionPane.showMessageDialog(this, "La parola segreta era: " + paroliere.getParolaSegreta(), "Uscita", JOptionPane.INFORMATION_MESSAGE);
+                JOptionPane.showMessageDialog(this, msgSegreta + paroliere.getParolaSegreta(), titoloGame, JOptionPane.INFORMATION_MESSAGE);
             }
             System.exit(0);
         }
@@ -644,7 +748,10 @@ public class WordleFrame extends JFrame {
     }
 
     private void gestisciInputVirtuale(String comando) {
-        if (comando.equals("INVIO")) {
+        String lingua = Controller.getLingua();
+        String invio = Messaggi.get("tastiera.invio", lingua);
+
+        if (comando.equals(invio)) {
             inviaTentativo();
         } else if (comando.equals("⌫")) {
             cancellaLettera();
@@ -667,8 +774,18 @@ public class WordleFrame extends JFrame {
     }
 
     private void inviaTentativo() {
+        String lingua = Controller.getLingua();
+
         if (colonnaCorrente < COLONNE) {
-            JOptionPane.showMessageDialog(this, "La parola deve essere di " + COLONNE + " lettere!", "Attenzione", JOptionPane.WARNING_MESSAGE);
+            String messaggio = String.format(Messaggi.get("tentativo.lunghezza.errata.msg", lingua), COLONNE);
+            String titolo = Messaggi.get("tentativo.lunghezza.errata.titolo", lingua);
+
+            JOptionPane.showMessageDialog(
+                this, 
+                messaggio, 
+                titolo, 
+                JOptionPane.WARNING_MESSAGE
+            );
             return;
         }
 
@@ -678,17 +795,19 @@ public class WordleFrame extends JFrame {
         }
         String parolaInserita = sb.toString();
 
+        
         // CONTROLLO: Verifica se la parola fa parte delle parole consentite (Unione dei 3 dizionari)
         // dizionario 1: parole_N.txt (soluzioni)
         // dizionario 2: parole_extra_N.txt (soluzioni aggiunte dall'utente)
         // dizionario 3: parole_consentite_N.txt (altre parole NON soluzioni ammesse dal sistema)
 
         // Mostriamo il pop-up di errore solo se la parola NON è soluzione e NON è consentita
+        lingua = Controller.getLingua();
         if (!Controller.esisteParola(parolaInserita) && !Controller.isConsentita(parolaInserita)) {
             JOptionPane.showMessageDialog(
-                this, 
-                "La parola inserita non è presente nell'elenco delle parole consentite!", 
-                "Parola non valida", 
+                this,  
+                Messaggi.get("tentativo.parola.non.valida.msg", lingua), 
+                Messaggi.get("tentativo.parola.non.valida.titolo", lingua),
                 JOptionPane.ERROR_MESSAGE
             );
             return; // viene mostrato il pop-up e l'utente può correggere il tentativo
@@ -744,10 +863,17 @@ public class WordleFrame extends JFrame {
                 }
         }
 
+        String messaggio;
+        String titolo;
+
         if (tutteVerdi) {
             tastieraBloccata = true;
             hasWon = true;
-            JOptionPane.showMessageDialog(this, "Complimenti, hai indovinato la parola!", "Vittoria", JOptionPane.INFORMATION_MESSAGE);
+
+            messaggio = Messaggi.get("vittoria.msg", lingua);
+            titolo = Messaggi.get("vittoria.titolo", lingua);
+
+            JOptionPane.showMessageDialog(this, messaggio, titolo, JOptionPane.INFORMATION_MESSAGE);
         } else if (tentativoFatto >= RIGHE - 1) {
             tastieraBloccata = true;
             wasSecretWordShown = true;
@@ -755,7 +881,10 @@ public class WordleFrame extends JFrame {
             lblParolaSegreta.setText(paroliere.getParolaSegreta());
             lblParolaSegreta.setVisible(true);
 
-            JOptionPane.showMessageDialog(this, "Tentativi terminati!", "Game Over", JOptionPane.INFORMATION_MESSAGE);
+            messaggio = Messaggi.get("gameover.msg", lingua);
+            titolo = Messaggi.get("gameover.titolo", lingua);
+
+            JOptionPane.showMessageDialog(this, messaggio, titolo, JOptionPane.INFORMATION_MESSAGE);
         } else {
             rigaCorrente++;
             colonnaCorrente = 0;
@@ -763,10 +892,15 @@ public class WordleFrame extends JFrame {
     }
 
     private void gestisciAggiungiParola() {
+        String lingua = Controller.getLingua();
+        
+        String messaggio = String.format(Messaggi.get("aggiungi.msg", lingua), COLONNE);
+        String titolo = Messaggi.get("aggiungi.titolo", lingua);
+
         String input = JOptionPane.showInputDialog(
             this,
-            "Inserisci una nuova parola di " + COLONNE + " lettere da aggiungere nel sistema:",
-            "Aggiungi Parola Personalizzata",
+            messaggio,
+            titolo,
             JOptionPane.QUESTION_MESSAGE
         );
 
@@ -774,13 +908,19 @@ public class WordleFrame extends JFrame {
             String parola = input.trim().toUpperCase();
 
             if (parola.length() != COLONNE) {
-                JOptionPane.showMessageDialog(this, "La parola deve essere di esattamente " + COLONNE + " lettere!", "Errore", JOptionPane.ERROR_MESSAGE);
+                messaggio = String.format(Messaggi.get("aggiungi.errore.lunghezza", lingua), COLONNE);
+                titolo = Messaggi.get("aggiungi.errore.lunghezza.titolo", lingua);
+
+                JOptionPane.showMessageDialog(this, messaggio, titolo, JOptionPane.ERROR_MESSAGE);
                 requestFocusInWindow();
                 return;
             }
 
             if (!parola.matches("[A-Z]+")) {
-                JOptionPane.showMessageDialog(this, "La parola deve contenere solo lettere dell'alfabeto!", "Caratteri non validi", JOptionPane.ERROR_MESSAGE);
+                messaggio = Messaggi.get("aggiungi.errore.caratteri", lingua);
+                titolo = Messaggi.get("aggiungi.errore.caratteri.titolo", lingua);
+
+                JOptionPane.showMessageDialog(this, messaggio, titolo, JOptionPane.ERROR_MESSAGE);
                 requestFocusInWindow();
                 return;
             }
@@ -796,7 +936,10 @@ public class WordleFrame extends JFrame {
             }
 
             if (tutteUguali) {
-                JOptionPane.showMessageDialog(this, "Davvero!? La stessa lettera? Mi dispiace ciccio, non è possibile!", "Parola non valida", JOptionPane.WARNING_MESSAGE);
+                messaggio = Messaggi.get("aggiungi.errore.uguali", lingua);
+                titolo = Messaggi.get("tentativo.parola.non.valida.titolo", lingua);
+
+                JOptionPane.showMessageDialog(this, messaggio, titolo, JOptionPane.WARNING_MESSAGE);
                 requestFocusInWindow();
                 return;
             }
@@ -804,22 +947,32 @@ public class WordleFrame extends JFrame {
 
             boolean salvata = Controller.aggiungiParolaExtra(parola);
             if (salvata) {
-                JOptionPane.showMessageDialog(this, "Parola aggiunta con successo!", "Successo", JOptionPane.INFORMATION_MESSAGE);
+                messaggio = Messaggi.get("aggiungi.successo.msg", lingua);
+                titolo = Messaggi.get("aggiungi.successo.titolo", lingua);
+
+                JOptionPane.showMessageDialog(this, messaggio, titolo, JOptionPane.INFORMATION_MESSAGE);
             } else {
-                JOptionPane.showMessageDialog(this, "La parola è già presente nel dizionario (interno o extra)!", "Attenzione", JOptionPane.WARNING_MESSAGE);
+                messaggio = Messaggi.get("aggiungi.esistente.msg", lingua);
+                titolo = Messaggi.get("tentativo.lunghezza.errata.titolo", lingua);
+
+                JOptionPane.showMessageDialog(this, messaggio, titolo, JOptionPane.WARNING_MESSAGE);
             }
         }
         requestFocusInWindow();
     }
 
     private void mostraDialogSelezioneLunghezza() {
-        String[] opzioni = {"5", "6", "7", "8", "9"};
+        String[] opzioni = Controller.getOpzioni();
         String sceltaCorrente = String.valueOf(COLONNE);
+
+        String lingua = Controller.getLingua();
+        String titoloDialogo = Messaggi.get("lunghezza.titolo", lingua);
+        String messaggioDialogo = Messaggi.get("lunghezza.msg", lingua);
         
         String scelta = (String) JOptionPane.showInputDialog(
             this,
-            "Seleziona la lunghezza della parola:",
-            "Cambia Dimensione",
+            messaggioDialogo,
+            titoloDialogo,
             JOptionPane.QUESTION_MESSAGE,
             null,
             opzioni,
@@ -831,7 +984,10 @@ public class WordleFrame extends JFrame {
             if (nuovaLunghezza != COLONNE) {
                 Controller.setNumCaratteri(nuovaLunghezza);
                 COLONNE = Controller.getNumCaratteri();
-                btnCambiaLunghezza.setText("Lunghezza: " + COLONNE);
+                
+                // Aggiorna l'etichetta del bottone
+                btnCambiaLunghezza.setText((Messaggi.get("btn.lunghezza", lingua).concat(String.valueOf(COLONNE))));
+                
                 ricostruisciGriglia();
                 gestisciNuovaPartita();
             }
@@ -996,11 +1152,11 @@ public class WordleFrame extends JFrame {
         // for debugging
         // System.out.println("HINTS DISPONIBILI: " + hintDisponibili);
 
+        String lingua = Controller.getLingua();
+
         if (hintDisponibili.isEmpty()) {
             boolean isNotte = tglModalita.isSelected();
-            String messaggioNessunHint = "<b>Nessun Indizio Disponibile!</b><br><br>"
-                    + "Hai già scoperto o escluso tutte le informazioni possibili.<br>"
-                    + "Non ci sono hint applicabili in questo momento!";
+            String messaggioNessunHint = Messaggi.get("hint.nessuno.msg", lingua);
             
             mostraGraficaHintDialog(messaggioNessunHint, isNotte);
             
@@ -1063,9 +1219,7 @@ public class WordleFrame extends JFrame {
                     }
                 }
 
-                messaggioDialogo = "<b>Potere della Lampadina: Esclusione!</b><br><br>"
-                        + "Il sistema ha analizzato la parola e ha oscurato <b>nuove lettere</b> "
-                        + "che non fanno parte della parola segreta.";
+                messaggioDialogo = Messaggi.get("hint.uno.msg", lingua);
                 break;
 
             case 2:
@@ -1078,9 +1232,7 @@ public class WordleFrame extends JFrame {
                     tastoIniziale.setForeground(Color.WHITE);
                 }
 
-                messaggioDialogo = "<b>Potere della Lampadina: Lettera Iniziale!</b><br><br>"
-                        + "La parola segreta inizia con la lettera: <span style='font-size: 16pt; color: #3498DB;'><b>" + primaLettera + "</b></span><br>"
-                        + "<i>È stata evidenziata in blu sulla tastiera!</i>";
+                messaggioDialogo = String.format(Messaggi.get("hint.due.msg", lingua), primaLettera);
                 break;
 
             case 3:
@@ -1095,10 +1247,7 @@ public class WordleFrame extends JFrame {
                     tastoPresente.setForeground(Color.WHITE);
                 }
 
-                messaggioDialogo = "<b>Potere della Lampadina: Indizio di Presenza!</b><br><br>"
-                        + "Fai attenzione: la parola segreta contiene sicuramente la lettera: "
-                        + "<span style='font-size: 16pt; color: #D4AC0D;'><b>" + letteraCasuale + "</b></span><br>"
-                        + "<i>È stata evidenziata in giallo speciale sulla tastiera!</i>";
+                messaggioDialogo = String.format(Messaggi.get("hint.tre.msg", lingua), letteraCasuale);
                 break;
         }
 
@@ -1113,7 +1262,9 @@ public class WordleFrame extends JFrame {
     private void mostraGraficaHintDialog(String htmlTesto, boolean isNotte) {
         Color bgColore = isNotte ? SFONDO_NOTTE : Color.WHITE;
         
-        javax.swing.JDialog hintDialog = new javax.swing.JDialog(this, "💡 Indizio Strategico Casuale", true);
+        String titolo = Messaggi.get("hint.titolo", Controller.getLingua());
+
+        javax.swing.JDialog hintDialog = new javax.swing.JDialog(this, titolo, true);
         hintDialog.setLayout(new BorderLayout());
 
         JPanel panelContenuto = new JPanel(new BorderLayout(15, 15));
@@ -1132,7 +1283,9 @@ public class WordleFrame extends JFrame {
         panelContenuto.add(lblIcona, BorderLayout.NORTH);
         panelContenuto.add(lblTesto, BorderLayout.CENTER);
 
-        JButton btnOk = new JButton("Ho capito, grazie!");
+        String lingua = Controller.getLingua();
+
+        JButton btnOk = new JButton(Messaggi.get("hint.btn.ok", lingua));
         styleButton(btnOk);
         btnOk.setPreferredSize(new Dimension(160, 35));
         btnOk.addActionListener(e -> hintDialog.dispose());
@@ -1146,5 +1299,87 @@ public class WordleFrame extends JFrame {
         hintDialog.pack();
         hintDialog.setLocationRelativeTo(this);
         hintDialog.setVisible(true);
+    }
+
+    private String mostraDialogCambioLingua() {
+    String[] lingueDisponibili = Controller.getLingueDisponibili();
+    String linguaCorrente = Controller.getLingua();
+    
+    String titoloDialogo = Messaggi.get("lingua.titolo", linguaCorrente);
+    String messaggioDialogo = Messaggi.get("lingua.msg", linguaCorrente);
+
+    // Pannello
+    String nuovaLingua = (String) JOptionPane.showInputDialog(
+            this,
+            messaggioDialogo,
+            titoloDialogo,
+            JOptionPane.QUESTION_MESSAGE,
+            null,
+            lingueDisponibili,
+            linguaCorrente
+        );
+
+    // Controllo sulla lingua
+    if (nuovaLingua != null && !nuovaLingua.equals(linguaCorrente)) {
+        // Aggiorna la lingua in "Controller" e salva nelle Preferences
+        Controller.setLingua(nuovaLingua);
+
+        String testo = String.format(Messaggi.get("btn.lingua", nuovaLingua), nuovaLingua);
+        btnCambiaLingua.setText(testo);
+
+        // Aggiorna subito tutta la GUI
+         aggiornaTestiInterfaccia();
+
+        // Ricarica la partita con i dizionari della nuova lingua
+        gestisciNuovaPartita();
+
+        String msgSuccesso = String.format(Messaggi.get("lingua.successo.msg", nuovaLingua), nuovaLingua);
+        String titoloSuccesso = Messaggi.get("lingua.successo.titolo", nuovaLingua);
+
+            JOptionPane.showMessageDialog(
+                this,
+                msgSuccesso,
+                titoloSuccesso,
+                JOptionPane.INFORMATION_MESSAGE
+            );
+    }
+    requestFocusInWindow();
+    return nuovaLingua;
+}
+
+private void aggiornaTestiInterfaccia() {
+        String lingua = Controller.getLingua();
+
+        boolean isNotte = tglModalita.isSelected();
+
+        String titleApp = Messaggi.get("titolo.app", lingua);
+        String nuovaBtn = Messaggi.get("btn.nuova", lingua);
+        String resaBtn = Messaggi.get("btn.arrenditi", lingua);
+        String esciBtn = Messaggi.get("btn.esci", lingua);
+        String aggiungiBtn = Messaggi.get("btn.aggiungi", lingua);
+        String lunghezzaBtn = Messaggi.get("btn.lunghezza", lingua).concat(String.valueOf(COLONNE));
+        String linguaBtn = String.format(Messaggi.get("btn.lingua", lingua), lingua);
+        String notteBtn = Messaggi.get("btn.notte", lingua);
+        String giornoBtn = Messaggi.get("btn.giorno", lingua);
+
+        String aiutoBtn = Messaggi.get("tooltip.aiuto", lingua);
+        String hintBtn = Messaggi.get("tooltip.hint", lingua);
+
+        setTitle(titleApp);
+        btnNuovaPartita.setText(nuovaBtn);
+        btnMostra.setText(resaBtn);
+        btnEsci.setText(esciBtn);
+        btnAggiungi.setText(aggiungiBtn);
+        btnCambiaLunghezza.setText(lunghezzaBtn);
+        btnCambiaLingua.setText(linguaBtn);
+        tglModalita.setText(isNotte ? notteBtn : giornoBtn);
+        
+        // Tooltip
+        btnAiuto.setToolTipText(aiutoBtn);
+        btnHint.setToolTipText(hintBtn);
+
+        // Testo aggiornato per l'invio
+        String testoInvio = Messaggi.get("tastiera.invio", lingua);
+        btnInvio.setText(testoInvio);
     }
 }
