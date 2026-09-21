@@ -10,6 +10,8 @@ public class Messaggi {
         switch (lingua.toUpperCase()) {
             case "ENG":
                 return getEnglish(chiave);
+            case "ESP":
+                return getSpanish(chiave);
             case "ITA":
             default:
                 return getItalian(chiave);
@@ -217,6 +219,109 @@ public class Messaggi {
             // tastiera invio
             case "tastiera.invio": return "ENTER";
             case "tastiera.nome": return "Keyboard";
+
+            default: return chiave;
+        }
+    }
+
+    private static String getSpanish(String chiave) {
+        switch (chiave) {
+             // Titolo App
+            case "titolo.app": return "Wordle Java";
+
+            // Primo avvio
+            case "primo.avvio.titolo": return "Inicio inicial - Selección de idioma";
+            case "primo.avvio.msg": return "Seleccionar idioma inicial / Seleziona la lingua iniziale:";
+            
+            // Bottoni principali
+            case "btn.nuova": return "NUEVO";
+            case "btn.arrenditi": return "RENDIRSE";
+            case "btn.esci": return "SALIDA";
+            case "btn.aggiungi": return "AÑADIR PALABRA";
+            case "btn.notte": return "NOCHE";
+            case "btn.giorno": return "DÍA";
+            case "btn.lunghezza": return "LONGITUD: ";
+            case "btn.lingua": return "IDIOMA: %s";
+            
+            // Tooltip
+            case "tooltip.aiuto": return "Ayuda y Normas";
+            case "tooltip.hint": return "Solicitar pista (se puede usar una vez por partida)";
+            
+            // Nuova partita
+            case "nuova.msg": return "¡Nueva partida iniciada! Empieza a escribir.";
+            case "nuova.titolo": return "Nueva partida";
+            
+            // Uscita
+            case "uscita.msg": return "¿Estás seguro de que quieres salir del juego?";
+            case "uscita.titolo": return "Confirmar salida";
+            case "uscita.segreta": return "La palabra secreta era: ";
+            case "uscita.gioco": return "Salida";
+            
+            // Lunghezza dialog
+            case "lunghezza.titolo": return "Cambiar tamaño";
+            case "lunghezza.msg": return "Selecciona la longitud de la palabra:";
+            
+            // Tentativi / errori
+            case "tentativo.lunghezza.errata.titolo": return "Atención";
+            case "tentativo.lunghezza.errata.msg": return "¡La palabra debe tener %d letras!";
+            case "tentativo.parola.non.valida.titolo": return "Palabra no válida";
+            case "tentativo.parola.non.valida.msg": return "¡Esta palabra no está en la lista de palabras permitidas!";
+            case "vittoria.msg": return "¡Felicidades, has adivinado la palabra!";
+            case "vittoria.titolo": return "Victoria";
+            case "gameover.msg": return "¡Se han agotado los intentos!";
+            case "gameover.titolo": return "Juego terminado";
+            
+            // Aggiungi parola
+            case "aggiungi.titolo": return "Agregar palabra personalizada";
+            case "aggiungi.msg": return "Ingrese una nueva palabra de %d letras para añadir al sistema:";
+            case "aggiungi.errore.lunghezza": return "¡La palabra debe tener exactamente %d letras!";
+            case "aggiungi.errore.lunghezza.titolo": return "Error";
+            case "aggiungi.errore.caratteri": return "¡La palabra debe contener únicamente letras del alfabeto!";
+            case "aggiungi.errore.caratteri.titolo": return "Caracteres no válidos";
+            case "aggiungi.errore.uguali": return "¿En serio? ¿La misma letra? Lo siento, amigo, ¡eso no es posible!";
+            case "aggiungi.successo.msg": return "¡Palabra añadida con éxito!";
+            case "aggiungi.successo.titolo": return "Éxito";
+            case "aggiungi.esistente.msg": return "¡La palabra ya está en el diccionario (interno o externo)!";
+            
+            // Hint
+            case "hint.titolo": return "💡 Consejo estratégico aleatorio";
+            case "hint.btn.ok": return "Entendido, ¡gracias!";
+            case "hint.nessuno.titolo": return "¡No hay pistas disponibles!";
+            case "hint.nessuno.msg": return "<b>¡No hay pistas disponibles!</b><br><br>Ya has descubierto o descartado toda la información posible.<br>¡No hay pistas aplicables en este momento!";
+            case "hint.uno.msg": return "<b>Lightbulb ¡Poder: exclusión!</b><br><br>El sistema analizó la palabra y puso en gris las <b>nuevas letras</b> que no forman parte de la palabra secreta.";
+            case "hint.due.msg": return "<b>Lightbulb Power: ¡Inicial!</b><br><br>La palabra secreta empieza con la letra: <span style='font-size: 16pt; color: #3498DB;'><b>%s</b></span><br><i>¡Se ha resaltado en azul en el teclado!</i>";
+            case "hint.tre.msg": return "<b>Lightbulb Poder: ¡Pista de presencia!</b><br><br>Presta atención: la palabra secreta definitivamente contiene la letra: <span style='font-size: 16pt; color: #D4AC0D;'><b>%s</b></span><br><i>¡Se ha resaltado en un amarillo especial en el teclado!</i>";
+            
+            // Cambio lingua dialog
+            case "lingua.titolo": return "Cambiar idioma";
+            case "lingua.msg": return "Seleccione un nuevo idioma:";
+            case "lingua.successo.msg": return "¡Idioma cambiado correctamente a %s! Sistema recargado.";
+            case "lingua.successo.titolo": return "Recarga completada";
+            
+            // Aiuto dialog
+            case "aiuto.titolo": return "Reglas del juego y guía de la interfaz";
+            case "aiuto.checkbox": return "No volver a mostrar este mensaje al iniciar";
+            case "aiuto.h1": return "1. Reglas de Wordle";
+            case "aiuto.h1.testo": return "El objetivo es adivinar la palabra secreta en el menor número de intentos posible. Tras cada intento, cada casilla cambiará de color para darte una pista sobre la palabra secreta.";
+            case "aiuto.verde": return "<b>Verde</b>: La letra es correcta y está en la posición adecuada.";
+            case "aiuto.giallo": return "<b>Amarillo</b>: La letra está en la palabra, pero en la posición incorrecta.";
+            case "aiuto.grigio": return "<b>Gris</b>: La letra no está en la palabra secreta.";
+            case "aiuto.h2": return "2. Guía de la interfaz y los botones";
+            case "aiuto.ui.lunghezza": return "Elige la longitud de la palabra que hay que adivinar.";
+            case "aiuto.ui.nuova": return "Inicia una partida nueva.";
+            case "aiuto.ui.arrenditi": return "Revela la palabra secreta.";
+            case "aiuto.ui.esci": return "Cierra la aplicación.";
+            case "aiuto.ui.nottegiorno": return "Alterna el tema gráfico y guarda automáticamente la preferencia.";
+            case "aiuto.ui.aggiungi": return "Permite añadir una nueva palabra al diccionario.";
+            case "aiuto.ui.aiuto": return "Abre esta pantalla con las reglas y la guía.";
+            case "aiuto.ui.hint": return "Si es posible, ofrece una pista al usuario (solo se puede usar una vez por partida).";
+            case "aiuto.ui.tastiera": return "Escribe letras, pulsa <b>ENVIO</b> para confirmar o <b>⌫</b> para borrar.";
+            case "aiuto.popup.nome": return "AYUDA";
+            case "aiuto.popup.hint.nome": return "PISTA";
+
+            // tastiera invio
+            case "tastiera.invio": return "ENVIO";
+            case "tastiera.nome": return "Teclado";
 
             default: return chiave;
         }

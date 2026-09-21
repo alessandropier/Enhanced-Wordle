@@ -63,7 +63,7 @@ public final class Controller {
     }
 
     public static String[] getLingueDisponibili() {
-        return new String[]{"ITA", "ENG"};
+        return new String[]{"ITA", "ENG", "ESP"};
     }
 
     /**

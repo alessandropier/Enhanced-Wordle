@@ -468,8 +468,14 @@ public class WordleFrame extends JFrame {
         String invio = Messaggi.get("tastiera.invio", Controller.getLingua());
 
         String[] riga1 = {"Q", "W", "E", "R", "T", "Y", "U", "I", "O", "P"};
-        String[] riga2 = {"A", "S", "D", "F", "G", "H", "J", "K", "L"};
+        String[] riga2;
         String[] riga3 = {invio, "Z", "X", "C", "V", "B", "N", "M", "⌫"};
+
+        // Se la lingua attiva è lo spagnolo (ESP), aggiungiamo la "Ñ"
+        if ("ESP".equalsIgnoreCase(Controller.getLingua()))
+            riga2 = new String[]{"A", "S", "D", "F", "G", "H", "J", "K", "L", "Ñ"};
+        else
+            riga2 = new String[]{"A", "S", "D", "F", "G", "H", "J", "K", "L"};
 
         panel.add(creaRigaTasti(riga1));
         panel.add(creaRigaTasti(riga2));
@@ -1347,6 +1353,8 @@ public class WordleFrame extends JFrame {
     return nuovaLingua;
 }
 
+// Quando viene cambiata la lingua, viene chiamato questo metodo che aggiorna 
+// i testi dell'interfaccia grafica di Wordle
 private void aggiornaTestiInterfaccia() {
         String lingua = Controller.getLingua();
 
@@ -1381,5 +1389,25 @@ private void aggiornaTestiInterfaccia() {
         // Testo aggiornato per l'invio
         String testoInvio = Messaggi.get("tastiera.invio", lingua);
         btnInvio.setText(testoInvio);
+
+        // Aggiunta o Rimozione della Ñ
+        if (panelSud != null && panelTastiera != null) {
+            // Rimozione dell'attuale Pannello
+            panelSud.remove(panelTastiera);
+            tastiVirtuali.clear(); // Pulisce i vecchi riferimenti ai tasti
+
+            // Ricreazione del Pannello
+            panelTastiera = creaPannelloTastiera();
+            panelSud.add(panelTastiera, BorderLayout.CENTER);
+
+            // Applico il tema attualmente in uso
+            if (isNotte)
+                applicaTema(true);
+            else
+                applicaTema(false);
+
+            panelSud.revalidate();
+            panelSud.repaint();
+        }
     }
 }
