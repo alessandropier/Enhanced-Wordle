@@ -15,7 +15,7 @@ public final class App {
     public static void main(final String[] args) {
         System.setProperty("sun.java2d.uiScale", "1.0");
 
-        // Abilitazione colori ANSI (opzionale se usi solo GUI)
+        // Abilitazione colori ANSI (per il cli)
         if (System.getProperty("os.name").toLowerCase().contains("win")) {
             try {
                 new ProcessBuilder("cmd", "/c", "echo off").inheritIO().start().waitFor();
