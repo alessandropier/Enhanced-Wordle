@@ -2152,8 +2152,6 @@ noleggio
 nominale
 nominare
 nonnismo
-nonsense
-nonsenso
 nordista
 normanno
 nostrano

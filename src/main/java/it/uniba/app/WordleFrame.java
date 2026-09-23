@@ -22,7 +22,9 @@ import java.awt.RenderingHints;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 import java.util.prefs.Preferences;
 
 public class WordleFrame extends JFrame {
@@ -79,7 +81,8 @@ public class WordleFrame extends JFrame {
 
     // Tasti bloccati dall'hint
     private final java.util.Set<Character> tastiOscuratiHint = new java.util.HashSet<>();
-    private final java.util.Set<Character> tastiHintSpeciali = new java.util.HashSet<>();
+    private Set<Character> tastiHintIniziale = new HashSet<>();   // Per il blu (Hint 2)
+    private Set<Character> tastiHintPresente = new HashSet<>();    // Per l'oro (Hint 3)
 
     // Bottone cambia lingua
     private JButton btnCambiaLingua;
@@ -559,7 +562,6 @@ public class WordleFrame extends JFrame {
                     if (subComp instanceof JButton) {
                         JButton btn = (JButton) subComp;
                         String testoBtn = btn.getText();
-                        Color bgAttuale = btn.getBackground();
 
                         // Verifichiamo se il bottone corrisponde a una lettera dell'alfabeto gestita nei nostri dizionari
                         Character letteraCorrispondente = null;
@@ -578,19 +580,9 @@ public class WordleFrame extends JFrame {
                         } 
                         // Se è un tasto lettera dell'alfabeto
                         else {
-                            // 1. Se il tasto ha un colore di tentativo standard (verde, giallo, grigio tentativo), lo manteniamo
-                            if (bgAttuale.equals(new Color(106, 170, 100)) ||
-                                bgAttuale.equals(new Color(201, 180, 88)) ||
-                                bgAttuale.equals(new Color(120, 124, 126))) {
-                                // Lascia inalterato
-                            } 
-                            // 2. Se il tasto è stato oscurato dall'Hint 1
-                            else if (tastiOscuratiHint.contains(letteraCorrispondente)) {
-                                // Notte: Grigio molto scuro (quasi nero) per staccare dai tasti normali
-                                // Giorno: Grigio tenue neutro
+                            // 1. Se il tasto è stato oscurato dall'Hint 1 (Priorità assoluta di esclusione)
+                            if (tastiOscuratiHint.contains(letteraCorrispondente)) {
                                 Color colBgHint = isNotte ? new Color(28, 30, 33) : new Color(215, 218, 222);
-                                
-                                // Testo sbiadito (faded) per dare l'effetto "tasto disabilitato/cancellato"
                                 Color colFgHint = isNotte ? new Color(110, 115, 120) : new Color(130, 135, 140);
                                 Color colBordoHint = isNotte ? new Color(40, 43, 46) : new Color(190, 193, 196);
 
@@ -598,17 +590,80 @@ public class WordleFrame extends JFrame {
                                 btn.setForeground(colFgHint);
                                 btn.setBorder(BorderFactory.createLineBorder(colBordoHint, 1));
                             }
-                            // 3. Se il tasto fa parte degli hint speciali (lettera iniziale o presente)
-                            else if (tastiHintSpeciali.contains(letteraCorrispondente)) {
-                                // Mantiene il colore speciale già assegnato senza perdersi
-                                btn.setForeground(Color.WHITE);
-                                btn.setBorder(BorderFactory.createLineBorder(coloreBordo, 1));
-                            } 
-                            // 4. Tasti normali neutri
                             else {
-                                btn.setBackground(coloreBottoniBg);
-                                btn.setForeground(coloreBottoniFg);
-                                btn.setBorder(BorderFactory.createLineBorder(coloreBordo, 1));
+                                // Cerchiamo se la lettera ha un colore nei tentativi fatti finora per trovare eventuale VERDE o GIALLO/GRIGIO
+                                Color coloreTentativoTrovato = null;
+                                int prioritaTrovata = -1;
+
+                                for (int t = 0; t < giocatore.getTentativi(); t++) {
+                                    if (t < matrice.getTentativiList().size() && t < matrice.getColoriList().size()) {
+                                        String parolaTentata = matrice.getTentativiList().get(t);
+                                        java.util.List<String> coloriTentativo = matrice.getColoriList().get(t);
+                                        
+                                        for (int cIdx = 0; cIdx < parolaTentata.length(); cIdx++) {
+                                            if (cIdx < coloriTentativo.size() && parolaTentata.charAt(cIdx) == letteraCorrispondente) {
+                                                String ansiCol = coloriTentativo.get(cIdx);
+                                                Color colTemp;
+                                                int prio;
+                                                if (ansiCol.equals("\u001B[42m")) { // Verde
+                                                    colTemp = new Color(106, 170, 100);
+                                                    prio = 3;
+                                                } else if (ansiCol.equals("\u001B[103m")) { // Giallo
+                                                    colTemp = new Color(201, 180, 88);
+                                                    prio = 2;
+                                                } else { // Grigio
+                                                    colTemp = new Color(120, 124, 126);
+                                                    prio = 1;
+                                                }
+                                                if (prio > prioritaTrovata) {
+                                                    prioritaTrovata = prio;
+                                                    coloreTentativoTrovato = colTemp;
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+
+                                // 1. MASSIMA PRIORITÀ ASSOLUTA: SE C'È UN VERDE NEI TENTATIVI, RIMANE VERDE SEMPRE (anche se ha hint)
+                                if (prioritaTrovata == 3) {
+                                    btn.setBackground(coloreTentativoTrovato);
+                                    btn.setForeground(Color.WHITE);
+                                    btn.setBorder(BorderFactory.createLineBorder(coloreTentativoTrovato, 1));
+                                }
+                                // 2. Se il tasto è stato oscurato dall'Hint 1 (Esclusione totale, a meno che non ci sia un verde sopra)
+                                else if (tastiOscuratiHint.contains(letteraCorrispondente)) {
+                                    Color colBgHint = isNotte ? new Color(28, 30, 33) : new Color(215, 218, 222);
+                                    Color colFgHint = isNotte ? new Color(110, 115, 120) : new Color(130, 135, 140);
+                                    Color colBordoHint = isNotte ? new Color(40, 43, 46) : new Color(190, 193, 196);
+
+                                    btn.setBackground(colBgHint);
+                                    btn.setForeground(colFgHint);
+                                    btn.setBorder(BorderFactory.createLineBorder(colBordoHint, 1));
+                                }
+                                // 3. Se il tasto fa parte dell'hint della lettera iniziale (BLU)
+                                else if (tastiHintIniziale.contains(letteraCorrispondente)) {
+                                    btn.setBackground(new Color(41, 128, 185)); // Blu Hint 2
+                                    btn.setForeground(Color.WHITE);
+                                    btn.setBorder(BorderFactory.createLineBorder(coloreBordo, 1));
+                                } 
+                                // 4. Se il tasto fa parte dell'hint della lettera presente (ORO)
+                                else if (tastiHintPresente.contains(letteraCorrispondente)) {
+                                    btn.setBackground(new Color(212, 172, 13));  // Oro Hint 3
+                                    btn.setForeground(Color.WHITE);
+                                    btn.setBorder(BorderFactory.createLineBorder(coloreBordo, 1));
+                                }
+                                // 5. SE LA LETTERA HA UN ALTRO COLORE NEI TENTATIVI (Giallo o Grigio)
+                                else if (prioritaTrovata > -1) {
+                                    btn.setBackground(coloreTentativoTrovato);
+                                    btn.setForeground(Color.WHITE);
+                                    btn.setBorder(BorderFactory.createLineBorder(coloreTentativoTrovato, 1));
+                                }
+                                // 6. Tasti normali neutri (mai tentati e senza hint)
+                                else {
+                                    btn.setBackground(coloreBottoniBg);
+                                    btn.setForeground(coloreBottoniFg);
+                                    btn.setBorder(BorderFactory.createLineBorder(coloreBordo, 1));
+                                }
                             }
                         }
                     }
@@ -701,7 +756,8 @@ public class WordleFrame extends JFrame {
         
         // --- PULIZIA DEGLI HINT PRECEDENTI ---
         tastiOscuratiHint.clear();
-        tastiHintSpeciali.clear();
+        tastiHintIniziale.clear();
+        tastiHintPresente.clear();
         // ---
 
         rigaCorrente = 0;
@@ -852,13 +908,18 @@ public class WordleFrame extends JFrame {
             JButton tastoBtn = tastiVirtuali.get(lettera);
             if (tastiOscuratiHint.contains(lettera))
             {
-                // non fare niente perché significa che quelle lettere sono già state oscurate da un hint
+                // non fare niente perché significa che quelle lettere sono già state oscurate dall'HINT 1
             } else if (tastoBtn != null) {
                     Color coloreAttuale = tastoBtn.getBackground();
                     boolean aggiorna = true;
                     if (coloreAttuale.equals(new Color(106, 170, 100))) {
                         aggiorna = false;
                     } else if (coloreAttuale.equals(new Color(201, 180, 88)) && prioritaColore < 3) {
+                        aggiorna = false;
+                    }
+                    // Se il tasto è un hint speciale (blu/oro), permettiamo di colorarlo di VERDE (prioritaColore == 3), 
+                    // ma blocchiamo se il tentativo lo assegna a giallo o grigio!
+                    else if ((tastiHintIniziale.contains(lettera) || tastiHintPresente.contains(lettera)) && prioritaColore < 3) {
                         aggiorna = false;
                     }
 
@@ -1094,8 +1155,10 @@ public class WordleFrame extends JFrame {
         }
 
         // 2. Calcola le lettere conosciute/escluse per verificare la disponibilità dell'HINT 1
-        java.util.Set<Character> lettereConosciuteHint1 = new java.util.HashSet<>(tastiHintSpeciali);
+        java.util.Set<Character> lettereConosciuteHint1 = new java.util.HashSet<>(tastiHintIniziale);
+        lettereConosciuteHint1.addAll(tastiHintPresente);
         lettereConosciuteHint1.addAll(tastiOscuratiHint);
+
         for (int i = 0; i < rigaCorrente; i++) {
             if (i < matrice.getTentativiList().size() && i < matrice.getColoriList().size()) {
                 String tentativo = matrice.getTentativiList().get(i);
@@ -1116,7 +1179,9 @@ public class WordleFrame extends JFrame {
         }
 
         // 3. Calcola le lettere conosciute (verdi/gialle) per verificare la disponibilità dell'HINT 3
-        java.util.Set<Character> lettereConosciuteHint3 = new java.util.HashSet<>(tastiHintSpeciali);
+        java.util.Set<Character> lettereConosciuteHint3 = new java.util.HashSet<>(tastiHintIniziale);
+        lettereConosciuteHint3.addAll(tastiHintPresente);
+
         for (int i = 0; i < rigaCorrente; i++) {
             if (i < matrice.getTentativiList().size() && i < matrice.getColoriList().size()) {
                 String tentativo = matrice.getTentativiList().get(i);
@@ -1230,7 +1295,7 @@ public class WordleFrame extends JFrame {
 
             case 2:
                 // --- HINT 2: Svelare la lettera iniziale ---
-                tastiHintSpeciali.add(primaLettera);
+                tastiHintIniziale.add(primaLettera);
                 
                 JButton tastoIniziale = tastiVirtuali.get(primaLettera);
                 if (tastoIniziale != null) {
@@ -1246,7 +1311,7 @@ public class WordleFrame extends JFrame {
                 java.util.Collections.shuffle(letterePresentiIgnotite, rand);
                 char letteraCasuale = letterePresentiIgnotite.get(0);
                 
-                tastiHintSpeciali.add(letteraCasuale);
+                tastiHintPresente.add(letteraCasuale);
                 JButton tastoPresente = tastiVirtuali.get(letteraCasuale);
                 if (tastoPresente != null) {
                     tastoPresente.setBackground(new Color(212, 172, 13));

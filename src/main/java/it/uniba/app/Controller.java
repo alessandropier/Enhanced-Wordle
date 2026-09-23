@@ -243,6 +243,7 @@ public final class Controller {
                 //p.setParolaSegreta(null);
                 //g.setTentativi(0);
                 //m.azzera(NUMCARATTERI);
+                g.setTentativi(g.getTentativi() + 1);
                 flagGioca = false;
 
                 System.out.println("\u001B[32m" + "Complimenti! Hai indovinato la parola!" + "\u001B[0m");
