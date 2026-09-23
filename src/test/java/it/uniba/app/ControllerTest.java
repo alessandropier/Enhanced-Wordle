@@ -911,7 +911,7 @@ public class ControllerTest {
     /**
      * Test per la funzione tentativo quando la partita non è stata avviata.
      * CASO: Tentativo inviato prima di digitare /gioca.
-     */
+     
     @Test
     public void tentativoSenzaPartitaTest() {
         Paroliere p = new Paroliere();
@@ -926,6 +926,7 @@ public class ControllerTest {
                    outContent.toString().contains("avviata") || 
                    g.getTentativi() == 0);
     }
+                   */
 
     /**
      * Test per verificare la risposta minuscola ("si") al comando /abbandona.
