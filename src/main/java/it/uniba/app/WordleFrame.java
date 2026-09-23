@@ -1171,12 +1171,23 @@ public class WordleFrame extends JFrame {
             }
         }
 
-        java.util.List<Character> lettereErrateIgnotite = new java.util.ArrayList<>();
+        // Controllo Lettere Standard
+        java.util.List<Character> lettereErrateIgnote = new java.util.ArrayList<>();
         for (char c = 'A'; c <= 'Z'; c++) {
             if (parolaSegreta.indexOf(c) == -1 && !lettereConosciuteHint1.contains(c)) {
-                lettereErrateIgnotite.add(c);
+                lettereErrateIgnote.add(c);
             }
         }
+
+        // Controllo della Ñ se la lingua è spagnola
+        // Se la lingua è Spagnolo
+        // E 
+        // La Ñ non è nella parola segreta
+        // E 
+        // La Ñ non è nota al giocatore
+        // allora la aggiungiamo alla lista delle lettere sbagliate
+        if("ESP".equals(Controller.getLingua()) && paroliere.getParolaSegreta().indexOf('Ñ') == -1 && !lettereConosciuteHint1.contains('Ñ'))
+            lettereErrateIgnote.add('Ñ');
 
         // 3. Calcola le lettere conosciute (verdi/gialle) per verificare la disponibilità dell'HINT 3
         java.util.Set<Character> lettereConosciuteHint3 = new java.util.HashSet<>(tastiHintIniziale);
@@ -1197,18 +1208,18 @@ public class WordleFrame extends JFrame {
             }
         }
 
-        java.util.List<Character> letterePresentiIgnotite = new java.util.ArrayList<>();
+        java.util.List<Character> letterePresentiIgnote = new java.util.ArrayList<>();
         for (int i = 0; i < parolaSegreta.length(); i++) {
             char c = parolaSegreta.charAt(i);
-            if (!letterePresentiIgnotite.contains(c) && !lettereConosciuteHint3.contains(c)) {
-                letterePresentiIgnotite.add(c);
+            if (!letterePresentiIgnote.contains(c) && !lettereConosciuteHint3.contains(c)) {
+                letterePresentiIgnote.add(c);
             }
         }
 
         // 4. Costruiamo dinamicamente la lista degli hint validi PRIMA di estrarre
         java.util.List<Integer> hintDisponibili = new java.util.ArrayList<>();
         
-        if (!lettereErrateIgnotite.isEmpty()) {
+        if (!lettereErrateIgnote.isEmpty()) {
             hintDisponibili.add(1); // Valido se ci sono ancora lettere errate ignote da poter escludere
         }
         
@@ -1216,7 +1227,7 @@ public class WordleFrame extends JFrame {
             hintDisponibili.add(2); // Valido solo se la prima lettera non è stata trovata
         }
         
-        if (!letterePresentiIgnotite.isEmpty()) {
+        if (!letterePresentiIgnote.isEmpty()) {
             hintDisponibili.add(3); // Valido solo se ci sono ancora lettere presenti ignote da mostrare
         }
 
@@ -1248,10 +1259,10 @@ public class WordleFrame extends JFrame {
         switch (tipoHint) {
             case 1:
                 // --- HINT 1: Esclusione di lettere errate ignote ---
-                java.util.Collections.shuffle(lettereErrateIgnotite, rand);
+                java.util.Collections.shuffle(lettereErrateIgnote, rand);
 
                 int conteggioScartate = 0;
-                for (char c : lettereErrateIgnotite) {
+                for (char c : lettereErrateIgnote) {
                     JButton tasto = tastiVirtuali.get(c);
                     if (tasto != null) {
                         tastiOscuratiHint.add(c);
@@ -1308,8 +1319,8 @@ public class WordleFrame extends JFrame {
 
             case 3:
                 // --- HINT 3: Mostrare una lettera presente ma NON ANCORA CONOSCIUTA ---
-                java.util.Collections.shuffle(letterePresentiIgnotite, rand);
-                char letteraCasuale = letterePresentiIgnotite.get(0);
+                java.util.Collections.shuffle(letterePresentiIgnote, rand);
+                char letteraCasuale = letterePresentiIgnote.get(0);
                 
                 tastiHintPresente.add(letteraCasuale);
                 JButton tastoPresente = tastiVirtuali.get(letteraCasuale);

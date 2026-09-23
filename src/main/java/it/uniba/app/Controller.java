@@ -216,9 +216,18 @@ public final class Controller {
                     flagLength = true;
                 } else {
                     s = s.toUpperCase();
-
+                    
+                    boolean isSpagnolo = "ESP".equalsIgnoreCase(Controller.getLingua());
                     for (int i = 0; i < NUMCARATTERI && !flagCorrect; i++) {
-                        if (s.charAt(i) < 'A' || s.charAt(i) > 'Z') {
+                        // carattere attuale
+                        char c = s.charAt(i);
+                        
+                        // var booleane che contengono l'esito dell'espressione a destra
+                        boolean fuoriRangeStandard = (c < 'A' || c > 'Z');
+                        boolean eEneSpagnola = (c == 'Ñ' && isSpagnolo);
+
+                        // controlliamo l'esito
+                        if (fuoriRangeStandard && !eEneSpagnola) {
                             flagCorrect = true;
                         }
                     }
@@ -480,7 +489,11 @@ public final class Controller {
                 //System.out.println(words);
 
                 int randomIndex = RANDOM.nextInt(words.size());
-                String nuova_parola = words.get(randomIndex);
+                String nuova_parola = words.get(randomIndex); 
+
+                // debug
+                // nuova_parola = "banco".toUpperCase();
+
                 p.setParolaSegreta(nuova_parola);
 
                 // (to delete) for quick development
