@@ -67,7 +67,7 @@ public class Messaggi {
             
             // Aggiungi parola
             case "aggiungi.titolo": return "Aggiungi Parola Personalizzata";
-            case "aggiungi.msg": return "Inserisci una nuova parola di %d lettere da aggiungere nel sistema:";
+            case "aggiungi.msg": return "Inserisci una nuova parola di %d lettere da aggiungere alle soluzioni del gioco:";
             case "aggiungi.errore.lunghezza": return "La parola deve essere di esattamente %d lettere!";
             case "aggiungi.errore.lunghezza.titolo": return "Errore";
             case "aggiungi.errore.caratteri": return "La parola deve contenere solo lettere dell'alfabeto!";
@@ -170,7 +170,7 @@ public class Messaggi {
             
             // Aggiungi parola
             case "aggiungi.titolo": return "Add Custom Word";
-            case "aggiungi.msg": return "Enter a new %d-letter word to add to the system:";
+            case "aggiungi.msg": return "Enter a new word of %d letters to add to the game's solutions:";
             case "aggiungi.errore.lunghezza": return "The word must be exactly %d letters long!";
             case "aggiungi.errore.lunghezza.titolo": return "Error";
             case "aggiungi.errore.caratteri": return "The word must contain only alphabet letters!";
@@ -273,7 +273,7 @@ public class Messaggi {
             
             // Aggiungi parola
             case "aggiungi.titolo": return "Agregar palabra personalizada";
-            case "aggiungi.msg": return "Ingrese una nueva palabra de %d letras para añadir al sistema:";
+            case "aggiungi.msg": return "Introduce una nueva palabra de %d letras para añadirla a las soluciones del juego:";
             case "aggiungi.errore.lunghezza": return "¡La palabra debe tener exactamente %d letras!";
             case "aggiungi.errore.lunghezza.titolo": return "Error";
             case "aggiungi.errore.caratteri": return "¡La palabra debe contener únicamente letras del alfabeto!";

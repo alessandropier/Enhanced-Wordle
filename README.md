@@ -36,7 +36,7 @@ Subsequently, I continued the project to integrate additional features such as:
 
 3. **Customization, Themes & System**
    * **"Dark/Light Mode"**: Click this toggle button to switch between the dark theme and the light theme of the user interface for a comfortable playing experience.
-   * **"Add Word"**: Click this button to open a dedicated input prompt where you can type and add a new custom word directly to your game dictionary saved locally (`parole_extra.txt`).
+   * **"Add Word"**: Click this button to open a dedicated input pop-up where you can type and add a new custom word directly to your **solutions** game dictionary saved locally (`parole_extra.txt`).
    * **Language**: Click this button to change the language of the game.
 
 4. **Hint & Info**

@@ -524,7 +524,7 @@ public final class Controller {
     }
 
     /**
-     * Controlla se una parola esiste già nel file interno o nel file extra.
+     * Controlla se una parola esiste già nel file interno o nel file extra. (come soluzione)
      * @param parola parola da verificare
      * @return true se esiste, false altrimenti
      */
