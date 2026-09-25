@@ -81,8 +81,6 @@ align
 alima
 aline
 alive
-allan
-aller
 allie
 allis
 allot
@@ -141,7 +139,6 @@ apter
 aptly
 arabs
 arbor
-arcos
 ardor
 areas
 arena

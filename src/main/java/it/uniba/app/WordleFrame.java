@@ -1255,6 +1255,9 @@ public class WordleFrame extends JFrame {
 
         String messaggioDialogo = "";
         boolean isNotte = tglModalita.isSelected();
+        
+        // debug
+        // tipoHint = 2;
 
         switch (tipoHint) {
             case 1:

@@ -3,7 +3,11 @@
 
 #### A fully featured, offline desktop implementation of the Wordle game supporting Italian, English and Spanish built with Java Swing, featuring dynamic difficulty with variable word lengths and attempts, custom vocabulary management, custom UI rendering and an advanced hint system.
 
----
+## 📺 Watch the Demo Video
+[![Watch the demo video on YouTube](docs/img/Final%20Thumbnail.png)](https://www.youtube.com/watch?v=wxe9mf7-VIA)
+> *Click the image above to watch the video on YouTube*
+
+## 💡 About the Project & Features
 
 Initially, this started as a repository for the implementation of the _Wordle_ game _(in Italian)_ via Command Line Interface _(CLI)_ for my _Software Engineering_ university course using the _Agile SCRUM_ framework and _GitHub Actions_ for _CI/CD_.
 
@@ -18,12 +22,6 @@ Subsequently, I continued the project to integrate additional features such as:
 - **Hints** given to the user, randomly selected from _3 categories_ based on their current context.
 
 ## 🕹️ Playing the Game
-<!---
-<div align="center">
-  <figure>
-    <img src="resources/video.gif" width="500" alt="Demo Wordle">
-  </figure>
-</div>--->
 
 1. **Main Game Window**
    * **Grid Area**: Displays your guesses attempt by attempt, coloring each letter to show your progress.
@@ -56,18 +54,18 @@ If the window appears scaled incorrectly on your operating system, you can force
 - **On Linux / macOS:** download the `avvia_wordle.sh`, open the terminal in the game folder and launch the `.sh` script with:
 
   ```bash
-  chmod +x avvia.sh
+  chmod +x avvia_wordle.sh
   ./avvia_wordle.sh
   ```
 
-## 📄 Where is the Custom Dictionary saved?
+## 📄 Where are the Custom Dictionaries saved?
 
-The custom dictionary is both read from and written to; therefore, a text file named 'parole_extra_N.txt' (extra words) is created, where N represents the number of characters. It is saved in the hidden _user.home_ directory depending on your operating system. 
+The custom dictionaries are both read from and written to; therefore, a text file named 'parole_extra_N.txt' (extra words) is created, where N represents the number of characters. It is saved in the hidden _user.home_ directory depending on your operating system. 
 - **Windows**: \Users\YourUserName\\.wordle_data\parole_extra.txt
 - **macOS**: /Users/YourUserName/.wordle_data/parole_extra.txt
 - **Linux**: /home/YourUserName/.wordle_data/parole_extra.txt
 
-_**Note**: since it is a .txt file, it can be manually modified. If invalid words are manually added to the extra words file, they will be skipped by the system, as well as duplicates._
+_**Note**: since it is a .txt file, it can be manually modified. If invalid words are manually added to the extra words file, they will be ignored by the system, as well as duplicates._
 
 ## Repository Structure
 
